@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'pages/HomeScreen.dart'; // Importa la pantalla que creaste
+import 'pages/HomeScreen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Main());
 }
 
-class MyApp extends StatelessWidget {
+class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+    return MaterialApp( 
       home: HomeScreen(), // Aquí se especifica la pantalla inicial
     );
   }
