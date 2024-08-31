@@ -9,24 +9,30 @@ class HomeScreen extends StatelessWidget {
       
       body: Center(
         child: Container(
-          color: Colors.lightBlueAccent, // Establece el color de fondo aquí
+          color: Colors.white, // Establece el color de fondo aquí
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center, 
             children: [
-              
+              Text(
+                "Titulo de Contenido", 
+                style: AppTextStyles.builder(
+                  color:AppColors.ateneaBlack,
+                  size: FontSizes.h1,
+                  weight: FontWeights.bold
+                )
+              ),
               AteneaButton(
                 text: 'Iniciar',
                 onPressed: () {
                   print('Botón presionado');
                 },
-                backgroundColor: const Color.fromARGB(255, 34, 136, 37),
-                textColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 34, 136, 37), 
                 borderRadius: 10.0,
-                textStyle: const TextStyle(
-                  fontSize: FontSizes.h1,
-                  color: Colors.white,
-                ),
+                textStyle: AppTextStyles.builder(
+                  color: AppColors.ateneaWhite,
+                  size: FontSizes.h3
+                )
               ),
           
               ElevatedButton(

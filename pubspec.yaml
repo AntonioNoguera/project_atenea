@@ -12,6 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_svg: ^0.22.0
  
   cupertino_icons: ^1.0.8
 
@@ -26,8 +28,16 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  #   - images/a_dot_burr.jpeg 
+  assets:
+    - assets/svg/Account.svg
+    - assets/svg/Account-Setting.svg
+    - assets/svg/Backspace.svg
+    - assets/svg/Calendar-Marked.svg
+    - assets/svg/Calendar-Upcoming.svg
+    - assets/svg/Historial.svg
+    - assets/svg/Search-Stadistics.svg
+    - assets/svg/Search.svg
 
   fonts:
     - family: RadioCanada

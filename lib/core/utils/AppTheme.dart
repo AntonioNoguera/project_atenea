@@ -17,45 +17,53 @@ class AppColors {
 
   //Event Tag Colors
   static const Color eventInstitutional = Color.fromRGBO(225, 162, 0,1);
+  static const Color eventAcademic = Color.fromRGBO(113, 14, 85, 1);
+  static const Color eventResearch = Color.fromRGBO(39, 118, 12, 1);
+  static const Color eventSports = Color.fromRGBO(202, 30, 30, 1);
+  static const Color eventArtistic = Color.fromRGBO(16, 22, 177, 1);
+  static const Color eventInnovation = Color.fromRGBO(102, 102, 102, 1);
+  static const Color eventCultural = Color.fromRGBO(121, 40, 14, 1);
+  static const Color eventLanguagues = Color.fromRGBO(12, 126, 99, 1);
+  static const Color eventSocial = Color.fromRGBO(37, 37, 37, 1);
+  static const Color eventExchange = Color.fromRGBO(0, 89, 46, 1);
 }
 
-class FontSizes{
+class FontSizes {
+  //Headers
   static const double h1 = 50.0;
   static const double h2 = 45.0;
   static const double h3 = 30.0;
   static const double h4 = 25.0;
 
+  //Body
   static const double body1 = 19.0;
-  static const double body2 = 0.0;
-  static const double body3 = 0.0;
-  static const double body4 = 12.0;
+  static const double body2 = 15.0;
+  static const double body3 = 12.0; 
 
+  //Captions (Pref avoid use to small for usabillity)
   static const double captions = 10.0;
 }
 
-class AppTextStyles {
-  
-  static const TextStyle headline1 = TextStyle(
-    fontSize: 24.0,
-    fontWeight: FontWeight.bold,
-    color: AppColors.textColor,
-  );
-
-  static const TextStyle bodyText1 = TextStyle(
-    fontSize: 16.0,
-    color: AppColors.textColor,
-  );
-
-  static const TextStyle buttonText = TextStyle(
-    fontSize: 18.0,
-    fontWeight: FontWeight.w600,
-    color: Colors.white,
-  );
+class FontWeights {
+  static const FontWeight light = FontWeight.w200;
+  static const FontWeight regular = FontWeight.normal;
+  static const FontWeight semibold = FontWeight.w600;
+  static const FontWeight bold = FontWeight.w800;
 }
 
-class AppSizes {
-  static const double smallPadding = 8.0;
-  static const double mediumPadding = 16.0;
-  static const double largePadding = 32.0;
-  static const double borderRadius = 12.0;
+class AppTextStyles {
+  //For only really common styles related to the font
+
+  static TextStyle builder(
+      { Color color = AppColors.primaryColor,
+        double size = FontSizes.h1,
+        FontWeight weight = FontWeights.regular }) {
+
+    return TextStyle(
+      fontFamily: 'RadioCanada',
+      fontSize: size,
+      fontWeight: weight,
+      color:color, // Aquí se usa el parámetro color
+    );
+  }
 }
