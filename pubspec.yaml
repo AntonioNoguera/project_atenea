@@ -25,10 +25,8 @@ dev_dependencies:
   
 flutter:
   uses-material-design: true
+ 
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg 
   assets:
     - assets/svg/Account.svg
     - assets/svg/Account-Setting.svg
@@ -38,6 +36,10 @@ flutter:
     - assets/svg/Historial.svg
     - assets/svg/Search-Stadistics.svg
     - assets/svg/Search.svg
+
+    - assets/images/backgrounds/dart_vector.png
+    - assets/images/backgrounds/down_left_asset.png 
+    - assets/images/backgrounds/living_fime.png
 
   fonts:
     - family: RadioCanada
