@@ -4,13 +4,14 @@ class AppColors {
   //Primary and Secondary Colors
   static const Color primaryColor = Color.fromRGBO(14, 113, 54, 1);
   static const Color secondaryColor = Color.fromRGBO(101, 190,69,1);
+  static const Color heavyPrimaryColor = Color.fromRGBO(5, 66, 29, 1);
 
   //Input Related Colorss
   static const Color grayColor = Color.fromRGBO(114, 114, 114, 1);
   static const Color placeholderInputColor = Color.fromRGBO(101, 190, 69, 0.6);
   
   //Generic Purpose Colors
-  static const Color ateneaWhite = Colors.white;
+  static const Color ateneaWhite = Color.fromRGBO(254,247,255,1);
   static const Color ateneaBlack = Colors.black;
   static const Color ateneaRed = Color.fromRGBO(244, 104, 104, 1);
   static const Color textColor = Color.fromRGBO(65, 65, 65, 1);
