@@ -36,43 +36,66 @@ class HomeScreen extends StatelessWidget {
                   placeHolder: "Ejemplo: Fernando",   
                   inputNameText:  "Ingresa el Usuario"
                 ),
-                Padding(
-                padding: const EdgeInsets.only(top: 8.0), // Espacio inferior de 8 píxeles
-                child: AtenaDropDown(
+ 
+                AtenaDropDown(
                   hint : "Ingresa una opss",
                   items: options,
                   initialValue: selectedValue,
                   onChanged: (value) {
                     print(value);
                   },
-                ), 
-              ),
+                ),
 
-              ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return  (
-                    AteneaDialog(
-                      parentContext: context,
-                      childContent: const Column(
-                        children: [
-                          Text("asdfasdf"),
-                          Text("asdfasdf"),
-                          Text("asdfasdf"),
-                          Text("asdfasdf"),
-                          Text("asdfasdf"),
-                        ]
-                      )
-                    )
-                  );
-                },
-              );
-            },
-            child: Text('Mostrar Bottom Sheet'),
-          ),
-                  
+                ElevatedButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return  (
+                          AteneaDialog(
+                            parentContext: context,
+                            childContent: const Column(
+                              children: [
+                                Text("asdfasdf"),
+                                Text("asdfasdf"),
+                                Text("asdfasdf"),
+                                Text("asdfasdf"),
+                                Text("asdfasdf"),
+                              ]
+                            )
+                          )
+                        );
+                      },
+                    );
+                  },
+                  child: Text('Mostrar Bottom Sheet'),
+                ),
+                
+                Card(
+                  elevation: 10, // Sombras
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20), // Bordes redondeados
+                  ),
+                  child:  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Titulos Titulos Titulos TitulosTitulosTitulos ',
+                          style: AppTextStyles.builder(color : AppColors.ateneaBlack, size : FontSizes.h4, weight: FontWeights.semibold),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Contenido Contenido   asd asd  asdf asdf Contenido Contenido Contenido Contenido Contenido Contenido Contenido ',
+                          style: AppTextStyles.builder(color : AppColors.ateneaBlack, size : FontSizes.body1, weight: FontWeights.regular),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                                    
               ]
             )
           )  

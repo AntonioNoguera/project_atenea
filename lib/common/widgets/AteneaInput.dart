@@ -9,44 +9,35 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Modal Bottom Sheet Example')),
+        appBar: AppBar(title: Text('Card Example')),
         body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: EdgeInsets.all(16.0),
-                    height: 250,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Modal Bottom Sheet',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          'Este es un ejemplo de un modal bottom sheet.',
-                        ),
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Cerrar el bottom sheet
-                          },
-                          child: Text('Cerrar'),
-                        ),
-                      ],
+          child: Card(
+            elevation: 5, // Sombras
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10), // Bordes redondeados
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'Este es un título de la tarjeta',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                  );
-                },
-              );
-            },
-            child: Text('Mostrar Bottom Sheet'),
+                  ),
+                  SizedBox(height: 10),
+                  Text('Aquí va el contenido de la tarjeta. Puedes agregar más información, imágenes, íconos, botones, etc.'),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Acción'),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

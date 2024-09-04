@@ -47,7 +47,7 @@ class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 3.0) ,
+      padding: const EdgeInsets.only(top: 10.0) ,
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
