@@ -11,7 +11,7 @@ class AteneaButton extends StatelessWidget {
   final String? svgIcon; // Path al recurso SVG
   final double? iconSize; // Tamaño opcional del ícono
 
-  AteneaButton({
+  const AteneaButton({super.key, 
     required this.text,
     required this.onPressed,
     this.backgroundColor = Colors.blue, 

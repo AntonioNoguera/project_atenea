@@ -36,6 +36,8 @@ flutter:
     - assets/svg/Historial.svg
     - assets/svg/Search-Stadistics.svg
     - assets/svg/Search.svg
+    - assets/svg/Close.svg
+
 
     - assets/images/backgrounds/dart_vector.png
     - assets/images/backgrounds/down_left_asset.png 
