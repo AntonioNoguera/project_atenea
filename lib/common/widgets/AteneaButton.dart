@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../core/utils/AppTheme.dart';
 
 class AteneaButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final Color backgroundColor; 
-  final double borderRadius;
-  final EdgeInsetsGeometry padding;
+  final Color backgroundColor;   
   final TextStyle? textStyle;
-  final String? svgIcon; // Path al recurso SVG
-  final double? iconSize; // Tamaño opcional del ícono
+  final String? svgIcon;
 
-  const AteneaButton({super.key, 
+  // Constant data of the button
+  final double borderRadius = 10.0;
+  final double iconSize = 35.0;
+  final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0);
+
+  AteneaButton({
+    super.key, 
     required this.text,
     required this.onPressed,
-    this.backgroundColor = Colors.blue, 
-    this.borderRadius = 10.0,
-    this.padding = const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-    this.textStyle,
-    this.svgIcon, // añadir esto
-    this.iconSize = 24.0, // añadir esto, default 24
-  });
+    this.backgroundColor = AppColors.primaryColor, 
+    TextStyle? textStyle,
+    this.svgIcon
+  }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.body1); // Lo hacemos aquí.
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +36,24 @@ class AteneaButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: Row(
-        mainAxisSize: MainAxisSize.min, // Asegura que el Row no ocupe todo el botón innecesariamente
-        children: [  // Si hay un ícono SVG, mostrarlo
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0), // Añade espacio entre el ícono y el texto
-              child: SvgPicture.asset(
-                'assets/svg/Historial.svg',
-                height: 80.0,
-                width: 80.0,
-              ),
-            ),
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          
           Text(
             text,
             style: textStyle,
           ),
+
+          if (svgIcon != null) // Solo se renderiza si svgIcon no es nulo
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0), // Añade espacio entre el ícono y el texto
+              child: SvgPicture.asset(
+                svgIcon!, // Usa el operador "!" porque ya verificamos que no es nulo
+                height: iconSize,
+                width: iconSize,
+              ),
+            ),
         ],
       ),
     );

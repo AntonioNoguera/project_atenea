@@ -9,6 +9,7 @@ import '../core/utils/AppTheme.dart';
 import '../common/widgets/AtenaDropDown.dart';
 
 import '../common/widgets/AteneaDialog.dart';
+import '../common/widgets/AteneaButton.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,8 +20,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {    
 
     String? selectedValue;
-    final List<String> options = ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 3', 'Opción 3', 'Opción 3', 'Opción 3', 'Opción 3', 'Opción 3'];
-
+    final List<String> options = ['Opción 1', ];
     return AteneaScaffold(
       body: AteneaBackground(
         child: Center(
@@ -46,7 +46,9 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
 
-                ElevatedButton(
+                AteneaButton(
+                  text: "Presioname",
+                  svgIcon: 'assets/svg/Historial.svg',
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -67,9 +69,9 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                     );
-                  },
-                  child: Text('Mostrar Bottom Sheet'),
-                ),
+                  }
+                )
+                ,
                 
                 Card(
                   elevation: 10, // Sombras
@@ -87,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Contenido Contenido   asd asd  asdf asdf Contenido Contenido Contenido Contenido Contenido Contenido Contenido ',
+                          'Contenido Contenido  ',
                           style: AppTextStyles.builder(color : AppColors.ateneaBlack, size : FontSizes.body1, weight: FontWeights.regular),
                           textAlign: TextAlign.center,
                         ),
