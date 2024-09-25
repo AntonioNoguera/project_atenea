@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "707092644639",
+    "project_id": "athenea-fime",
+    "storage_bucket": "athenea-fime.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707092644639:android:a48c4168bed7d7af79662a",
+        "android_client_info": {
+          "package_name": "om.example.proyect_atenea"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwBnerDHAlD235ulHUjbwZ51IfmFvOMZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
