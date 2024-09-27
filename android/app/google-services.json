@@ -7,9 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:707092644639:android:a48c4168bed7d7af79662a",
+        "mobilesdk_app_id": "1:707092644639:android:e51922066ba8b7f279662a",
         "android_client_info": {
-          "package_name": "om.example.proyect_atenea"
+          "package_name": "com.example.neo_proyect_atenea"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwBnerDHAlD235ulHUjbwZ51IfmFvOMZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707092644639:android:48855352ea39e43b79662a",
+        "android_client_info": {
+          "package_name": "com.mike.proyect_atenea"
         }
       },
       "oauth_client": [],

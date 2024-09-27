@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'pages/HomeScreen.dart';
-import 'core/utils/AppTheme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
-  runApp(Main());
+import 'fire_test.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();  // Inicializa Firebase
+  runApp(MyApp());
 }
 
-class Main extends StatelessWidget {
-  const Main({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: AppColors.primaryColor.withOpacity(0.65), // color de la barra de estado
-          statusBarIconBrightness: Brightness.dark, // brillo de los íconos
-        ),
-        child: HomeScreen(),
-      ),
+      title: 'Flutter Firebase Demo',
+      home: FirestoreExample(),
     );
   }
 }
