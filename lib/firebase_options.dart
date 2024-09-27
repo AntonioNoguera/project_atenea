@@ -48,17 +48,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyA8OGWpxPf3AxIdXuB7DLt1Vz2LLOI1KJI',
-    appId: '1:707092644639:web:481cebfb724495ed79662a',
+    appId: '1:707092644639:web:8e2ea1807bf21f5a79662a',
     messagingSenderId: '707092644639',
     projectId: 'athenea-fime',
     authDomain: 'athenea-fime.firebaseapp.com',
     storageBucket: 'athenea-fime.appspot.com',
-    measurementId: 'G-V6JSLJMB86',
+    measurementId: 'G-1GMGP3T2H5',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCwBnerDHAlD235ulHUjbwZ51IfmFvOMZo',
-    appId: '1:707092644639:android:48855352ea39e43b79662a',
+    appId: '1:707092644639:android:4170ce6797833bce79662a',
     messagingSenderId: '707092644639',
     projectId: 'athenea-fime',
     storageBucket: 'athenea-fime.appspot.com',
@@ -66,10 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAgZoGo695CAJGoy1jA4eyIHgA4tQwuHMc',
-    appId: '1:707092644639:ios:aa98ea0cb04591b979662a',
+    appId: '1:707092644639:ios:f14d7beec9c167fe79662a',
     messagingSenderId: '707092644639',
     projectId: 'athenea-fime',
     storageBucket: 'athenea-fime.appspot.com',
-    iosBundleId: 'com.example.proyectAtenea',
+    iosBundleId: 'com.mike.proyectAtenea',
   );
+
 }
