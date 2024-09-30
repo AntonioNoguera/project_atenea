@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/utils/AppTheme.dart';
+import '../values/AppTheme.dart';
 
 class AtenaDropDown extends StatefulWidget {
   final List<String> items;
@@ -56,9 +56,10 @@ class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProvider
           children: [
             GestureDetector(
               onTap: toggleDropdown,
-              child: Container(
+              child: Container( 
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: (isOpen) ? 11.8 : 12),
                 decoration: BoxDecoration(
+                  color: AppColors.ateneaWhite,
                   border: Border.all(color: (isOpen) ? AppColors.secondaryColor : AppColors.primaryColor, width: (isOpen) ? 1.8 : 1.3 ),
                   borderRadius: BorderRadius.circular(4),
                 ),

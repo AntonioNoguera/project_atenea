@@ -20,7 +20,7 @@ class AteneaBackground extends StatelessWidget {
             fit: BoxFit.cover,
           ), 
         ),
-        
+ 
         Positioned(
           top: 10,
           right: 10, 

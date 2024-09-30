@@ -16,6 +16,10 @@ dependencies:
   firebase_auth: ^5.3.0
   cloud_firestore: ^5.4.2
 
+  path_provider: ^2.0.11
+  provider: ^6.0.5
+  shared_preferences: ^2.0.15
+
   flutter_svg: ^2.0.10+1
  
   cupertino_icons: ^1.0.8
@@ -40,8 +44,9 @@ flutter:
     - assets/svg/Search-Stadistics.svg
     - assets/svg/Search.svg
     - assets/svg/Close.svg
+    - assets/svg/Bearny.svg
 
-
+    - assets/images/backgrounds/top_left_asset.png
     - assets/images/backgrounds/dart_vector.png
     - assets/images/backgrounds/down_left_asset.png 
     - assets/images/backgrounds/living_fime.png

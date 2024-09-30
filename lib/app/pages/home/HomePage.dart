@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart'; 
-
-import '../common/widgets/AteneaField.dart';
-import '../common/widgets/AteneaScaffold.dart';
-
-import '../common/widgets/AteneaBackground.dart';
-import '../core/utils/AppTheme.dart';
-
-import '../common/widgets/AtenaDropDown.dart';
-
-import '../common/widgets/AteneaDialog.dart';
-import '../common/widgets/AteneaButton.dart';
-
-import '../common/widgets/AteneaSquaredButton.dart';
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
  
+import '../../widgets/AteneaScaffold.dart';
 
+import '../../widgets/AteneaBackground.dart';  
 
+import '../../widgets/AteneaSquaredButton.dart';
+
+import '../../../app/values/AppTheme.dart';
+import '../../widgets/AteneaField.dart';
+import '../../widgets/AtenaDropDown.dart';
+import '../../widgets/AteneaButton.dart';
+import '../../widgets/AteneaDialog.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+ 
   @override
   Widget build(BuildContext context) {    
 
     String? selectedValue;
     final List<String> options = ['Opción 1', ];
+
     return AteneaScaffold(
       body: AteneaBackground( 
         child: SafeArea(  
@@ -31,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
             child: Column( 
               children: [ 
-                /*
+                
                 Text("Titulos", style: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.h1, weight: FontWeights.bold)),
                 Text("Subtitulos", style: AppTextStyles.builder(color: AppColors.secondaryColor, size: FontSizes.h3)),
                 Text("Contenidos", style: AppTextStyles.builder(color: AppColors.ateneaBlack, size: FontSizes.body1)), 
@@ -102,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                */
+                /*
                 Expanded(
                   child: GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -114,7 +112,7 @@ class HomeScreen extends StatelessWidget {
                     itemCount: 4,
                   ),
                 ),
-                   
+                   */
                                     
               ]
             ),

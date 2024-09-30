@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../core/utils/AppTheme.dart';
+import '../values/AppTheme.dart';
 
 class AteneaButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback onPressed;
   final Color backgroundColor;   
   final TextStyle? textStyle;
   final String? svgIcon;
 
-  // Constant data of the button
   final double borderRadius = 10.0;
   final double iconSize = 35.0;
-  final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0);
+  final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0);
+
+  final bool enabledBorder;
 
   AteneaButton({
     super.key, 
-    required this.text,
+    this.text,
     required this.onPressed,
     this.backgroundColor = AppColors.primaryColor, 
     TextStyle? textStyle,
+    this.enabledBorder = false,
     this.svgIcon
-  }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.body1); // Lo hacemos aquí.
+  }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.h4); // Lo hacemos aquí.
 
 
   @override
@@ -33,23 +35,31 @@ class AteneaButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
+        side: enabledBorder  // Condicional para mostrar borde solo si `hasBorder` es `true`
+              ? const BorderSide(
+                  color: AppColors.primaryColor,  // Color del borde
+                  width: 1.5,  // Grosor del borde
+                  style: BorderStyle.solid,  // Estilo sólido
+                )
+              : BorderSide.none, 
       ),
       onPressed: onPressed,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          
+
+          if (text != null) 
           Text(
-            text,
+            text!,
             style: textStyle,
           ),
 
-          if (svgIcon != null) // Solo se renderiza si svgIcon no es nulo
+          if (svgIcon != null)
             Padding(
-              padding: const EdgeInsets.only(left: 8.0), // Añade espacio entre el ícono y el texto
+              padding: EdgeInsets.only(left: text != null ? 8.0 : 0.0),
               child: SvgPicture.asset(
-                svgIcon!, // Usa el operador "!" porque ya verificamos que no es nulo
+                svgIcon!,
                 height: iconSize,
                 width: iconSize,
               ),

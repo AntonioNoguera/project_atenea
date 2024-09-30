@@ -4,7 +4,8 @@ class AppColors {
   //Primary and Secondary Colors
   static const Color primaryColor = Color.fromRGBO(14, 113, 54, 1);
   static const Color secondaryColor = Color.fromRGBO(101, 190,69,1);
-  static const Color heavyPrimaryColor = Color.fromRGBO(5, 66, 29, 1);
+  static const Color heavyPrimaryColor = Color.fromRGBO(5, 66, 29, 1); 
+  static const Color lightPrimaryColor = Color.fromRGBO(14, 113, 54, .6);
 
   //Input Related Colorss
   static const Color grayColor = Color.fromRGBO(114, 114, 114, 1);
@@ -33,7 +34,7 @@ class FontSizes {
   //Headers
   static const double h1 = 50.0;
   static const double h2 = 45.0;
-  static const double h3 = 30.0;
+  static const double h3 = 35.0;
   static const double h4 = 25.0;
 
   //Body

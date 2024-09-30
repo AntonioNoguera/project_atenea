@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import '../../core/utils/AppTheme.dart';
+import '../values/AppTheme.dart';
 
 class AteneaField extends StatelessWidget {
   final String placeHolder;
@@ -8,9 +7,10 @@ class AteneaField extends StatelessWidget {
 
   final double inputFontSize = FontSizes.body1;
   final double inputBorderWidth = 1.3;
+  final double borderRadiusValue = 12.0; // Define el radio de las esquinas
 
   const AteneaField({
-    super.key, 
+    super.key,
     required this.placeHolder,
     required this.inputNameText
   });
@@ -18,8 +18,7 @@ class AteneaField extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return TextField(
-
-      //Estilos del input en estado generico
+      // Estilos del input en estado generico
       style: TextStyle(
         fontFamily: 'RadioCanada',
         color: AppColors.heavyPrimaryColor,
@@ -31,42 +30,46 @@ class AteneaField extends StatelessWidget {
         labelText: inputNameText,
         labelStyle: TextStyle(
           fontFamily: 'RadioCanada',
-          color: AppColors.primaryColor, 
+          color: AppColors.lightPrimaryColor,
           fontSize: inputFontSize,
         ),
-
         hintText: placeHolder,
         hintStyle: TextStyle(
           fontFamily: 'RadioCanada',
           color: AppColors.grayColor,
           fontSize: inputFontSize,
         ),
-        
-        //habilitado y sin foco
+
+        // Estilo de bordes habilitado y sin foco
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
           borderSide: BorderSide(
             color: AppColors.primaryColor,
             width: inputBorderWidth,
           ),
         ),
-        
 
-        //Bordes
+        // Borde cuando está enfocado
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
           borderSide: BorderSide(
-            color: AppColors.secondaryColor, // Color del borde cuando el campo está enfocado
+            color: AppColors.secondaryColor,
             width: inputBorderWidth + 0.5,
           ),
         ),
-        
+
+        // Borde deshabilitado
         disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
           borderSide: BorderSide(
-            color: AppColors.grayColor,  
+            color: AppColors.grayColor,
             width: inputBorderWidth,
           ),
-        ), 
+        ),
 
+        // Borde de error
         errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
           borderSide: BorderSide(
             color: Colors.red,
             width: inputBorderWidth,
