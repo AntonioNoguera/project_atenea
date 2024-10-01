@@ -21,34 +21,34 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Bienvenido de vuelta",
+              'Bienvenido de vuelta',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.h1, weight: FontWeights.semibold),
             ),
             const SizedBox(height: 60),
             Text(
-              "Inicia Sesión",
+              'Inicia Sesión',
               style: AppTextStyles.builder(color: AppColors.secondaryColor, size: FontSizes.h3),
             ),
             const SizedBox(height: 30),
             const AteneaField(
-              placeHolder: "Ejemplo: Fernando",
-              inputNameText: "Usuario",
+              placeHolder: 'Ejemplo: Fernando',
+              inputNameText: 'Usuario',
             ),
             const SizedBox(height: 10),
             const AteneaField(
-              placeHolder: "Ejemplo: Fernando",
-              inputNameText: "Contraseña",
+              placeHolder: 'Ejemplo: Fernando',
+              inputNameText: 'Contraseña',
             ),
             const AteneaSwitch(),
             const SizedBox(height: 20),
             AteneaButton(
-              text: "Iniciar",
+              text: 'Iniciar',
               onPressed: () {},
             ),
             const Spacer(),
             Text(
-              "¿Eres nuevo por acá?, ¡Regístrate!",
+              '¿Eres nuevo por acá?, ¡Regístrate!',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body2, weight: FontWeights.semibold),
             ),
@@ -57,7 +57,7 @@ class LoginPage extends StatelessWidget {
             ),
             AteneaButton(
               backgroundColor: AppColors.secondaryColor,
-              text: "Regístrate",
+              text: 'Regístrate',
               onPressed: () {},
             ),
           ],

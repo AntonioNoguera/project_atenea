@@ -65,7 +65,7 @@ class SplashPage extends StatelessWidget {
                   const CircularProgressIndicator(color: AppColors.primaryColor),
                   const Spacer(),
                   Text(
-                    "Versión: 24.09",
+                    'Versión: 24.09',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1, weight: FontWeights.semibold),
                   ),

@@ -18,7 +18,7 @@ class _CustomSwitchState extends State<AteneaSwitch> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(isSwitched ? "Recuérdame" : "Cerrar sesión al salir", style: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1)),
+        Text(isSwitched ? 'Recuérdame' : 'Cerrar sesión al salir', style: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1)),
         const SizedBox(width: 10),
         Switch(
             value: isSwitched,
