@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../values/app_theme.dart';
 
 class AteneaDialog extends StatelessWidget {
   final Widget childContent;
