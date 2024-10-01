@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/app/widgets/AteneaScaffold.dart';
-import '../../../app/values/AppTheme.dart';
+import 'package:proyect_atenea/app/widgets/atenea_scaffold.dart';
+import '../../values/app_theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  
+
   final List<Widget> _pages = <Widget>[
     const Center(child: Text('Mis Unidades', style: TextStyle(fontSize: 24))),
     const Center(child: Text('Mi Perfil', style: TextStyle(fontSize: 24))),
@@ -78,7 +78,7 @@ class HomePageState extends State<HomePage> {
                     unselectedItemColor: AppColors.ateneaWhite.withOpacity(0.6),
                     currentIndex: _selectedIndex, // Índice del ítem seleccionado
                     onTap: _onItemTapped, // Manejar el toque en los ítems
-                    type: BottomNavigationBarType.fixed, 
+                    type: BottomNavigationBarType.fixed,
                     items: [
                       BottomNavigationBarItem(
                         icon: Icon(Icons.home),

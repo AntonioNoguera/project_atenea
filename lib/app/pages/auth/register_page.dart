@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart'; 
-import '../../widgets/AteneaScaffold.dart'; 
-import '../../../app/values/AppTheme.dart'; 
-import '../../widgets/AteneaField.dart'; 
-import '../../widgets/AteneaButton.dart';
+import 'package:flutter/material.dart';
+import '../../widgets/atenea_scaffold.dart';
+import '../../values/app_theme.dart';
+import '../../widgets/atenea_field.dart';
+import '../../widgets/atenea_button.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context) {    
-    return AteneaScaffold( 
+  Widget build(BuildContext context) {
+    return AteneaScaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.05,
@@ -24,26 +24,27 @@ class RegisterPage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(
                 color: AppColors.primaryColor,
-                size: FontSizes.h1, 
+                size: FontSizes.h1,
                 weight: FontWeights.bold,
               ),
             ),
             const SizedBox(height: 20.0),
 
             // El contenido desplazable
-            Expanded(  // Esto asegura que el contenido puede desplazarse
+            Expanded(
+              // Esto asegura que el contenido puede desplazarse
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Text(
-                      "Estos datos se usarán únicamente para estadística", 
+                      "Estos datos se usarán únicamente para estadística",
                       style: AppTextStyles.builder(
-                        color: AppColors.secondaryColor, 
+                        color: AppColors.secondaryColor,
                         size: FontSizes.body1,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 20.0),  // Espaciado
+                    const SizedBox(height: 20.0), // Espaciado
 
                     // Botones de selección
                     Row(
@@ -78,7 +79,7 @@ class RegisterPage extends StatelessWidget {
 
                     // Campos de texto
                     const AteneaField(
-                      placeHolder: "Ejemplo: Fernando",   
+                      placeHolder: "Ejemplo: Fernando",
                       inputNameText: "Matrícula",
                     ),
                     const SizedBox(height: 10),
@@ -86,14 +87,14 @@ class RegisterPage extends StatelessWidget {
                       children: [
                         Flexible(
                           child: AteneaField(
-                            placeHolder: "Ejemplo: Fernando",   
+                            placeHolder: "Ejemplo: Fernando",
                             inputNameText: "Nombre (s)",
                           ),
                         ),
                         SizedBox(width: 10),
                         Flexible(
                           child: AteneaField(
-                            placeHolder: "Ejemplo: Fernando",   
+                            placeHolder: "Ejemplo: Fernando",
                             inputNameText: "Apellidos",
                           ),
                         ),
@@ -101,27 +102,27 @@ class RegisterPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     const AteneaField(
-                      placeHolder: "Ejemplo: Fernando",   
+                      placeHolder: "Ejemplo: Fernando",
                       inputNameText: "Correo Electrónico",
                     ),
                     const SizedBox(height: 10),
                     const AteneaField(
-                      placeHolder: "Ejemplo: Fernando",   
+                      placeHolder: "Ejemplo: Fernando",
                       inputNameText: "Tipo de permiso",
                     ),
                     const SizedBox(height: 10),
                     const AteneaField(
-                      placeHolder: "Ejemplo: Fernando",   
+                      placeHolder: "Ejemplo: Fernando",
                       inputNameText: "Departamento / Académica",
                     ),
                     const SizedBox(height: 10),
                     const AteneaField(
-                      placeHolder: "Ejemplo: Fernando",   
+                      placeHolder: "Ejemplo: Fernando",
                       inputNameText: "Contraseña",
                     ),
                     const SizedBox(height: 10),
                     const AteneaField(
-                      placeHolder: "Ejemplo: Fernando",   
+                      placeHolder: "Ejemplo: Fernando",
                       inputNameText: "Verificar Contraseña",
                     ),
                     const SizedBox(height: 30),
@@ -133,7 +134,7 @@ class RegisterPage extends StatelessWidget {
             // Botones en la parte inferior, fuera del scroll
             Row(
               children: [
-                AteneaButton(  
+                AteneaButton(
                   svgIcon: "assets/svg/Backspace.svg",
                   backgroundColor: AppColors.secondaryColor,
                   onPressed: () {},
@@ -142,7 +143,7 @@ class RegisterPage extends StatelessWidget {
                 Flexible(
                   child: AteneaButton(
                     text: "Registrar",
-                    backgroundColor: AppColors.primaryColor, 
+                    backgroundColor: AppColors.primaryColor,
                     onPressed: () {},
                   ),
                 ),

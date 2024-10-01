@@ -1,6 +1,6 @@
 import '../../domain/entities/session.dart';
-import '../../domain/repositories/SessionRepository.dart';
-import '../datasources/SessionManagerDataSource.dart';
+import '../../domain/repositories/session_repository.dart';
+import '../datasources/session_manager_data_source.dart';
 
 class SessionRepositoryImpl implements SessionRepository {
   final SessionLocalDataSource localDataSource;

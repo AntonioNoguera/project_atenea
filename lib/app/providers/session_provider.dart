@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/session.dart';
-import '../../domain/usecases/SessionUsecases.dart';
+import '../../domain/usecases/session_use_cases.dart';
 
 class SessionProvider with ChangeNotifier {
   final GetSessionUseCase getSessionUseCase;

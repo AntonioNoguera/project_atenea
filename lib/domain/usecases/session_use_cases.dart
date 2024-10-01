@@ -1,6 +1,6 @@
 // lib/domain/usecases/session_usecases.dart
 import '../entities/session.dart';
-import '../repositories/SessionRepository.dart';
+import '../repositories/session_repository.dart';
 
 class GetSessionUseCase {
   final SessionRepository repository;

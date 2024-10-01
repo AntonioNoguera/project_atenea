@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../values/AppTheme.dart';
+import '../values/app_theme.dart';
 
 class AteneaDialog extends StatelessWidget {
   final Widget childContent;
@@ -27,7 +27,7 @@ class AteneaDialog extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(parentContext);  
+                    Navigator.pop(parentContext);
                   },
                   child: SvgPicture.asset(
                     'assets/svg/Close.svg',
@@ -39,7 +39,7 @@ class AteneaDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            childContent,  
+            childContent,
           ],
         ),
       ),

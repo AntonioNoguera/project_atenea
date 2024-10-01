@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../values/AppTheme.dart';
+import '../values/app_theme.dart';
 
 class AteneaField extends StatelessWidget {
   final String placeHolder;
@@ -9,14 +9,10 @@ class AteneaField extends StatelessWidget {
   final double inputBorderWidth = 1.3;
   final double borderRadiusValue = 12.0; // Define el radio de las esquinas
 
-  const AteneaField({
-    super.key,
-    required this.placeHolder,
-    required this.inputNameText
-  });
+  const AteneaField({super.key, required this.placeHolder, required this.inputNameText});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return TextField(
       // Estilos del input en estado generico
       style: TextStyle(
@@ -42,7 +38,7 @@ class AteneaField extends StatelessWidget {
 
         // Estilo de bordes habilitado y sin foco
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(borderRadiusValue), // Agrega el radio aquí
           borderSide: BorderSide(
             color: AppColors.primaryColor,
             width: inputBorderWidth,
@@ -51,7 +47,7 @@ class AteneaField extends StatelessWidget {
 
         // Borde cuando está enfocado
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(borderRadiusValue), // Agrega el radio aquí
           borderSide: BorderSide(
             color: AppColors.secondaryColor,
             width: inputBorderWidth + 0.5,
@@ -60,7 +56,7 @@ class AteneaField extends StatelessWidget {
 
         // Borde deshabilitado
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(borderRadiusValue), // Agrega el radio aquí
           borderSide: BorderSide(
             color: AppColors.grayColor,
             width: inputBorderWidth,
@@ -69,7 +65,7 @@ class AteneaField extends StatelessWidget {
 
         // Borde de error
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadiusValue),  // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(borderRadiusValue), // Agrega el radio aquí
           borderSide: BorderSide(
             color: Colors.red,
             width: inputBorderWidth,

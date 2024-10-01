@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart'; 
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
-import 'app/values/AppTheme.dart';
+import 'app/values/app_theme.dart';
 
 //Provider Immports
-import 'app/providers/SessionProvider.dart'; 
-import 'domain/usecases/SessionUsecases.dart';
+import 'app/providers/session_provider.dart';
+import 'domain/usecases/session_use_cases.dart';
 
 //Page
-import 'app/pages/auth/SplashPage.dart';
-import 'app/pages/home/HomePage.dart';
-import 'app/pages/auth/LoginPage.dart';
-import 'app/pages/auth/RegisterPage.dart';
+import 'app/pages/auth/splash_page.dart';
+import 'app/pages/home/home_page.dart';
+import 'app/pages/auth/login_page.dart';
+import 'app/pages/auth/register_page.dart';
 
-import 'package:proyect_atenea/data/datasources/SessionManagerDataSource.dart';
-import 'package:proyect_atenea/data/repositories/SessionRepositoryImpl.dart'; 
-void main() async { 
-  
+import 'package:proyect_atenea/data/datasources/session_manager_data_source.dart';
+import 'package:proyect_atenea/data/repositories/session_repository_impl.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Fire Store Initialization
@@ -56,7 +56,7 @@ void main() async {
     ),
   );
 }
- 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,6 @@ class MyApp extends StatelessWidget {
         '/auth/register': (context) => const RegisterPage(),
         '/home': (context) => const HomePage(),
       },
-
       initialRoute: '/splash',
     );
   }

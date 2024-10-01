@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../values/AppTheme.dart';
+import '../values/app_theme.dart';
 
 class Ateneasquaredbutton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final Color backgroundColor;   
+  final Color backgroundColor;
   final TextStyle? textStyle;
   final String? svgIcon;
 
@@ -14,15 +14,8 @@ class Ateneasquaredbutton extends StatelessWidget {
   final double iconSize = 35.0;
   final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0);
 
-  Ateneasquaredbutton({
-    super.key, 
-    required this.text,
-    required this.onPressed,
-    this.backgroundColor = AppColors.primaryColor, 
-    TextStyle? textStyle,
-    this.svgIcon
-  }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.body1); // Lo hacemos aquí.
-
+  Ateneasquaredbutton({super.key, required this.text, required this.onPressed, this.backgroundColor = AppColors.primaryColor, TextStyle? textStyle, this.svgIcon})
+      : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.body1); // Lo hacemos aquí.
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +32,8 @@ class Ateneasquaredbutton extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          
-          if (svgIcon != null) 
-             Expanded(
+          if (svgIcon != null)
+            Expanded(
               flex: 3, // Proporciona más espacio al SVG
               child: SvgPicture.asset(
                 svgIcon!,
@@ -52,7 +44,6 @@ class Ateneasquaredbutton extends StatelessWidget {
             text,
             style: textStyle,
           ),
- 
         ],
       ),
     );

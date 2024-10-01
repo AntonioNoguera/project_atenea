@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/app/widgets/AteneaBackground.dart';
+import 'package:proyect_atenea/app/widgets/atenea_background.dart';
 
 class AteneaScaffold extends StatelessWidget {
   final Widget body;
@@ -22,7 +22,7 @@ class AteneaScaffold extends StatelessWidget {
       body: AteneaBackground(child: body),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,
-      resizeToAvoidBottomInset: false,  // Evita que el teclado desplace el contenido
+      resizeToAvoidBottomInset: false, // Evita que el teclado desplace el contenido
     );
   }
 }
