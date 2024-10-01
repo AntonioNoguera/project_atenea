@@ -52,12 +52,14 @@ void main() async {
         ),
         // Otros Providers globales aquí
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Aplicar estilo de la barra de estado globalmente
