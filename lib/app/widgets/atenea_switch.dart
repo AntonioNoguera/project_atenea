@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../values/app_theme.dart';
 
 class AteneaSwitch extends StatefulWidget {
+  const AteneaSwitch({super.key});
+
   @override
-  _CustomSwitchState createState() => _CustomSwitchState();
+  State<AteneaSwitch> createState() => _CustomSwitchState();
 }
 
 class _CustomSwitchState extends State<AteneaSwitch> {
