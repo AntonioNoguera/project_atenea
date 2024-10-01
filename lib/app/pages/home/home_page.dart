@@ -3,7 +3,9 @@ import 'package:proyect_atenea/app/values/app_theme.dart';
 import 'package:proyect_atenea/app/widgets/atenea_scaffold.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+  });
 
   @override
   HomePageState createState() => HomePageState();
@@ -17,14 +19,14 @@ class HomePageState extends State<HomePage> {
     const Center(child: Text('Mi Perfil', style: TextStyle(fontSize: 24))),
   ];
 
+  // Lista de etiquetas para facilitar la alineación del fondo
+  final List<String> _labels = ['Home', 'Profile'];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
-  // Lista de etiquetas para facilitar la alineación del fondo
-  final List<String> _labels = ['Home', 'Profile'];
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SessionLocalDataSource {
   final SharedPreferences sharedPreferences;
 
-  SessionLocalDataSource(this.sharedPreferences);
+  const SessionLocalDataSource(this.sharedPreferences);
 
   Future<String?> getToken() async {
     return sharedPreferences.getString('session_token');

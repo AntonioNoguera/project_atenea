@@ -5,7 +5,9 @@ import 'package:proyect_atenea/app/widgets/atenea_field.dart';
 import 'package:proyect_atenea/app/widgets/atenea_scaffold.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({super.key});
+  const RegisterPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,6 @@ class RegisterPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0),
-
             // El contenido desplazable
             Expanded(
               // Esto asegura que el contenido puede desplazarse
@@ -45,7 +46,6 @@ class RegisterPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20.0), // Espaciado
-
                     // Botones de selección
                     Row(
                       children: [
@@ -76,7 +76,6 @@ class RegisterPage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10.0),
-
                     // Campos de texto
                     const AteneaField(
                       placeHolder: "Ejemplo: Fernando",
@@ -130,7 +129,6 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
-
             // Botones en la parte inferior, fuera del scroll
             Row(
               children: [

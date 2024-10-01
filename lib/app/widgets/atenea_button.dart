@@ -8,15 +8,20 @@ class AteneaButton extends StatelessWidget {
   final Color backgroundColor;
   final TextStyle? textStyle;
   final String? svgIcon;
-
   final double borderRadius = 10.0;
   final double iconSize = 35.0;
   final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0);
-
   final bool enabledBorder;
 
-  AteneaButton({super.key, this.text, required this.onPressed, this.backgroundColor = AppColors.primaryColor, TextStyle? textStyle, this.enabledBorder = false, this.svgIcon})
-      : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.h4); // Lo hacemos aquí.
+  AteneaButton({
+    super.key,
+    this.text,
+    required this.onPressed,
+    this.backgroundColor = AppColors.primaryColor,
+    TextStyle? textStyle,
+    this.enabledBorder = false,
+    this.svgIcon,
+  }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.h4); // Lo hacemos aquí.
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +29,7 @@ class AteneaButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         padding: padding,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius)),
         side: enabledBorder // Condicional para mostrar borde solo si `hasBorder` es `true`
             ? const BorderSide(
                 color: AppColors.primaryColor, // Color del borde

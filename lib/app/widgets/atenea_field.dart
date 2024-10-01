@@ -4,12 +4,15 @@ import 'package:proyect_atenea/app/values/app_theme.dart';
 class AteneaField extends StatelessWidget {
   final String placeHolder;
   final String inputNameText;
-
   final double inputFontSize = FontSizes.body1;
   final double inputBorderWidth = 1.3;
-  final double borderRadiusValue = 12.0; // Define el radio de las esquinas
+  final double borderRadiusValue = 12.0;
 
-  const AteneaField({super.key, required this.placeHolder, required this.inputNameText});
+  const AteneaField({
+    super.key,
+    required this.placeHolder,
+    required this.inputNameText,
+  });
 
   @override
   Widget build(BuildContext context) {

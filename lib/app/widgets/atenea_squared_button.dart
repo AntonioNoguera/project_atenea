@@ -8,14 +8,19 @@ class Ateneasquaredbutton extends StatelessWidget {
   final Color backgroundColor;
   final TextStyle? textStyle;
   final String? svgIcon;
-
   // Constant data of the button
   final double borderRadius = 10.0;
   final double iconSize = 35.0;
   final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0);
 
-  Ateneasquaredbutton({super.key, required this.text, required this.onPressed, this.backgroundColor = AppColors.primaryColor, TextStyle? textStyle, this.svgIcon})
-      : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.body1); // Lo hacemos aquí.
+  Ateneasquaredbutton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.backgroundColor = AppColors.primaryColor,
+    TextStyle? textStyle,
+    this.svgIcon,
+  }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.body1); // Lo hacemos aquí.
 
   @override
   Widget build(BuildContext context) {

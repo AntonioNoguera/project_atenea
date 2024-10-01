@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/app/values/app_theme.dart';
 
 class AteneaSwitch extends StatefulWidget {
-  const AteneaSwitch({super.key});
+  const AteneaSwitch({
+    super.key,
+  });
 
   @override
   State<AteneaSwitch> createState() => _CustomSwitchState();

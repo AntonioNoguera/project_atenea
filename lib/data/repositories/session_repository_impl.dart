@@ -5,7 +5,7 @@ import 'package:proyect_atenea/domain/repositories/session_repository.dart';
 class SessionRepositoryImpl implements SessionRepository {
   final SessionLocalDataSource localDataSource;
 
-  SessionRepositoryImpl(this.localDataSource);
+  const SessionRepositoryImpl(this.localDataSource);
 
   @override
   Future<Session?> getSession() async {

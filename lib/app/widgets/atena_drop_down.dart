@@ -16,8 +16,7 @@ class AtenaDropDown extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AtenaDropDownState createState() => _AtenaDropDownState();
+  State<AtenaDropDown> createState() => _AtenaDropDownState();
 }
 
 class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProviderStateMixin {
