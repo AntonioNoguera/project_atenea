@@ -1,4 +1,4 @@
-import 'package:proyect_atenea/data/datasources/session_manager_data_source.dart';
+import 'package:proyect_atenea/data/data_sources/session_manager_data_source.dart';
 import 'package:proyect_atenea/domain/entities/session.dart';
 import 'package:proyect_atenea/domain/repositories/session_repository.dart';
 

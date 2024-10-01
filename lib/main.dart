@@ -8,9 +8,9 @@ import 'package:proyect_atenea/app/pages/auth/splash_page.dart';
 import 'package:proyect_atenea/app/pages/home/home_page.dart';
 import 'package:proyect_atenea/app/providers/session_provider.dart';
 import 'package:proyect_atenea/app/values/app_theme.dart';
-import 'package:proyect_atenea/data/datasources/session_manager_data_source.dart';
+import 'package:proyect_atenea/data/data_sources/session_manager_data_source.dart';
 import 'package:proyect_atenea/data/repositories/session_repository_impl.dart';
-import 'package:proyect_atenea/domain/usecases/session_use_cases.dart';
+import 'package:proyect_atenea/domain/use_cases/session_use_cases.dart';
 import 'package:proyect_atenea/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
