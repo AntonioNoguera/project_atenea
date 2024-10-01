@@ -17,7 +17,9 @@ class SessionProvider with ChangeNotifier {
         _saveSessionUseCase = saveSessionUseCase,
         _clearSessionUseCase = clearSessionUseCase;
 
-  bool hasSession() => _session != null;
+  bool hasSession() {
+    return _session != null;
+  }
 
   Future<void> loadSession() async {
     _session = await _getSessionUseCase();

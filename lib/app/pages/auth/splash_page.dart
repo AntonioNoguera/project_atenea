@@ -39,7 +39,7 @@ class SplashPage extends StatelessWidget {
           );
         } else {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!sessionProvider.hasSession()) {
+            if (sessionProvider.hasSession()) {
               Navigator.pushReplacementNamed(context, '/home');
             } else {
               Navigator.pushReplacementNamed(context, '/auth/login');
