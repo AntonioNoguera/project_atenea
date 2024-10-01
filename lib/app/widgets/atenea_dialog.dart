@@ -17,7 +17,7 @@ class AteneaDialog extends StatelessWidget {
     return Dialog(
       insetPadding: const EdgeInsets.all(0),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,

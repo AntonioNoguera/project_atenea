@@ -55,14 +55,14 @@ class HomePageState extends State<HomePage> {
                 children: [
                   // Fondo personalizado para el ítem seleccionado
                   AnimatedPositioned(
-                    duration: Duration(milliseconds: 5000),
+                    duration: const Duration(milliseconds: 5000),
                     curve: Curves.easeInOut,
                     left: _selectedIndex == 0 ? 0 : null,
                     right: _selectedIndex == 1 ? 0 : null,
                     top: 0,
                     bottom: 0,
                     child: AnimatedContainer(
-                      duration: Duration(milliseconds: 5000),
+                      duration: const Duration(milliseconds: 5000),
                       curve: Curves.easeInOut,
                       width: MediaQuery.of(context).size.width / 2 - 20, // Ajusta según el número de ítems
                       decoration: BoxDecoration(
@@ -81,11 +81,11 @@ class HomePageState extends State<HomePage> {
                     type: BottomNavigationBarType.fixed,
                     items: [
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.home),
+                        icon: const Icon(Icons.home),
                         label: _labels[0],
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.person),
+                        icon: const Icon(Icons.person),
                         label: _labels[1],
                       ),
                     ],

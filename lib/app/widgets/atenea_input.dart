@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Card Example')),
+        appBar: AppBar(title: const Text('Card Example')),
         body: Center(
           child: Card(
             elevation: 5, // Sombras
@@ -21,19 +21,19 @@ class MyApp extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Este es un título de la tarjeta',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text('Aquí va el contenido de la tarjeta. Puedes agregar más información, imágenes, íconos, botones, etc.'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  const Text('Aquí va el contenido de la tarjeta. Puedes agregar más información, imágenes, íconos, botones, etc.'),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text('Acción'),
+                    child: const Text('Acción'),
                   ),
                 ],
               ),
