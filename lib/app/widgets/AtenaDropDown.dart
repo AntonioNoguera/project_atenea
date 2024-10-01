@@ -61,7 +61,7 @@ class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProvider
                 decoration: BoxDecoration(
                   color: AppColors.ateneaWhite,
                   border: Border.all(color: (isOpen) ? AppColors.secondaryColor : AppColors.primaryColor, width: (isOpen) ? 1.8 : 1.3 ),
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -11,20 +11,19 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Accede al SessionProvider para verificar si hay sesión
+
     final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
 
-    // Usa un FutureBuilder para redirigir al usuario después de verificar la sesión
     return FutureBuilder(
-      future: sessionProvider.loadSession(), // Cargar la sesión desde el Provider
+      future: sessionProvider.loadSession(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Mientras se carga la sesión, muestra una pantalla de carga (Splash)
+          
           return Scaffold(
-            body: Center(  // Centrar todo el contenido del cuerpo
+            body: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,  // Centrar verticalmente
-                crossAxisAlignment: CrossAxisAlignment.center,  // Centrar horizontalmente
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -34,25 +33,23 @@ class SplashPage extends StatelessWidget {
                       width: 300.0,
                     ),
                   ),
-                  const SizedBox(height: 20),  // Añade espacio entre la imagen y el indicador
+                  const SizedBox(height: 20),
                   const CircularProgressIndicator(),
                 ],
               ),
             ),
           );
-        } else { 
-          // Si hay sesión, redirigir a la pantalla principal
+        } else {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Future.delayed(const Duration(milliseconds: 5000), () {
-              if (sessionProvider.session != null) {
+              if (sessionProvider.session == null) {
                 Navigator.pushReplacementNamed( context, '/home' );
               } else {
-                Navigator.pushReplacementNamed( context, '/auth/register' );
+                Navigator.pushReplacementNamed( context, '/auth/login' );
               }    
             });
           });
           
-          // Muestra una pantalla  
           return Scaffold(
             body: Center(
               child: Column(
