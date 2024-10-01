@@ -28,7 +28,7 @@ class LoginPage extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         const AteneaField(placeHolder: "Ejemplo: Fernando", inputNameText: "Contraseña"),
-        AteneaSwitch(),
+        const AteneaSwitch(),
         const SizedBox(height: 20),
         AteneaButton(text: "Iniciar", onPressed: () {}),
         const Spacer(),
