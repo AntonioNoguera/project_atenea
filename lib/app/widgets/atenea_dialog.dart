@@ -33,7 +33,7 @@ class AteneaDialog extends StatelessWidget {
                     'assets/svg/Close.svg',
                     height: 30.0,
                     width: 30.0,
-                    color: AppColors.grayColor,
+                    // color: AppColors.grayColor,
                   ),
                 ),
               ],
