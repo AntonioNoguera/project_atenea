@@ -39,13 +39,11 @@ class SplashPage extends StatelessWidget {
           );
         } else {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Future.delayed(const Duration(milliseconds: 5000), () {
-              if (sessionProvider.session == null) {
-                Navigator.pushReplacementNamed(context, '/home');
-              } else {
-                Navigator.pushReplacementNamed(context, '/auth/login');
-              }
-            });
+            if (sessionProvider.session == null) {
+              Navigator.pushReplacementNamed(context, '/home');
+            } else {
+              Navigator.pushReplacementNamed(context, '/auth/login');
+            }
           });
 
           return Scaffold(
