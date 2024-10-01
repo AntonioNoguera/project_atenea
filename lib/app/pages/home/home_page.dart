@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/app/values/app_theme.dart';
 import 'package:proyect_atenea/app/widgets/atenea_scaffold.dart';
-import '../../values/app_theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

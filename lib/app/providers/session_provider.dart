@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/session.dart';
-import '../../domain/usecases/session_use_cases.dart';
+import 'package:proyect_atenea/domain/entities/session.dart';
+import 'package:proyect_atenea/domain/usecases/session_use_cases.dart';
 
 class SessionProvider with ChangeNotifier {
   final GetSessionUseCase getSessionUseCase;
@@ -8,7 +8,6 @@ class SessionProvider with ChangeNotifier {
   final ClearSessionUseCase clearSessionUseCase;
 
   Session? _session;
-
   Session? get session => _session;
 
   SessionProvider({

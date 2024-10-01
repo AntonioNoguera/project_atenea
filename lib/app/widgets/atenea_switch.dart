@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../values/app_theme.dart';
+import 'package:proyect_atenea/app/values/app_theme.dart';
 
 class AteneaSwitch extends StatefulWidget {
   const AteneaSwitch({super.key});

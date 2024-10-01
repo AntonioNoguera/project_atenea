@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../values/app_theme.dart';
+import 'package:proyect_atenea/app/values/app_theme.dart';
 
 class AteneaButton extends StatelessWidget {
   final String? text;

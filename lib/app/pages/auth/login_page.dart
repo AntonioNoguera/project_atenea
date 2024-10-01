@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../../widgets/atenea_scaffold.dart';
-
-import '../../values/app_theme.dart';
-
-import '../../widgets/atenea_field.dart';
-import '../../widgets/atenea_button.dart';
-import '../../widgets/atenea_switch.dart';
+import 'package:proyect_atenea/app/values/app_theme.dart';
+import 'package:proyect_atenea/app/widgets/atenea_button.dart';
+import 'package:proyect_atenea/app/widgets/atenea_field.dart';
+import 'package:proyect_atenea/app/widgets/atenea_scaffold.dart';
+import 'package:proyect_atenea/app/widgets/atenea_switch.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

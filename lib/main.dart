@@ -1,26 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'firebase_options.dart';
 import 'package:provider/provider.dart';
-
-import 'app/values/app_theme.dart';
-
-//Provider Immports
-import 'app/providers/session_provider.dart';
-import 'domain/usecases/session_use_cases.dart';
-
-//Page
-import 'app/pages/auth/splash_page.dart';
-import 'app/pages/home/home_page.dart';
-import 'app/pages/auth/login_page.dart';
-import 'app/pages/auth/register_page.dart';
-
+import 'package:proyect_atenea/app/pages/auth/login_page.dart';
+import 'package:proyect_atenea/app/pages/auth/register_page.dart';
+import 'package:proyect_atenea/app/pages/auth/splash_page.dart';
+import 'package:proyect_atenea/app/pages/home/home_page.dart';
+import 'package:proyect_atenea/app/providers/session_provider.dart';
+import 'package:proyect_atenea/app/values/app_theme.dart';
 import 'package:proyect_atenea/data/datasources/session_manager_data_source.dart';
 import 'package:proyect_atenea/data/repositories/session_repository_impl.dart';
+import 'package:proyect_atenea/domain/usecases/session_use_cases.dart';
+import 'package:proyect_atenea/firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,11 +54,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Aplicar estilo de la barra de estado globalmente
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: AppColors.primaryColor.withOpacity(0.65), // Color de la barra de estado
-        statusBarIconBrightness: Brightness.dark, // Brillo de los íconos
+        statusBarColor: AppColors.primaryColor.withOpacity(0.65),
+        statusBarIconBrightness: Brightness.dark,
       ),
     );
 

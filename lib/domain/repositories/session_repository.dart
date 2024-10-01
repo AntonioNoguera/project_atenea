@@ -1,4 +1,3 @@
-// lib/domain/repositories/session_repository.dart
 import '../entities/session.dart';
 
 abstract class SessionRepository {
