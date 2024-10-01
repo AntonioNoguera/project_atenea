@@ -5,7 +5,6 @@ import '../../widgets/atenea_scaffold.dart';
 import '../../values/app_theme.dart';
 
 import '../../widgets/atenea_field.dart';
-import '../../widgets/atena_drop_down.dart';
 import '../../widgets/atenea_button.dart';
 import '../../widgets/atenea_switch.dart';
 
