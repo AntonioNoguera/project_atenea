@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class AteneaField extends StatelessWidget {
   final String placeHolder;

@@ -1,5 +1,5 @@
-import 'package:proyect_atenea/domain/entities/session.dart';
-import 'package:proyect_atenea/domain/repositories/session_repository.dart';
+import 'package:proyect_atenea/src/domain/entities/session.dart';
+import 'package:proyect_atenea/src/domain/repositories/session_repository.dart';
 
 class GetSessionUseCase {
   final SessionRepository repository;

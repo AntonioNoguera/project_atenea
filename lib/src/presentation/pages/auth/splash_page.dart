@@ -1,8 +1,8 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyect_atenea/presentation/providers/session_provider.dart';
-import 'package:proyect_atenea/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({

@@ -1,6 +1,6 @@
-import 'package:proyect_atenea/data/data_sources/session_manager_data_source.dart';
-import 'package:proyect_atenea/domain/entities/session.dart';
-import 'package:proyect_atenea/domain/repositories/session_repository.dart';
+import 'package:proyect_atenea/src/data/data_sources/session_manager_data_source.dart';
+import 'package:proyect_atenea/src/domain/entities/session.dart';
+import 'package:proyect_atenea/src/domain/repositories/session_repository.dart';
 
 class SessionRepositoryImpl implements SessionRepository {
   final SessionLocalDataSource localDataSource;
