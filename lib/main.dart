@@ -1,28 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart'; 
-
+import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/presentation/pages/auth/login_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/auth/register_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/auth/splash_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/home_page.dart';
+import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/data/data_sources/session_manager_data_source.dart';
+import 'package:proyect_atenea/src/data/repositories/session_repository_impl.dart';
+import 'package:proyect_atenea/src/domain/use_cases/session_use_cases.dart';
+import 'package:proyect_atenea/src/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'firebase_options.dart';
-import 'package:provider/provider.dart';
-
-import 'app/values/AppTheme.dart';
-
-//Provider Immports
-import 'app/providers/SessionProvider.dart'; 
-import 'domain/usecases/SessionUsecases.dart';
-
-//Page
-import 'app/pages/auth/SplashPage.dart';
-import 'app/pages/home/HomePage.dart';
-import 'app/pages/auth/LoginPage.dart';
-import 'app/pages/auth/RegisterPage.dart';
-
-import 'package:proyect_atenea/data/datasources/SessionManagerDataSource.dart';
-import 'package:proyect_atenea/data/repositories/SessionRepositoryImpl.dart'; 
-void main() async { 
-  
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Fire Store Initialization
@@ -52,30 +44,30 @@ void main() async {
         ),
         // Otros Providers globales aquí
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
- 
+
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    // Aplicar estilo de la barra de estado globalmente
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: AppColors.primaryColor.withOpacity(0.65), // Color de la barra de estado
-        statusBarIconBrightness: Brightness.dark, // Brillo de los íconos
+        statusBarColor: AppColors.primaryColor.withOpacity(0.65),
+        statusBarIconBrightness: Brightness.dark,
       ),
     );
 
     return MaterialApp(
       routes: {
         '/splash': (context) => const SplashPage(),
-        '/auth': (context) => const LoginPage(),
+        '/auth/login': (context) => const LoginPage(),
         '/auth/register': (context) => const RegisterPage(),
         '/home': (context) => const HomePage(),
       },
-
       initialRoute: '/splash',
     );
   }
