@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/app/widgets/AteneaScaffold.dart';
-import '../../../app/values/AppTheme.dart';
+import 'package:proyect_atenea/app/values/AppTheme.dart';
+import 'package:proyect_atenea/app/widgets/AteneaScaffold.dart'; 
 
 import 'package:proyect_atenea/app/pages/home/home_profile_pages/default_profile_page.dart';
 import 'package:proyect_atenea/app/pages/home/my_subjects/my_subjects_page.dart';
@@ -64,14 +64,14 @@ class HomePageState extends State<HomePage> {
                       children: [
                         
                         AnimatedPositioned(
-                          duration: Duration(milliseconds: 5000),
+                          duration: const Duration(milliseconds: 5000),
                           curve: Curves.easeInOut,
                           left: _selectedIndex == 0 ? 0 : null,
                           right: _selectedIndex == 1 ? 0 : null,
                           top: 0,
                           bottom: 0,
                           child: AnimatedContainer(
-                            duration: Duration(milliseconds: 5000),
+                            duration: const Duration(milliseconds: 5000),
                             curve: Curves.easeInOut,
                             width: MediaQuery.of(context).size.width / 2 - 20,
                             decoration: BoxDecoration(
