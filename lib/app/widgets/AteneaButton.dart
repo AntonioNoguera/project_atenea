@@ -14,7 +14,6 @@ class AteneaButton extends StatelessWidget {
   final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0);
 
   final bool enabledBorder;
-  final bool expandedText;
 
   AteneaButton({
     super.key, 
@@ -23,8 +22,7 @@ class AteneaButton extends StatelessWidget {
     this.backgroundColor = AppColors.primaryColor, 
     TextStyle? textStyle,
     this.enabledBorder = false,
-    this.svgIcon,
-    this.expandedText = false
+    this.svgIcon
   }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.h4); // Lo hacemos aquí.
 
 
@@ -55,10 +53,7 @@ class AteneaButton extends StatelessWidget {
           Text(
             text!,
             style: textStyle,
-          ), 
-          
-          if (expandedText)
-          const Spacer(),
+          ),
 
           if (svgIcon != null)
             Padding(

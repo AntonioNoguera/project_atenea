@@ -15,7 +15,6 @@ dependencies:
   firebase_core: ^3.5.0
   firebase_auth: ^5.3.0
   cloud_firestore: ^5.4.2
-  intl: ^0.17.0
 
   path_provider: ^2.0.11
   provider: ^6.0.5
@@ -37,15 +36,15 @@ flutter:
 
   assets:
     - assets/svg/Account.svg
-    - assets/svg/account_settings.svg
-    - assets/svg/Backspace.svg 
-    - assets/svg/Historial.svg 
+    - assets/svg/Account-Setting.svg
+    - assets/svg/Backspace.svg
+    - assets/svg/Calendar-Marked.svg
+    - assets/svg/Calendar-Upcoming.svg
+    - assets/svg/Historial.svg
+    - assets/svg/Search-Stadistics.svg
     - assets/svg/Search.svg
     - assets/svg/Close.svg
     - assets/svg/Bearny.svg
-    - assets/svg/edit_contents.svg
-    - assets/svg/my_subjects.svg
-    - assets/svg/user_list.svg
 
     - assets/images/backgrounds/top_left_asset.png
     - assets/images/backgrounds/dart_vector.png
