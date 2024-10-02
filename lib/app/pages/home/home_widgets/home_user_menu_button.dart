@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../values/AppTheme.dart';
+import 'package:proyect_atenea/app/values/AppTheme.dart';
 
-class AteneaButton extends StatelessWidget {
+class HomeUserMenuButton extends StatelessWidget {
   final String? text;
   final VoidCallback onPressed;
   final Color backgroundColor;   
@@ -16,7 +16,9 @@ class AteneaButton extends StatelessWidget {
   final bool enabledBorder;
   final bool expandedText;
 
-  AteneaButton({
+
+
+  HomeUserMenuButton({
     super.key, 
     this.text,
     required this.onPressed,
@@ -55,10 +57,9 @@ class AteneaButton extends StatelessWidget {
           Text(
             text!,
             style: textStyle,
-          ), 
+          ),
+
           
-          if (expandedText)
-          const Spacer(),
 
           if (svgIcon != null)
             Padding(

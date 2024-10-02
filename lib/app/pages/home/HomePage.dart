@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/app/widgets/AteneaScaffold.dart';
 import '../../../app/values/AppTheme.dart';
 
+import 'package:proyect_atenea/app/pages/home/home_profile_pages/default_profile_page.dart';
+import 'package:proyect_atenea/app/pages/home/my_subjects/my_subjects_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -12,9 +15,9 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   
-  final List<Widget> _pages = <Widget>[
-    const Center(child: Text('Mis Unidades', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Mi Perfil', style: TextStyle(fontSize: 24))),
+  final List<Widget> _pages = <Widget>[ 
+    const MySubjectsPage(),
+    const DefaultProfilePage(), 
   ];
 
   void _onItemTapped(int index) {
@@ -23,8 +26,7 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  // Lista de etiquetas para facilitar la alineación del fondo
-  final List<String> _labels = ['Home', 'Profile'];
+  final List<String> _labels = ['Mis Materias', 'Mi Perfil'];
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +44,18 @@ class HomePageState extends State<HomePage> {
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(30), // Bordes redondeados
+                borderRadius: BorderRadius.circular(30),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black26,
                     blurRadius: 10,
-                    offset: Offset(0, 5), // Sombra debajo
+                    offset: Offset(0, 5),
                   ),
                 ],
               ),
               child: Stack(
                 children: [
-                  // Fondo personalizado para el ítem seleccionado
+                  
                   AnimatedPositioned(
                     duration: Duration(milliseconds: 5000),
                     curve: Curves.easeInOut,
@@ -64,7 +66,7 @@ class HomePageState extends State<HomePage> {
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 5000),
                       curve: Curves.easeInOut,
-                      width: MediaQuery.of(context).size.width / 2 - 20, // Ajusta según el número de ítems
+                      width: MediaQuery.of(context).size.width / 2 - 20,
                       decoration: BoxDecoration(
                         color: AppColors.ateneaWhite.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(30),
@@ -72,12 +74,12 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                   BottomNavigationBar(
-                    backgroundColor: Colors.transparent, // Hacer transparente para ver el fondo personalizado
+                    backgroundColor: Colors.transparent,
                     elevation: 0,
                     selectedItemColor: AppColors.ateneaWhite,
                     unselectedItemColor: AppColors.ateneaWhite.withOpacity(0.6),
-                    currentIndex: _selectedIndex, // Índice del ítem seleccionado
-                    onTap: _onItemTapped, // Manejar el toque en los ítems
+                    currentIndex: _selectedIndex,
+                    onTap: _onItemTapped,
                     type: BottomNavigationBarType.fixed, 
                     items: [
                       BottomNavigationBarItem(

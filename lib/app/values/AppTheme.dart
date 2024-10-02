@@ -14,7 +14,7 @@ class AppColors {
   //Generic Purpose Colors
   static const Color ateneaWhite = Color.fromRGBO(254,247,255,1);
   static const Color ateneaBlack = Colors.black;
-  static const Color ateneaRed = Color.fromRGBO(244, 104, 104, 1);
+  static const Color ateneaRed = Color.fromRGBO(255, 87, 51, .60);
   static const Color textColor = Color.fromRGBO(65, 65, 65, 1);
 
   //Event Tag Colors
