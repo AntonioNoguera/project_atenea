@@ -1,0 +1,19 @@
+[33m971cd2b[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Feat [ Default Styles 4 Subject Component ] -> Created more faithful to the design
+[33m6e884e4[m Fix [ Home Page ] -> Remove a lil relative import
+[33mfd8417d[m Feat [Subject Stractch widget] -> Still working on the component for the subject list, and pending creating all the subjects
+[33mf73da7b[m Feat [ Home Struct / My Profile Struct ] -> Pending on exploring implementations, awating for localization?
+[33m8ea7caa[m Feat (Working on the main home navbar) -> Still in dev
+[33mc9fe842[m Feat n Mayor Refactor ( Login Flow Scratched / Clean Arq Implemented  ) -> Some big changes were made, related to the part of the login over here, and some components are thought better to the long term
+[33m1c894f3[m Feat [Firestore on all platforms] -> All platforms are currently working pending ios test
+[33m94fc7f0[m Feat [Success firestore vinculation] -> At least android is working as supposed
+[33m9c6914b[m Merge branch 'main' of https://github.com/AntonioNoguera/project_atenea
+[33md0bf3f7[m Experimental Feat (new graddle ) -> updating versions to new ones
+[33m49fa66d[m Feat (New Component) -> Squared Component is added
+[33m9e20011[m Feat (Atenea Button) -> Atenea Buttons Now Following the styleguides
+[33md127218[m Feat (Card Component) -> First Version of the component is released
+[33mca20ed9[m Feat(New Components) -> Components related to the dialogs, and drop downs Components are added, changed some stuff centered on the child working
+[33mabfc5aa[m Feat [Input Text V1] -> The field text is now working as its supposed to, pending dropdowns and squared buttons to go
+[33md77165c[m Feat(UI Backgrounds and Components) -> Working on the new components mainly the input text, and the background app, maybe in future times is going to receive params
+[33m00fa4f9[m Feat (Style Guides Done, Main Widgets r defined) -> Some of the critics widgets are created, we got pending the stuff related to the input functionalities
+[33m3a37ce3[m Feat (Main StyleGuides Created) -> The main App Theme is done pending working on the funcitonalities related to the text classes
+[33me8a7e36[m Feat [main struct] -> The first project structure is done
