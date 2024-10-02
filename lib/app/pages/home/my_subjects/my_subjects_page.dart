@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/app/widgets/AteneaScaffold.dart';
   
 
-import 'package:proyect_atenea/app/values/AppTheme.dart';  
+import 'package:proyect_atenea/app/values/AppTheme.dart'; 
+
+import 'package:proyect_atenea/app/widgets/atenea_dialog.dart';
   
 import 'package:proyect_atenea/app/widgets/AteneaButton.dart';  
 
@@ -27,7 +29,7 @@ class MySubjectsPage extends StatelessWidget {
               style: AppTextStyles.builder(
                     color: AppColors.primaryColor, 
                     size: FontSizes.h2, 
-                    weight: FontWeights.regular
+                    weight: FontWeights.semibold
                   )
             ),
 
@@ -50,93 +52,27 @@ class MySubjectsPage extends StatelessWidget {
                   child: Column(
                     children: List.generate(30, (index) {
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
+                        padding: const EdgeInsets.only(bottom: 16.0), // Espacio entre Cards
                         child: SizedBox(
                           width: double.infinity,
                           child: Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                            elevation: 5.0,
-                            color: AppColors.ateneaWhite,
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Temas Selectos de Materia Genérica #${index + 1}',
-                                    style: AppTextStyles.builder(
-                                      color: AppColors.ateneaBlack,
-                                      size: FontSizes.body1,
-                                      weight: FontWeights.semibold
-                                    ),
-
-                                    
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start, 
-                                          children: [
-                                            Text(
-                                              'Autor',
-                                              style: 
-                                              AppTextStyles.builder(
-                                                color: AppColors.primaryColor,
-                                                size: FontSizes.body2,
-                                              )
-                                            ),
-
-                                            Text(
-                                              'Noguera Guzman',
-                                              style: 
-                                              AppTextStyles.builder(
-                                                color: AppColors.primaryColor,
-                                                size: FontSizes.body2,
-                                              )
-                                            ),
-                                          ],
-                                        )
-                                      ) ,
-                                      
-
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              'Autor',
-                                              style: 
-                                              AppTextStyles.builder(
-                                                color: AppColors.primaryColor,
-                                                size: FontSizes.body2,
-                                              )
-                                            ),
-
-                                            Text(
-                                              'Noguera Guzman',
-                                              style: 
-                                              AppTextStyles.builder(
-                                                color: AppColors.primaryColor,
-                                                size: FontSizes.body2,
-                                              )
-                                            ),
-                                          ],
-                                        ) 
-                                      )
-                                    ] 
-                                  ), 
-                                ],
-                              )
+                              padding: const EdgeInsets.all(16.0), // Padding dentro del Card
+                              child: Text('Este es el Card #${index + 1}'),
                             ),
                           ),
                         ),
                       );
                     }
-                  ))
+                  )
+                )
                 )
               )
             )
+
+
           ] 
+          
         )
       ),
     );

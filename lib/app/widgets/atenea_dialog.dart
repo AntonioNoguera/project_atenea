@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/app/values/AppTheme.dart';
 
+
 import 'package:proyect_atenea/app/widgets/AteneaButton.dart'; 
+  
 
 class AteneaDialog extends StatelessWidget {
   final String title;
