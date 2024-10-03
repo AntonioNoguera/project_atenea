@@ -26,16 +26,16 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/svg/Account.svg
-    - assets/svg/Account-Setting.svg
-    - assets/svg/Backspace.svg
-    - assets/svg/Calendar-Marked.svg
-    - assets/svg/Calendar-Upcoming.svg
-    - assets/svg/Historial.svg
-    - assets/svg/Search-Stadistics.svg
-    - assets/svg/Search.svg
-    - assets/svg/Close.svg
+    - assets/svg/account.svg
+    - assets/svg/account_settings.svg
+    - assets/svg/back_action.svg 
+    - assets/svg/seach.svg
+    - assets/svg/close.svg
     - assets/svg/Bearny.svg
+    - assets/svg/book.svg
+    - assets/svg/subject.svg
+    - assets/svg/user_list.svg
+
     - assets/images/backgrounds/top_left_asset.png
     - assets/images/backgrounds/dart_vector.png
     - assets/images/backgrounds/down_left_asset.png 
