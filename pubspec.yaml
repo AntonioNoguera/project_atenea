@@ -33,14 +33,14 @@ flutter:
     - assets/svg/close.svg
     - assets/svg/Bearny.svg
     - assets/svg/book.svg
-    - assets/svg/subject.svg
+    - assets/svg/subjects.svg
     - assets/svg/user_list.svg
 
     - assets/images/backgrounds/top_left_asset.png
     - assets/images/backgrounds/dart_vector.png
     - assets/images/backgrounds/down_left_asset.png 
     - assets/images/backgrounds/living_fime.png
-
+    
   fonts:
     - family: RadioCanada
       fonts:

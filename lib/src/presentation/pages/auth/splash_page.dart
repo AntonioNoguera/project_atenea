@@ -38,12 +38,15 @@ class SplashPage extends StatelessWidget {
             ),
           );
         } else {
+
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!sessionProvider.hasSession()) {
-              Navigator.pushReplacementNamed(context, '/home');
-            } else {
-              Navigator.pushReplacementNamed(context, '/auth/login');
-            }
+            Future.delayed(Duration(seconds: 4), () {
+              if (!sessionProvider.hasSession()) {
+                Navigator.pushReplacementNamed(context, '/home');
+              } else {
+                Navigator.pushReplacementNamed(context, '/auth/login');
+              }
+            });
           });
 
           return Scaffold(
@@ -67,7 +70,11 @@ class SplashPage extends StatelessWidget {
                   Text(
                     'Versión: 24.09',
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1, weight: FontWeights.semibold),
+                    style: AppTextStyles.builder(
+                      color: AppColors.primaryColor, 
+                      size: FontSizes.body1, 
+                      weight: FontWeights.semibold
+                    ),
                   ),
                   const SizedBox(
                     height: 20,

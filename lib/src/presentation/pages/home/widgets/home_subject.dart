@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/presentation/subjects/subject_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 
@@ -20,9 +21,25 @@ class HomeSubject extends StatelessWidget {
               borderRadius: BorderRadius.circular(30.0),
             ),
           ),
-          onPressed: () {
-            // Acción cuando se presiona el botón
-            print('Botón grande presionado');
+          onPressed: () { 
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => SubjectDetailPage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
+            );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -33,7 +33,7 @@ class MyProfilePage extends StatelessWidget {
             AteneaButton(
               text : 'Editar Contenidos',
               expandedText : true,
-              svgIcon: 'assets/svg/edit_contents.svg',
+              svgIcon: 'assets/svg/subjects.svg',
               onPressed: () {
                 print("Pressed");
               }
@@ -61,9 +61,9 @@ class MyProfilePage extends StatelessWidget {
                 print("Pressed");
               }
             ),
-
+            
             const SizedBox(height: 20.0,),
-
+            
             AteneaButton(
               text : 'Cerrar Sesión',
               backgroundColor: AppColors.ateneaRed,

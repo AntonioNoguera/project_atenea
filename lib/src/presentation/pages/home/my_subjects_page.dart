@@ -24,8 +24,7 @@ class MySubjectsPage extends StatelessWidget {
                       size: FontSizes.h2, 
                       weight: FontWeights.regular
                     )
-              ), 
-           
+              ),
 
             const SizedBox(height: 20.0,),
 
