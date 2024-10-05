@@ -1,33 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/subjects/widgets/member_row.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class ThemeOrFileSubject extends StatelessWidget {
   final String contentType;
 
-  const ThemeOrFileSubject({
+  final bool hasSvg;
+
+  ThemeOrFileSubject({
     super.key,
     this.contentType = '',
+    this.hasSvg = false,
   });
+
+  final List<Color> memberStyle  = [AppColors.lightSecondaryColor, AppColors.primaryColor];
+  final List<Color> memberTextColor  = [AppColors.ateneaWhite, AppColors.primaryColor];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(contentType),
-        const SizedBox(height: 10),
+        Center(
+          child: Text(
+            contentType,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.builder(
+              color: AppColors.primaryColor,
+              size: FontSizes.h4,
+              weight: FontWeights.semibold
+            ),
+          ),
+        ),
+        const SizedBox(height: 7),
         Column(
           children: List.generate(12, (index) {
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0), // Añade espaciado vertical
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200], // Puedes ajustar el color de fondo si lo deseas
-                  borderRadius: BorderRadius.circular(10.0), // Borde redondeado de 10 píxeles
-                ),
-                padding: const EdgeInsets.all(12.0), // Espacio interno del contenedor
-                child: MemberRow(contentType: 'Item $index'), // Pasamos el índice al MemberRow
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
+              child: MemberRow(
+                textColor: memberTextColor[index%2],
+                backgroundColor: memberStyle[(index +1 )%2],
+                hasSvg : hasSvg,
+                contentType: 'Item $index'),
             );
           }),
         ),

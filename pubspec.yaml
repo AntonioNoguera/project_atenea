@@ -15,7 +15,8 @@ dependencies:
   firebase_core: ^3.5.0
   flutter_svg: ^2.0.10+1
   path_provider: ^2.0.11
-  provider: ^6.0.5
+  provider: ^6.0.5 
+  fluttertoast: ^8.1.1 
   shared_preferences: ^2.0.15
 
 dev_dependencies:
@@ -29,7 +30,7 @@ flutter:
     - assets/svg/account.svg
     - assets/svg/account_settings.svg
     - assets/svg/back_action.svg 
-    - assets/svg/seach.svg
+    - assets/svg/search.svg
     - assets/svg/close.svg
     - assets/svg/Bearny.svg
     - assets/svg/book.svg

@@ -33,7 +33,7 @@ class MySubjectsPage extends StatelessWidget {
               child: AteneaButton(
               text : 'Añadir Nueva Materia',
               expandedText : true,
-              svgIcon: 'assets/svg/edit_contents.svg',
+              svgIcon: 'assets/svg/search.svg',
               onPressed: () {
                 print("Pressed");
               }

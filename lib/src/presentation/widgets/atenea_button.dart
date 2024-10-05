@@ -4,7 +4,7 @@ import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class AteneaButton extends StatelessWidget {
   final String? text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;   
   final TextStyle? textStyle;
   final String? svgIcon;
@@ -14,7 +14,7 @@ class AteneaButton extends StatelessWidget {
   final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0);
 
   final bool enabledBorder;
-  final bool expandedText;
+  final bool expandedText; 
 
   AteneaButton({
     super.key, 
@@ -24,7 +24,7 @@ class AteneaButton extends StatelessWidget {
     TextStyle? textStyle,
     this.enabledBorder = false,
     this.svgIcon,
-    this.expandedText = false
+    this.expandedText = false, 
   }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.h4);
 
 

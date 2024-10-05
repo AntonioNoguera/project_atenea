@@ -98,7 +98,7 @@ class HomePageState extends State<HomePage> {
                         ),
                         BottomNavigationBarItem(
                           icon: SvgPicture.asset(
-                            'assets/svg/Account.svg',
+                            'assets/svg/account.svg',
                             height: 27.0,
                             width: 27.0,
                           ),

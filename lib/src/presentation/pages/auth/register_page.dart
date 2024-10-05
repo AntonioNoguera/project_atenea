@@ -133,7 +133,7 @@ class RegisterPage extends StatelessWidget {
             Row(
               children: [
                 AteneaButton(
-                  svgIcon: 'assets/svg/Backspace.svg',
+                  svgIcon: 'assets/svg/back_action.svg',
                   backgroundColor: AppColors.secondaryColor,
                   onPressed: () {},
                 ),

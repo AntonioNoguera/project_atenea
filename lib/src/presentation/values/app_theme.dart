@@ -6,6 +6,7 @@ class AppColors {
   //Primary and Secondary Colors
   static const Color primaryColor = Color.fromRGBO(14, 113, 54, 1);
   static const Color secondaryColor = Color.fromRGBO(101, 190, 69, 1);
+  static const Color lightSecondaryColor = Color.fromRGBO(178, 244, 154, 1);
   static const Color heavyPrimaryColor = Color.fromRGBO(5, 66, 29, 1);
   static const Color lightPrimaryColor = Color.fromRGBO(14, 113, 54, .6);
 
