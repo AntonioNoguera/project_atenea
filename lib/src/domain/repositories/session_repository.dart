@@ -1,9 +1,9 @@
-import '../entities/session.dart';
+import '../entities/session_entity.dart';
 
 abstract class SessionRepository {
   const SessionRepository();
 
-  Future<Session?> getSession();
-  Future<void> saveSession(Session session);
+  Future<SessionEntity?> getSession();
+  Future<void> saveSession(SessionEntity session);
   Future<void> clearSession();
 }

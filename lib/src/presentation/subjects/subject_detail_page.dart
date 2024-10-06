@@ -1,26 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/subjects/widgets/theme_or_file_subject.dart'; // Asegúrate de importar el nuevo widget
+import 'package:proyect_atenea/src/presentation/subjects/widgets/theme_or_file_subject.dart'; 
 import 'package:proyect_atenea/src/presentation/subjects/widgets/toggle_buttons_widget%20.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
-class SubjectDetailPage extends StatelessWidget {
-  const SubjectDetailPage({super.key});
+class SubjectDetailPage extends StatefulWidget { 
 
-   void _handleToggle(int activeIndex) {
-    // Aquí ejecutas el código que desees al cambiar el valor de activeIndex
-    if (activeIndex == 0) {
-      print("El botón 'Temas' está activo");
-      // Código para cuando 'Temas' está activo
-    } else {
-      print("El botón 'Recursos' está activo");
-      // Código para cuando 'Recursos' está activo
-    }
+
+  const SubjectDetailPage({super.key});
+ 
+
+  @override
+  _SubjectDetailPageState createState() => _SubjectDetailPageState();
+}
+
+class _SubjectDetailPageState extends State<SubjectDetailPage> {
+  int activeIndex = 0; // Definir una variable de estado para almacenar el índice activo
+
+
+  final Map<int, Widget> _renderedContent = {
+    0: Column( 
+        children: List.generate(2, (index) {
+            return ThemeOrFileSubject(
+              contentType: 'Contenido del tema',
+              hasSvg: index == 1,
+            );
+          }),
+        ),
+
+    1: Column( 
+        children: List.generate(1, (index) {
+            return ThemeOrFileSubject(
+              contentType: 'Recursos',
+              hasSvg: index == 1,
+            );
+          }),
+        ),
+  };
+
+  void _handleToggle(int index) {
+    setState(() {
+      activeIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    
+
     return AteneaScaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -40,7 +69,7 @@ class SubjectDetailPage extends StatelessWidget {
             ),
 
             const SizedBox(height: 10),
-            
+
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -49,7 +78,7 @@ class SubjectDetailPage extends StatelessWidget {
                       width: double.infinity,
                       child: Card(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center, // Centra horizontalmente los hijos del Column
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               'Redactado por:',
@@ -60,7 +89,6 @@ class SubjectDetailPage extends StatelessWidget {
                                 weight: FontWeights.semibold,
                               ),
                             ),
-
                             Text(
                               'Michael Antonio Noguera Guzmán',
                               textAlign: TextAlign.center,
@@ -70,9 +98,7 @@ class SubjectDetailPage extends StatelessWidget {
                                 weight: FontWeights.regular,
                               ),
                             ),
-
                             const SizedBox(height: 20),
-
                             Text(
                               'Última Actualización:',
                               textAlign: TextAlign.center,
@@ -82,7 +108,6 @@ class SubjectDetailPage extends StatelessWidget {
                                 weight: FontWeights.semibold,
                               ),
                             ),
-
                             Text(
                               '23 Sep 2024 | 15:20',
                               textAlign: TextAlign.center,
@@ -99,21 +124,15 @@ class SubjectDetailPage extends StatelessWidget {
 
                     const SizedBox(height: 10),
 
-                    // El nuevo widget ToggleButtonsWidget maneja su propio estado 
+                    // El nuevo widget ToggleButtonsWidget maneja su propio estado
                     ToggleButtonsWidget(
-                      onToggle: _handleToggle,  // Aquí pasamos la función que manejará el cambio
+                      onToggle: _handleToggle, // Pasa la función que manejará el cambio
                     ),
 
                     const SizedBox(height: 10),
- 
-                    Column(
-                      children: List.generate(2, (index) {
-                        return ThemeOrFileSubject(
-                          contentType: 'Contenido del tema',
-                          hasSvg: index == 1,
-                        );
-                      }),
-                    ),
+
+                    // Cambia el contenido dinámicamente según el índice activo
+                    _renderedContent[activeIndex] ?? Text('Unrenderable')
                   ],
                 ),
               ),
@@ -135,7 +154,7 @@ class SubjectDetailPage extends StatelessWidget {
                 const SizedBox(width: 10.0),
                 Expanded(
                   child: AteneaButton(
-                    text: 'Marcar ',
+                    text: 'Marcar',
                     onPressed: () {
                       print("PressedFavorite");
                     },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/domain/entities/session.dart';
+import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/domain/use_cases/session_use_cases.dart';
 
 class SessionProvider with ChangeNotifier {
@@ -7,7 +7,7 @@ class SessionProvider with ChangeNotifier {
   final SaveSessionUseCase _saveSessionUseCase;
   final ClearSessionUseCase _clearSessionUseCase;
 
-  Session? _session;
+  SessionEntity? _session;
 
   SessionProvider({
     required GetSessionUseCase getSessionUseCase,
@@ -25,14 +25,16 @@ class SessionProvider with ChangeNotifier {
     _session = await _getSessionUseCase();
     notifyListeners();
   }
-
+/*
   Future<void> saveSession(String token) async {
-    final session = Session(token: token);
+    final session = SessionEntity(token: token);
+
+
     await _saveSessionUseCase(session);
     _session = session;
     notifyListeners();
   }
-
+*/
   Future<void> clearSession() async {
     await _clearSessionUseCase();
     _session = null;

@@ -1,4 +1,4 @@
-import 'package:proyect_atenea/src/domain/entities/session.dart';
+import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/domain/repositories/session_repository.dart';
 
 class GetSessionUseCase {
@@ -6,7 +6,7 @@ class GetSessionUseCase {
 
   const GetSessionUseCase(this.repository);
 
-  Future<Session?> call() async {
+  Future<SessionEntity?> call() async {
     return await repository.getSession();
   }
 }
@@ -16,7 +16,7 @@ class SaveSessionUseCase {
 
   const SaveSessionUseCase(this.repository);
 
-  Future<void> call(Session session) async {
+  Future<void> call(SessionEntity session) async {
     await repository.saveSession(session);
   }
 }

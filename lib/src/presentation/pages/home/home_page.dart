@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/my_profile_page.dart';
+import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/profile/my_profile_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subjects_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,11 +15,21 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  
-  final List<Widget> _pages = <Widget>[ 
-    const MySubjectsPage(),
-    const MyProfilePage(), 
-  ];
+  late SessionEntity mock;
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Inicializa el mock y la lista de páginas aquí
+    mock = SessionEntity(token: 'token', userLevel: UserType.superAdmin);
+
+    _pages = <Widget>[
+      const MySubjectsPage(),
+      MyProfilePage(mock), // Ahora puedes usar 'mock' correctamente
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -33,12 +42,11 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return AteneaScaffold(
       body: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(40),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child:
-        Stack( 
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: Stack(
           children: <Widget>[
             IndexedStack(
               index: _selectedIndex,
@@ -86,7 +94,7 @@ class HomePageState extends State<HomePage> {
                       unselectedItemColor: AppColors.ateneaWhite.withOpacity(0.6),
                       currentIndex: _selectedIndex,
                       onTap: _onItemTapped,
-                      type: BottomNavigationBarType.fixed, 
+                      type: BottomNavigationBarType.fixed,
                       items: [
                         BottomNavigationBarItem(
                           icon: SvgPicture.asset(
@@ -108,13 +116,11 @@ class HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-              )
-            )
-          ]
-        )
-  
+              ),
+            ),
+          ],
         ),
-      );
-      
+      ),
+    );
   }
 }
