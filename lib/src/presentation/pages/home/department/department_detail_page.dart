@@ -121,6 +121,7 @@ class _DepartmentDetailPageState extends State<DepartmentDetailPage> {
                     
                     ToggleButtonsWidget(
                       onToggle: _handleToggle,
+                      toggleOptions: ['A','s'],
                     ),
 
                     const SizedBox(height: 10),

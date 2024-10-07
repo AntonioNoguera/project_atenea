@@ -37,6 +37,8 @@ flutter:
     - assets/svg/book.svg
     - assets/svg/subjects.svg
     - assets/svg/user_list.svg
+    - assets/svg/add.svg
+
 
     - assets/images/backgrounds/top_left_asset.png
     - assets/images/backgrounds/dart_vector.png

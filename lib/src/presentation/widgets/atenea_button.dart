@@ -8,11 +8,11 @@ class AteneaButton extends StatelessWidget {
   final Color backgroundColor;   
   final TextStyle? textStyle;
   final String? svgIcon;
+  final Color svgTint;
 
   final double borderRadius = 10.0;
-  final double iconSize = 35.0;
-  final EdgeInsetsGeometry padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0);
-
+  final double iconSize;
+  final EdgeInsetsGeometry padding;
   final bool enabledBorder;
   final bool expandedText; 
 
@@ -24,7 +24,11 @@ class AteneaButton extends StatelessWidget {
     TextStyle? textStyle,
     this.enabledBorder = false,
     this.svgIcon,
-    this.expandedText = false, 
+    this.expandedText = false,
+    this.iconSize = 35.0,
+    this.svgTint = AppColors.ateneaWhite,
+    this.padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0),
+
   }) : textStyle = textStyle ?? AppTextStyles.builder(color: AppColors.ateneaWhite, size: FontSizes.h4);
 
 
@@ -37,6 +41,8 @@ class AteneaButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
+        elevation: 12.0, // Incrementa el valor para más sombra
+        shadowColor: Colors.black.withOpacity(0.5), // Ajusta el color y la opacidad de la sombra
         side: enabledBorder
               ? const BorderSide(
                   color: AppColors.primaryColor,
@@ -67,6 +73,7 @@ class AteneaButton extends StatelessWidget {
                 svgIcon!,
                 height: iconSize,
                 width: iconSize,
+                color: svgTint,
               ),
             ),
         ],
