@@ -28,18 +28,11 @@ class _ManageContentPageState extends State<ManageContentPage> {
       ],
     ),
     1: Column(
-      children: [
-        AteneaButton(
-          text: 'Agregar nueva academia',
-          onPressed: () {},
-        ),
-        Column(
           children: List.generate(8, (index) {
             return HomeSubject();
           }),
         )
-      ],
-    ),
+     
   };
 
   @override
@@ -89,7 +82,14 @@ class _ManageContentPageState extends State<ManageContentPage> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                    'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos'),
+                    textAlign: TextAlign.center,
+                    'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos',
+                    style: AppTextStyles.builder(
+                      color: AppColors.primaryColor,
+                      size: FontSizes.body2,
+                      weight: FontWeights.regular,
+                    ),
+                    ),
                 const SizedBox(height: 20),
                 ToggleButtonsWidget(
                   onToggle: _handleToggle,
@@ -107,7 +107,7 @@ class _ManageContentPageState extends State<ManageContentPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 40.0),
               ],
             ),
             Positioned(

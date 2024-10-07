@@ -41,6 +41,7 @@ class FontSizes {
   static const double h2 = 45.0;
   static const double h3 = 35.0;
   static const double h4 = 25.0;
+  static const double h5 = 22.0;
 
   //Body
   static const double body1 = 19.0;

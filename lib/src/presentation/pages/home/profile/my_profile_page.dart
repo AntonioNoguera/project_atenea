@@ -87,9 +87,24 @@ class MyProfilePage extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const AteneaDialog(
+                    return AteneaDialog(
                       title: '¿Cerrar Cuenta?',
                       content: 'Tendrás que volver a ingresar tus datos al volver, y tu contenido descargado se perderá.',
+                      buttonCallbacks: [
+                        AteneaButtonCallback(
+                          textButton:'Cancelar',
+                          onPressedCallback: () {  
+                            Navigator.of(context).pop();
+                          },
+                          buttonStyles: AteneaButtonStyles(backgroundColor: AppColors.secondaryColor, textColor: AppColors.ateneaWhite)
+                        ),
+                        AteneaButtonCallback(
+                          textButton:'Aceptar',
+                          onPressedCallback: () {  
+                            Navigator.of(context).pop();
+                          }
+                        ),
+                      ],
                     );
                   },
                 );
