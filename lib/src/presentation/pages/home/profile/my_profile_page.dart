@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
+import 'package:proyect_atenea/src/presentation/pages/demos/color_picker_demo.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart';
+import 'package:proyect_atenea/src/presentation/subjects/subject_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class MyProfilePage extends StatelessWidget {
@@ -37,7 +41,10 @@ class MyProfilePage extends StatelessWidget {
                 expandedText: true,
                 svgIcon: 'assets/svg/subjects.svg',
                 onPressed: () {
-                  print('Editar Contenidos Pressed');
+                  Navigator.push(
+                    context,
+                    AteneaPageAnimator(page: ManageContentPage())
+                  ); 
                 },
               ),
               const SizedBox(height: 10.0),
@@ -49,7 +56,10 @@ class MyProfilePage extends StatelessWidget {
               expandedText: true,
               svgIcon: 'assets/svg/account_settings.svg',
               onPressed: () {
-                print('Editar Perfil Pressed');
+                Navigator.push(
+                    context,
+                    AteneaPageAnimator(page: ColorPickerDemo())
+                  ); 
               },
             ),
             const SizedBox(height: 10.0),

@@ -5,24 +5,22 @@ import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
-class SubjectDetailPage extends StatefulWidget { 
+class DepartmentDetailPage extends StatefulWidget { 
 
-
-  const SubjectDetailPage({super.key});
- 
+  const DepartmentDetailPage({super.key});
 
   @override
-  _SubjectDetailPageState createState() => _SubjectDetailPageState();
+  _DepartmentDetailPageState createState() => _DepartmentDetailPageState();
 }
 
-class _SubjectDetailPageState extends State<SubjectDetailPage> {
+class _DepartmentDetailPageState extends State<DepartmentDetailPage> {
   int activeIndex = 0; 
 
   final Map<int, Widget> _renderedContent = {
     0: Column( 
         children: List.generate(2, (index) {
             return ThemeOrFileSubject(
-              contentType: 'Contenido del tema',
+              contentType: 'Academias',
               hasSvg: index == 1,
             );
           }),
@@ -31,7 +29,7 @@ class _SubjectDetailPageState extends State<SubjectDetailPage> {
     1: Column( 
         children: List.generate(1, (index) {
             return ThemeOrFileSubject(
-              contentType: 'Recursos',
+              contentType: 'Departamentos',
               hasSvg: index == 1,
             );
           }),
@@ -123,7 +121,6 @@ class _SubjectDetailPageState extends State<SubjectDetailPage> {
                     
                     ToggleButtonsWidget(
                       onToggle: _handleToggle,
-                      toggleOptions: ['Temas','Recursos'],
                     ),
 
                     const SizedBox(height: 10),
@@ -133,11 +130,9 @@ class _SubjectDetailPageState extends State<SubjectDetailPage> {
                 ),
               ),
             ),
+
+            const SizedBox(height: 10.0),
             
-
-            const SizedBox(height: 20.0),
-
-            // Aquí está el row de botones que no debe estar en el scroll
             Row(
               children: [
                 AteneaButton(
