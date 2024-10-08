@@ -38,6 +38,9 @@ flutter:
     - assets/svg/subjects.svg
     - assets/svg/user_list.svg
     - assets/svg/add.svg
+    - assets/svg/edit.svg
+    - assets/svg/eye.svg
+    - assets/svg/trashcan.svg
 
 
     - assets/images/backgrounds/top_left_asset.png

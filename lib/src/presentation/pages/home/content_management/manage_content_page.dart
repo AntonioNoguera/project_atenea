@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/widgets/academic_department_item.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
@@ -84,6 +85,18 @@ class _ManageContentPageState extends State<ManageContentPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
+
+                Text(
+                  'Departamentos Académicos Disponibles',
+                  style: AppTextStyles.builder(
+                    color: AppColors.primaryColor,
+                    size: FontSizes.h5,
+                    weight: FontWeights.semibold
+                  ),
+                ),
+
+                
+                const SizedBox(height: 20),
                 
                 Expanded(
                   child: SingleChildScrollView(
@@ -93,7 +106,7 @@ class _ManageContentPageState extends State<ManageContentPage> {
                         const SizedBox(height: 10),
                         Column(
                           children: List.generate(8, (index) {
-                            return HomeSubject();
+                            return AcademicDepartmentItem();
                           }),
                         )
                       ],

@@ -1,1 +1,138 @@
 //Page in charge of show all the user his habilities related to the data handle of the lvl 3
+
+import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
+import 'package:proyect_atenea/src/presentation/subjects/widgets/theme_or_file_subject.dart'; 
+import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
+
+class AcademicDepartmentDetailPage extends StatelessWidget { 
+
+  const AcademicDepartmentDetailPage({super.key});
+  
+  @override
+  Widget build(BuildContext context) {
+
+    return AteneaScaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.05,
+          vertical: 30.0,
+        ),
+        child: Column(
+          children: [
+            Text(
+              'Nombre del departamento Genérico',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.primaryColor,
+                size: FontSizes.h4,
+                weight: FontWeights.semibold,
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            Text(
+              'Estas son las academias dadas de alta, selecciona alguna para poder continuar',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.primaryColor,
+                size: FontSizes.body2,
+                weight: FontWeights.regular,
+              ),
+            ),
+
+            
+            const SizedBox(height: 10),
+
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      child: Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Redactado por:',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.builder(
+                                color: AppColors.ateneaBlack,
+                                size: FontSizes.body1,
+                                weight: FontWeights.semibold,
+                              ),
+                            ),
+                            Text(
+                              'Michael Antonio Noguera Guzmán',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.builder(
+                                color: AppColors.grayColor,
+                                size: FontSizes.body2,
+                                weight: FontWeights.regular,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Última Actualización:',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.builder(
+                                color: AppColors.ateneaBlack,
+                                size: FontSizes.body1,
+                                weight: FontWeights.semibold,
+                              ),
+                            ),
+                            Text(
+                              '23 Sep 2024 | 15:20',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.builder(
+                                color: AppColors.grayColor,
+                                size: FontSizes.body2,
+                                weight: FontWeights.regular,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 10.0,),
+
+
+                    Column(
+                      children: List.generate(20, (index) {
+                        return HomeSubject();
+                      })
+                    ) 
+
+                  ],
+                ),
+              ),
+            ),
+            
+ 
+
+            // Aquí está el row de botones que no debe estar en el scroll
+            Row(
+              children: [
+                Expanded(
+                  child: AteneaButton(
+                    text: 'Volver',
+                    backgroundColor: AppColors.secondaryColor,
+                    onPressed: () { 
+                      Navigator.pop(context);
+                    },
+                  ),        
+                ),
+              ]  
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

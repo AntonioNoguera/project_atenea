@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academic_department_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/subjects/subject_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
 
-
-class AcademyManageItem extends StatelessWidget {
-  const AcademyManageItem({super.key});
+class AcademicDepartmentItem extends StatelessWidget {
+  const AcademicDepartmentItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class AcademyManageItem extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: SubjectDetailPage())
+              AteneaPageAnimator(page: AcademicDepartmentDetailPage())
             );
           },
           child: Column(
@@ -71,8 +72,9 @@ class AcademyManageItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Autor',
+                                'Administrador',
                                 style: AppTextStyles.builder(
+                                  weight: FontWeights.semibold,
                                   color: AppColors.primaryColor,
                                   size: FontSizes.body2,
                                 ),
@@ -81,33 +83,26 @@ class AcademyManageItem extends StatelessWidget {
                                 'Noguera Guzman',
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,
-                                  size: FontSizes.body2,
+                                  size: FontSizes.body1,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Autor',
-                                style: AppTextStyles.builder(
-                                  color: AppColors.primaryColor,
-                                  size: FontSizes.body2,
-                                ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Permisos',
+                              style: AppTextStyles.builder(
+                                color: AppColors.primaryColor,
+                                size: FontSizes.body2,
+                                weight: FontWeights.semibold
                               ),
-                              Text(
-                                'Noguera Guzman',
-                                style: AppTextStyles.builder(
-                                  color: AppColors.grayColor,
-                                  size: FontSizes.body2,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                            ),
+                            const AteneaPermitsRow(userPermits: [Permits.view,Permits.edit,Permits.delete],)
+                          ],
+                        ), 
                       ],
                     ),
                     
