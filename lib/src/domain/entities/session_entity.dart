@@ -8,11 +8,8 @@ class SessionEntity {
     required this.userLevel,
   });
 
-
-  
 }
-
-
+  
 enum UserType {
   superAdmin,
   admin,

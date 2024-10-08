@@ -51,15 +51,8 @@ class _ManageContentPageState extends State<ManageContentPage> {
     });
   }
 
-  void _handleToggle(int index) {
-    setState(() {
-      activeIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    List<String> toggleOptions = ['Academias (3)', 'Departamentos (1)'];
 
     return AteneaScaffold(
       body: Padding(
@@ -82,32 +75,32 @@ class _ManageContentPageState extends State<ManageContentPage> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                    textAlign: TextAlign.center,
-                    'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos',
-                    style: AppTextStyles.builder(
-                      color: AppColors.primaryColor,
-                      size: FontSizes.body2,
-                      weight: FontWeights.regular,
-                    ),
-                    ),
-                const SizedBox(height: 20),
-                ToggleButtonsWidget(
-                  onToggle: _handleToggle,
-                  toggleOptions: toggleOptions,
+                  textAlign: TextAlign.center,
+                  'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico,',
+                  style: AppTextStyles.builder(
+                    color: AppColors.primaryColor,
+                    size: FontSizes.body2,
+                    weight: FontWeights.regular,
+                  ),
                 ),
                 const SizedBox(height: 20),
+                
                 Expanded(
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        _renderedContent[activeIndex] ?? const Text('Unrenderable'),
+                        Column(
+                          children: List.generate(8, (index) {
+                            return HomeSubject();
+                          }),
+                        )
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 40.0),
+                const SizedBox(height: 45.0),
               ],
             ),
             Positioned(
