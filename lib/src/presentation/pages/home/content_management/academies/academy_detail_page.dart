@@ -1,16 +1,15 @@
+//Page in charge of show all the user his habilities related to the data handle of the academy lvl2
 //Page in charge of show all the user his habilities related to the data handle of the lvl 3
 
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
-import 'package:proyect_atenea/src/presentation/subjects/widgets/theme_or_file_subject.dart'; 
-import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
-class AcademicDepartmentDetailPage extends StatelessWidget { 
+class AcademyDetailPage extends StatelessWidget { 
 
-  const AcademicDepartmentDetailPage({super.key});
+  const AcademyDetailPage({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'Nombre del departamento Genérico',
+              'Detalle Academico',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(
                 color: AppColors.primaryColor,
@@ -102,9 +101,8 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
 
                     SizedBox(height: 10.0,),
 
-
                     Column(
-                      children: List.generate(20, (index) {
+                      children: List.generate(2, (index) {
                         return HomeSubject();
                       })
                     ) 
@@ -114,8 +112,6 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
               ),
             ),
             
- 
-
             // Aquí está el row de botones que no debe estar en el scroll
             Row(
               children: [

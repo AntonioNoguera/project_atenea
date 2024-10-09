@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/widgets/academic_department_item.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
-import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_item_row.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
+
+//Esta funcionalidad podría ser deprecada
 
 class ManageContentPage extends StatefulWidget {
   const ManageContentPage({super.key});
@@ -16,17 +17,14 @@ class ManageContentPage extends StatefulWidget {
 class _ManageContentPageState extends State<ManageContentPage> {
   int activeIndex = 0;
   bool isButtonCollapsed = false;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   final Map<int, Widget> _renderedContent = {
-    0: Column(
-      children: [
-        Column(
+    0: Column( 
           children: List.generate(8, (index) {
             return HomeSubject();
-          }),
-        )
-      ],
+          }
+        ),
     ),
     1: Column(
           children: List.generate(8, (index) {
@@ -106,7 +104,7 @@ class _ManageContentPageState extends State<ManageContentPage> {
                         const SizedBox(height: 10),
                         Column(
                           children: List.generate(8, (index) {
-                            return AcademicDepartmentItem();
+                            return AcademicDepartmentItemRow();
                           }),
                         )
                       ],

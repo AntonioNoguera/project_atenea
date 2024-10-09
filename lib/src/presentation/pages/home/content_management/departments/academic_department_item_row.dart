@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/subjects/subject_detail_page.dart';
+ import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 
 
-class DepartmentManageItem extends StatelessWidget {
-  const DepartmentManageItem({super.key});
+class AcademicDepartmentItemRow extends StatelessWidget {
+  const AcademicDepartmentItemRow({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class DepartmentManageItem extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: SubjectDetailPage())
+              AteneaPageAnimator(page: AcademicDepartmentDetailPage())
             );
           },
           child: Column(

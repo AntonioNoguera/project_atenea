@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/academic_department_detail_page.dart';
-import 'package:proyect_atenea/src/presentation/subjects/subject_detail_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
 
-class AcademicDepartmentItem extends StatelessWidget {
-  const AcademicDepartmentItem({super.key});
+
+class AcademyItemRow extends StatelessWidget {
+  const AcademyItemRow({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class AcademicDepartmentItem extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: AcademicDepartmentDetailPage())
+              AteneaPageAnimator(page: AcademyDetailPage())
             );
           },
           child: Column(
@@ -50,7 +49,7 @@ class AcademicDepartmentItem extends StatelessWidget {
                   children: [
                     const SizedBox(height: 8.0,),
                     Text(
-                      'Temas Selectos de Materia Genérica',
+                      'Academias',
                       style: AppTextStyles.builder(
                         color: AppColors.ateneaBlack,
                         size: FontSizes.body1,
@@ -72,9 +71,8 @@ class AcademicDepartmentItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Administrador',
+                                'Autor',
                                 style: AppTextStyles.builder(
-                                  weight: FontWeights.semibold,
                                   color: AppColors.primaryColor,
                                   size: FontSizes.body2,
                                 ),
@@ -83,26 +81,33 @@ class AcademicDepartmentItem extends StatelessWidget {
                                 'Noguera Guzman',
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,
-                                  size: FontSizes.body1,
+                                  size: FontSizes.body2,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Permisos',
-                              style: AppTextStyles.builder(
-                                color: AppColors.primaryColor,
-                                size: FontSizes.body2,
-                                weight: FontWeights.semibold
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Autor',
+                                style: AppTextStyles.builder(
+                                  color: AppColors.primaryColor,
+                                  size: FontSizes.body2,
+                                ),
                               ),
-                            ),
-                            const AteneaPermitsRow(userPermits: [Permits.view,Permits.edit,Permits.delete],)
-                          ],
-                        ), 
+                              Text(
+                                'Noguera Guzman',
+                                style: AppTextStyles.builder(
+                                  color: AppColors.grayColor,
+                                  size: FontSizes.body2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     

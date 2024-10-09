@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/demos/color_picker_demo.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart';
-import 'package:proyect_atenea/src/presentation/subjects/subject_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
