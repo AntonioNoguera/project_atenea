@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/profile/my_profile_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/my_subjects_page.dart';
@@ -23,7 +24,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
     
     // Inicializa el mock y la lista de páginas aquí
-    mock = SessionEntity(token: 'token', userLevel: UserType.superAdmin);
+    mock = SessionEntity(token: "token", userLevel: UserType.superAdmin, fullName: "fullName", passwordHash: "passwordHash", createdAt: "createdAt", userPermissions: []);
 
     _pages = <Widget>[
       const MySubjectsPage(),

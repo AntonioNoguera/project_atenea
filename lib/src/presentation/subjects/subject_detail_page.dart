@@ -7,9 +7,7 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class SubjectDetailPage extends StatefulWidget { 
 
-
-  const SubjectDetailPage({super.key});
- 
+  const SubjectDetailPage({super.key}); 
 
   @override
   _SubjectDetailPageState createState() => _SubjectDetailPageState();

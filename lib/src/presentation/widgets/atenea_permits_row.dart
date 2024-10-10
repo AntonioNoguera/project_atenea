@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
-enum Permits {
-  edit,
-  delete,
-  view,
-}
 
 class AteneaPermitsRow extends StatelessWidget {
   final List<Enum> userPermits;

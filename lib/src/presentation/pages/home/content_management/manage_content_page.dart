@@ -1,54 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_item_row.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
-//Esta funcionalidad podría ser deprecada
 
-class ManageContentPage extends StatefulWidget {
-  const ManageContentPage({super.key});
+class ManageContentPage extends StatelessWidget {
 
-  @override
-  _ManageContentPageState createState() => _ManageContentPageState();
-}
-
-class _ManageContentPageState extends State<ManageContentPage> {
-  int activeIndex = 0;
-  bool isButtonCollapsed = false;
-  final ScrollController _scrollController = ScrollController();
-
-  final Map<int, Widget> _renderedContent = {
-    0: Column( 
-          children: List.generate(8, (index) {
-            return HomeSubject();
-          }
-        ),
-    ),
-    1: Column(
-          children: List.generate(8, (index) {
-            return HomeSubject();
-          }),
-        )
-     
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.offset > 50 && !isButtonCollapsed) {
-        setState(() {
-          isButtonCollapsed = true;
-        });
-      } else if (_scrollController.offset <= 50 && isButtonCollapsed) {
-        setState(() {
-          isButtonCollapsed = false;
-        });
-      }
-    });
-  }
+  const ManageContentPage({super.key}); 
 
   @override
   Widget build(BuildContext context) {
@@ -97,8 +57,7 @@ class _ManageContentPageState extends State<ManageContentPage> {
                 const SizedBox(height: 20),
                 
                 Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
+                  child: SingleChildScrollView( 
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
@@ -119,31 +78,7 @@ class _ManageContentPageState extends State<ManageContentPage> {
               left: 0,
               right: 0,
               child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      AnimatedContainer(
-                        curve: Curves.decelerate,
-                        duration: Duration(milliseconds: 230),
-                        width: isButtonCollapsed ? 60.0 : 200.0,
-                        child: AteneaButton(
-                          padding : EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
-                          text: isButtonCollapsed ? null : 'Crear Acadermia',
-                          iconSize: 30.0,
-                          svgIcon: 'assets/svg/add.svg',
-                          svgTint: AppColors.primaryColor,
-                          enabledBorder: true,
-                          backgroundColor: AppColors.ateneaWhite,
-                          textStyle: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
+                children: [ 
                   Row(
                     children: [
                       Expanded(
