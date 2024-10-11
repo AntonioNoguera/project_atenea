@@ -24,14 +24,33 @@ class AteneaBackground extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: 10,
-              right: 10,
+            top: 10,
+            right: 10,
+            child: Image.asset(
+              'assets/images/backgrounds/living_fime.png',
+              width: 150,
+              height: 30,
+              fit: BoxFit.cover,
+            )
+          ),
+          Container(
+            color: Colors.transparent,
+            child: child,
+          ),
+
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Opacity(
+              opacity: 0.6,
               child: Image.asset(
-                'assets/images/backgrounds/living_fime.png',
-                width: 150,
-                height: 30,
+                'assets/images/backgrounds/top_right.png',
+                width: 489,
+                height: 450,
                 fit: BoxFit.cover,
-              )),
+              ),
+            )
+          ),
           Container(
             color: Colors.transparent,
             child: child,

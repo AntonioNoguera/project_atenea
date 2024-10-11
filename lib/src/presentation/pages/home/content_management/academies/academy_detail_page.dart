@@ -2,9 +2,7 @@
 //Page in charge of show all the user his habilities related to the data handle of the lvl 3
 
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
-import 'package:proyect_atenea/src/presentation/subjects/widgets/theme_or_file_subject.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
@@ -48,12 +46,12 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.05,
-          vertical: 50.0,
+          vertical: 30.0,
         ),
         child: Column(
           children: [
             Text(
-              'Nombre de la Materia Genérica',
+              'Detalle de Academia',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(
                 color: AppColors.primaryColor,
@@ -63,15 +61,18 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
             ),
 
             const SizedBox(height: 10),
-            Text("Planes de estudio", style: AppTextStyles.builder(size: FontSizes.body2, weight: FontWeights.bold),),
+            
+            Text('Planes de estudio', style: AppTextStyles.builder(size: FontSizes.body2, weight: FontWeights.bold),),
             
             const SizedBox(height: 5),
+
             ToggleButtonsWidget(
               onToggle: _handleToggle,
               toggleOptions: ['401','4XX'],
             ),
 
             const SizedBox(height: 10),
+
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

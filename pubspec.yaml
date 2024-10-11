@@ -48,6 +48,7 @@ flutter:
     - assets/images/backgrounds/dart_vector.png
     - assets/images/backgrounds/down_left_asset.png 
     - assets/images/backgrounds/living_fime.png
+    - assets/images/backgrounds/top_right.png
     
   fonts:
     - family: RadioCanada

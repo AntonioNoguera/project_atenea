@@ -24,7 +24,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
     
     // Inicializa el mock y la lista de páginas aquí
-    mock = SessionEntity(token: "token", userLevel: UserType.superAdmin, fullName: "fullName", passwordHash: "passwordHash", createdAt: "createdAt", userPermissions: []);
+    mock = SessionEntity(token: 'token', userId: 'userId', userPermissions: [], tokenValidUntil: DateTime.now());
 
     _pages = <Widget>[
       const MySubjectsPage(),
