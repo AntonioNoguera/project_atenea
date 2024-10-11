@@ -1,4 +1,7 @@
 import 'package:proyect_atenea/src/data/data_sources/local_session_data_source.dart';
+import 'package:proyect_atenea/src/domain/entities/atomic_permission_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/domain/repositories/session_repository.dart';
 
@@ -12,9 +15,7 @@ class SessionRepositoryImpl implements SessionRepository {
     final session = await localDataSource.getSession();
 
     if (session != null) {
-      //return session
-      return SessionEntity(
-        token: 'token', userId: 'userId', userPermissions: [], tokenValidUntil: DateTime.now());
+      return session; 
     }
     return null;
   }

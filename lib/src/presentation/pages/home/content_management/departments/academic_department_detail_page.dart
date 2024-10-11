@@ -46,8 +46,9 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
           children: [
             Column(
               children: [
+                const SizedBox(height: 10.0,),
                 Text(
-                  'Detalle de departamento',
+                  'Informática',
                   textAlign: TextAlign.center,
                   style: AppTextStyles.builder(
                     color: AppColors.primaryColor,
@@ -67,9 +68,10 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                 ),
                 const SizedBox(height: 20),
                 Text(
+                  textAlign: TextAlign.center,
                   'Departamentos Académicos Disponibles',
-                  style: AppTextStyles.builder(
-                    color: AppColors.primaryColor,
+                  style: AppTextStyles.builder(  
+                    color: AppColors.primaryColor.withOpacity(.8),
                     size: FontSizes.h5,
                     weight: FontWeights.semibold,
                   ),
@@ -147,7 +149,7 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
               right: 0,
               child: Column(
                 children: [
-                  Row(
+                 Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       AnimatedContainer(

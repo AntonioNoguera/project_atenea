@@ -13,76 +13,108 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final SessionProvider sessionProvider = Provider.of<SessionProvider>(context, listen: false);
 
+    final splashContent = SafeArea(
+      child: Scaffold(
+        body : Container(
+        decoration:  const BoxDecoration(
+          color: AppColors.primaryColor, 
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [ 
+              
+              const SizedBox(height: 20.0,),
+
+              Row(
+                children: [
+                  const SizedBox(width: 20.0,),
+                  Image.asset(
+                    'assets/images/backgrounds/uanl.png',
+                    width: 150.0,
+                    height: 63.3,
+                    fit: BoxFit.contain,
+                  ),
+
+                  const Spacer(),
+                  
+                  Image.asset(
+                    'assets/images/backgrounds/fime.png',
+                    width: 150.0,
+                    height: 64.8,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(width: 20.0,),
+                ],
+                
+                ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: SvgPicture.asset(                  
+                  'assets/svg/Bearny.svg',
+                  height: 200.0,
+                  width: 200.0,
+                  color: AppColors.ateneaWhite.withOpacity(0.7)
+                ),
+              ),
+              const SizedBox(height: 20),
+              
+              const CircularProgressIndicator(color: AppColors.ateneaWhite),
+
+              const Spacer(), 
+              
+              Text(
+                'Versión: 24.09',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.builder(
+                  color: AppColors.ateneaWhite, 
+                  size: FontSizes.body2, 
+                  weight: FontWeights.semibold
+                ),
+              ),  
+
+              const SizedBox( height: 5 ), 
+
+              Text(
+                'Bienvenido al Proyecto Atenea',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.builder(
+                  color: AppColors.ateneaWhite, 
+                  size: FontSizes.body3, 
+                  weight: FontWeights.regular
+                ),
+              ),
+              
+              const SizedBox( height: 20, )
+            ],
+          ),
+        ),
+      ),
+      ), 
+    );
+
+
     return FutureBuilder(
       future: sessionProvider.loadSession(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: SvgPicture.asset(
-                      'assets/svg/Bearny.svg',
-                      height: 300.0,
-                      width: 300.0,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const CircularProgressIndicator(),
-                ],
-              ),
-            ),
-          );
-        } else {
-
+          return splashContent;
+        } else { 
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Future.delayed(Duration(seconds: 4), () {
+            
+            Future.delayed( const Duration(seconds:3) , () {
               if (!sessionProvider.hasSession()) {
                 Navigator.pushReplacementNamed(context, '/home');
               } else {
                 Navigator.pushReplacementNamed(context, '/auth/login');
               }
-            });
-          });
+            }
+            );
+          }); 
 
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: SvgPicture.asset(
-                      'assets/svg/Bearny.svg',
-                      height: 250.0,
-                      width: 250.0,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const CircularProgressIndicator(color: AppColors.primaryColor),
-                  const Spacer(),
-                  Text(
-                    'Versión: 24.09',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.builder(
-                      color: AppColors.primaryColor, 
-                      size: FontSizes.body1, 
-                      weight: FontWeights.semibold
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  )
-                ],
-              ),
-            ),
-          );
+          return splashContent;  
         }
       },
     );

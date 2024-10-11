@@ -25,16 +25,22 @@ class SessionProvider with ChangeNotifier {
     _session = await _getSessionUseCase();
     notifyListeners();
   }
-/*
+
+  Future<SessionEntity?> getSession() async {
+    return await _getSessionUseCase();
+  }
+
   Future<void> saveSession(String token) async {
+    
+    /*
     final session = SessionEntity(token: token);
 
 
     await _saveSessionUseCase(session);
     _session = session;
-    notifyListeners();
+    notifyListeners();*/
   }
-*/
+
   Future<void> clearSession() async {
     await _clearSessionUseCase();
     _session = null;

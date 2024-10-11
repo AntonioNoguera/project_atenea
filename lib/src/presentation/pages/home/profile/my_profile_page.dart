@@ -35,7 +35,7 @@ class MyProfilePage extends StatelessWidget {
 
             const SizedBox(height: 20.0),
  
-            if (userSession.userPermissions.any((permission) => permission.academy == PermitTypes.edit)) ...[
+            if (userSession.userPermissions.academy.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
               AteneaButton(
                 text: 'Editar Contenidos',
                 expandedText: true,
@@ -65,7 +65,7 @@ class MyProfilePage extends StatelessWidget {
             const SizedBox(height: 10.0),
 
             // Mostrar 'Administrar Usuarios' solo si el usuario es super admin 
-            if (userSession.userPermissions.any((permission) => permission.academy == PermitTypes.edit)) ...[
+            if (userSession.userPermissions.academy.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
               AteneaButton(
                 text: 'Administrar Usuarios',
                 expandedText: true,

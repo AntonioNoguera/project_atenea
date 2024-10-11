@@ -23,6 +23,9 @@ class ManageContentPage extends StatelessWidget {
           children: [
             Column(
               children: [
+                
+                const SizedBox(height: 10.0,),
+                
                 Text(
                   'Administrar Contenidos',
                   textAlign: TextAlign.center,
@@ -45,9 +48,11 @@ class ManageContentPage extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 Text(
+                  
+                  textAlign: TextAlign.center,
                   'Departamentos Académicos Disponibles',
                   style: AppTextStyles.builder(
-                    color: AppColors.primaryColor,
+                    color: AppColors.primaryColor.withOpacity(.8),
                     size: FontSizes.h5,
                     weight: FontWeights.semibold
                   ),

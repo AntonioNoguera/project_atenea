@@ -7,7 +7,7 @@ class UserEntity {
   final String fullName;
   final String passwordHash;
   final String createdAt;
-  final List<PermissionEntity> userPermissions; 
+  final PermissionEntity userPermissions; 
 
   UserEntity ({
     required this.id,

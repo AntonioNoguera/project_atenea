@@ -68,7 +68,7 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
 
             ToggleButtonsWidget(
               onToggle: _handleToggle,
-              toggleOptions: ['401','4XX'],
+              toggleOptions: ['401','440'],
             ),
 
             const SizedBox(height: 10),

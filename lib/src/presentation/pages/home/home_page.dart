@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/domain/entities/atomic_permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/profile/my_profile_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/my_subjects_page.dart';
+import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
@@ -22,14 +26,20 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    
-    // Inicializa el mock y la lista de páginas aquí
-    mock = SessionEntity(token: 'token', userId: 'userId', userPermissions: [], tokenValidUntil: DateTime.now());
+    _loadSession(); // Llamamos a la función asíncrona para cargar la sesión
+  }
 
-    _pages = <Widget>[
-      const MySubjectsPage(),
-      MyProfilePage(mock), // Ahora puedes usar 'mock' correctamente
-    ];
+  Future<void> _loadSession() async {
+    final SessionProvider sessionProvider = Provider.of<SessionProvider>(context, listen: false);
+    await sessionProvider.loadSession();
+    mock = await sessionProvider.getSession() ?? SessionEntity.defaultValues(); // Proporciona un valor predeterminado si es null
+
+    setState(() {
+      _pages = <Widget>[
+        const MySubjectsPage(),
+        MyProfilePage(mock), // Ahora puedes usar 'mock' correctamente
+      ];
+    });
   }
 
   void _onItemTapped(int index) {
@@ -40,7 +50,8 @@ class HomePageState extends State<HomePage> {
 
   //Note: Navbar still on working
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
+
     return AteneaScaffold(
       body: Container(
         decoration: BoxDecoration(

@@ -33,16 +33,12 @@ class AteneaBackground extends StatelessWidget {
               fit: BoxFit.cover,
             )
           ),
-          Container(
-            color: Colors.transparent,
-            child: child,
-          ),
-
+          
           Positioned(
             top: 0,
             right: 0,
             child: Opacity(
-              opacity: 0.6,
+              opacity: 0.2,
               child: Image.asset(
                 'assets/images/backgrounds/top_right.png',
                 width: 489,
@@ -50,11 +46,13 @@ class AteneaBackground extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             )
-          ),
+          ), 
+          
           Container(
             color: Colors.transparent,
             child: child,
           ),
+
         ],
       ),
     );

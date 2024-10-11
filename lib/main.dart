@@ -24,7 +24,7 @@ void main() async {
   );
 
   // Configura el service locator para registrar todas las dependencias
-  setupLocator();
+  await setupLocator();
 
   runApp(
     MultiProvider(

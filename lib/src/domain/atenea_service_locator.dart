@@ -18,7 +18,7 @@ import '../domain/repositories/user_repository.dart';
 
 final GetIt locator = GetIt.instance;
 
-void setupLocator() async {
+Future<void> setupLocator() async {
   
   //SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
