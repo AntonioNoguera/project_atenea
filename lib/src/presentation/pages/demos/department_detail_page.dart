@@ -117,6 +117,9 @@ class _DepartmentDetailPageState extends State<DepartmentDetailPage> {
                       )
                     ),
 
+                    
+                    const SizedBox(height: 10),
+
                     const SizedBox(height: 10),
                     
                     ToggleButtonsWidget(

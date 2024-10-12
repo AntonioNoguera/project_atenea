@@ -127,6 +127,8 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                             ]
                           )
                         ),
+
+                        const SizedBox(height: 15.0,),
                         
                         Column(
                           children: List.generate(20, (index) {

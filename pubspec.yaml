@@ -42,6 +42,8 @@ flutter:
     - assets/svg/edit.svg
     - assets/svg/eye.svg
     - assets/svg/trashcan.svg
+    
+    - assets/svg/view_file.svg
 
 
     - assets/images/backgrounds/top_left_asset.png
@@ -50,8 +52,7 @@ flutter:
     - assets/images/backgrounds/living_fime.png
     - assets/images/backgrounds/top_right.png
     - assets/images/backgrounds/fime.png
-    - assets/images/backgrounds/uanl.png
-    
+    - assets/images/backgrounds/uanl.png  
   fonts:
     - family: RadioCanada
       fonts:

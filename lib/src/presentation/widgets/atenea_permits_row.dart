@@ -30,7 +30,7 @@ class AteneaPermitsRow extends StatelessWidget {
                 color: AppColors.grayColor,
               ),
             ),
-          if (userPermits.contains(Permits.edit))
+          if (userPermits.contains(Permits.view))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(
@@ -40,7 +40,7 @@ class AteneaPermitsRow extends StatelessWidget {
                 color: AppColors.grayColor,
               ),
             ),
-          if (userPermits.contains(Permits.delete))
+          if (userPermits.contains(Permits.view))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(

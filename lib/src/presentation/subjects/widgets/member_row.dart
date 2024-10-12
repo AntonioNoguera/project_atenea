@@ -39,7 +39,7 @@ class MemberRow extends StatelessWidget {
           if(hasSvg)
 
             SvgPicture.asset(
-              'assets/svg/account.svg',
+              'assets/svg/view_file.svg',
               color : textColor,
               height: 27.0,
               width: 27.0,
