@@ -5,11 +5,11 @@ import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 
 class AteneaPermitsRow extends StatelessWidget {
-  final List<Enum> userPermits;
+  final List<Permits> userPermits;
 
   const AteneaPermitsRow({
     super.key,
-    required this.userPermits,
+    this.userPermits = const [Permits.view],
   });
 
   @override

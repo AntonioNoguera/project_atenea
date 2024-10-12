@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/subjects/subject_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
 
 
 class HomeSubject extends StatelessWidget {
@@ -87,26 +88,19 @@ class HomeSubject extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Autor',
-                                style: AppTextStyles.builder(
-                                  color: AppColors.primaryColor,
-                                  size: FontSizes.body2,
-                                ),
+                        Column(
+                          children: [
+                            Text(
+                              'Permisos',
+                              style: AppTextStyles.builder(
+                                color: AppColors.primaryColor,
+                                size: FontSizes.body2
                               ),
-                              Text(
-                                'Noguera Guzman',
-                                style: AppTextStyles.builder(
-                                  color: AppColors.grayColor,
-                                  size: FontSizes.body2,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 3,),
+                            AteneaPermitsRow()
+                          ],
+                          
                         ),
                       ],
                     ),

@@ -45,7 +45,7 @@ class ManageContentPage extends StatelessWidget {
                     weight: FontWeights.regular,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
 
                 Text(
                   
@@ -58,8 +58,7 @@ class ManageContentPage extends StatelessWidget {
                   ),
                 ),
 
-                
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 
                 Expanded(
                   child: SingleChildScrollView( 

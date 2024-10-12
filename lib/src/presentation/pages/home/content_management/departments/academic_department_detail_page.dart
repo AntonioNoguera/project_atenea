@@ -4,6 +4,7 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/de
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class AcademicDepartmentDetailPage extends StatefulWidget {
@@ -83,64 +84,61 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                         Container(
-                          width: double.infinity,
-                          child: Card(
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Redactado por:',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.builder(
-                                    color: AppColors.ateneaBlack,
-                                    size: FontSizes.body1,
-                                    weight: FontWeights.semibold,
-                                  ),
+                         AteneaCard(
+                          child:Column(
+                            children: [
+                              Text(
+                                'Redactado por:',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.ateneaBlack,
+                                  size: FontSizes.body1,
+                                  weight: FontWeights.semibold,
                                 ),
-                                Text(
-                                  'Michael Antonio Noguera Guzmán',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.builder(
-                                    color: AppColors.grayColor,
-                                    size: FontSizes.body2,
-                                    weight: FontWeights.regular,
-                                  ),
+                              ),
+                              Text(
+                                'Michael Antonio Noguera Guzmán',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.grayColor,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.regular,
                                 ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  'Última Actualización:',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.builder(
-                                    color: AppColors.ateneaBlack,
-                                    size: FontSizes.body1,
-                                    weight: FontWeights.semibold,
-                                  ),
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Última Actualización:',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.ateneaBlack,
+                                  size: FontSizes.body1,
+                                  weight: FontWeights.semibold,
                                 ),
-                                Text(
-                                  '23 Sep 2024 | 15:20',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.builder(
-                                    color: AppColors.grayColor,
-                                    size: FontSizes.body2,
-                                    weight: FontWeights.regular,
-                                  ),
+                              ),
+                              Text(
+                                '23 Sep 2024 | 15:20',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.grayColor,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.regular,
                                 ),
-                                const SizedBox(height: 10),
-                              ],
-                            ),
-                          ),
+                              ),
+                            ]
+                          )
                         ),
                         
                         Column(
                           children: List.generate(20, (index) {
                             return AcademyItemRow();
                           }),
-                        ),
-                        const SizedBox(height: 40),
+                        ), 
                       ],
                     ),
                   ),
                 ),
+                
+                const SizedBox(height: 45.0),
               ],
             ),
             Positioned(

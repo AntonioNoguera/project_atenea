@@ -49,7 +49,7 @@ class _SubjectDetailPageState extends State<SubjectDetailPage> {
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.05,
-          vertical: 50.0,
+          vertical: 30.0,
         ),
         child: Column(
           children: [
@@ -142,15 +142,15 @@ class _SubjectDetailPageState extends State<SubjectDetailPage> {
                   text: 'Volver',
                   backgroundColor: AppColors.secondaryColor,
                   onPressed: () {
-                    print("PressedBack");
+                    Navigator.pop(context);
                   },
                 ),
                 const SizedBox(width: 10.0),
                 Expanded(
                   child: AteneaButton(
-                    text: 'Marcar',
+                    text: 'Moficar Contenido',
                     onPressed: () {
-                      print("PressedFavorite");
+                      print("ModifyContent");
                     },
                   ),
                 ),
