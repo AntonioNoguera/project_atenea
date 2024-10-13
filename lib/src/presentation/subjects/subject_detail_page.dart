@@ -22,7 +22,7 @@ class _SubjectDetailPageState extends State<SubjectDetailPage> {
         children: List.generate(2, (index) {
             return ThemeOrFileSubject(
               contentType: 'Contenido del tema',
-              hasSvg: index == 1,
+              hasSvg: false,
             );
           }),
         ),
@@ -31,7 +31,7 @@ class _SubjectDetailPageState extends State<SubjectDetailPage> {
         children: List.generate(1, (index) {
             return ThemeOrFileSubject(
               contentType: 'Recursos',
-              hasSvg: index == 1,
+              hasSvg: true,
             );
           }),
         ),

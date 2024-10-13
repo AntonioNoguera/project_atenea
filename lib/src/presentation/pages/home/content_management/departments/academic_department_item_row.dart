@@ -87,27 +87,27 @@ class AcademicDepartmentItemRow extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Autor',
-                                style: AppTextStyles.builder(
-                                  color: AppColors.primaryColor,
-                                  size: FontSizes.body2,
-                                ),
+                        
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Academias disponibles',
+                              style: AppTextStyles.builder(
+                                color: AppColors.primaryColor,
+                                size: FontSizes.body2,
                               ),
-                              Text(
-                                'Noguera Guzman',
-                                style: AppTextStyles.builder(
-                                  color: AppColors.grayColor,
-                                  size: FontSizes.body2,
-                                ),
+                            ),
+                            Text(
+                              '12',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.builder(
+                                color: AppColors.grayColor,
+                                size: FontSizes.body2,
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          ],
+                        ), 
                       ],
                     ),
                     

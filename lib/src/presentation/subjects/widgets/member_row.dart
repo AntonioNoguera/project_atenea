@@ -19,7 +19,7 @@ class MemberRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       margin: const EdgeInsets.all(0),
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -41,8 +41,8 @@ class MemberRow extends StatelessWidget {
             SvgPicture.asset(
               'assets/svg/view_file.svg',
               color : textColor,
-              height: 27.0,
-              width: 27.0,
+              height: 22.0,
+              width: 22.0,
             ),
         ],
       ),

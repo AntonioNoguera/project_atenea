@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_create_new_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_item_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class AcademicDepartmentDetailPage extends StatefulWidget {
@@ -39,8 +41,7 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
   Widget build(BuildContext context) {
     return AteneaScaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05,
+        padding: EdgeInsets.symmetric( 
           vertical: 30.0,
         ),
         child: Stack(
@@ -81,62 +82,64 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                 Expanded(
                   child: SingleChildScrollView(
                     controller: _scrollController,
-                    child: Column(
+                    child:
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05,),
+                      child:  Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                          AteneaCard(
-                          child:Column(
-                            children: [
-                              Text(
-                                'Redactado por:',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.builder(
-                                  color: AppColors.ateneaBlack,
-                                  size: FontSizes.body1,
-                                  weight: FontWeights.semibold,
+                            child:Column(
+                              children: [
+                                Text(
+                                  'Redactado por:',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.builder(
+                                    color: AppColors.ateneaBlack,
+                                    size: FontSizes.body1,
+                                    weight: FontWeights.semibold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Michael Antonio Noguera Guzmán',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.builder(
-                                  color: AppColors.grayColor,
-                                  size: FontSizes.body2,
-                                  weight: FontWeights.regular,
+                                Text(
+                                  'Michael Antonio Noguera Guzmán',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.builder(
+                                    color: AppColors.grayColor,
+                                    size: FontSizes.body2,
+                                    weight: FontWeights.regular,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                'Última Actualización:',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.builder(
-                                  color: AppColors.ateneaBlack,
-                                  size: FontSizes.body1,
-                                  weight: FontWeights.semibold,
+                                const SizedBox(height: 20),
+                                Text(
+                                  'Última Actualización:',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.builder(
+                                    color: AppColors.ateneaBlack,
+                                    size: FontSizes.body1,
+                                    weight: FontWeights.semibold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '23 Sep 2024 | 15:20',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.builder(
-                                  color: AppColors.grayColor,
-                                  size: FontSizes.body2,
-                                  weight: FontWeights.regular,
+                                Text(
+                                  '23 Sep 2024 | 15:20',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.builder(
+                                    color: AppColors.grayColor,
+                                    size: FontSizes.body2,
+                                    weight: FontWeights.regular,
+                                  ),
                                 ),
-                              ),
-                            ]
-                          )
-                        ),
-
-                        const SizedBox(height: 15.0,),
-                        
-                        Column(
-                          children: List.generate(20, (index) {
-                            return AcademyItemRow();
-                          }),
-                        ), 
-                      ],
-                    ),
+                              ]
+                            )
+                          ),
+                          
+                          Column(
+                            children: List.generate(20, (index) {
+                              return AcademyItemRow();
+                            }),
+                          ), 
+                        ],
+                      ),
+                    )
                   ),
                 ),
                 
@@ -166,7 +169,10 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                           backgroundColor: AppColors.ateneaWhite,
                           textStyle: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context, 
+                              
+                              AteneaPageAnimator(page: AcademyCreateNewPage()) );
                           },
                         ),
                       ),

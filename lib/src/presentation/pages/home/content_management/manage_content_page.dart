@@ -16,7 +16,6 @@ class ManageContentPage extends StatelessWidget {
     return AteneaScaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05,
           vertical: 30.0,
         ),
         child: Stack(
@@ -48,7 +47,6 @@ class ManageContentPage extends StatelessWidget {
                 const SizedBox(height: 15),
 
                 Text(
-                  
                   textAlign: TextAlign.center,
                   'Departamentos Académicos Disponibles',
                   style: AppTextStyles.builder(
@@ -61,26 +59,31 @@ class ManageContentPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 
                 Expanded(
-                  child: SingleChildScrollView( 
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        Column(
-                          children: List.generate(8, (index) {
-                            return AcademicDepartmentItemRow();
-                          }),
-                        )
-                      ],
+                  child: SingleChildScrollView(
+                    child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width * 0.05), // Define el padding horizontal
+
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Column(
+                            children: List.generate(8, (index) {
+                              return AcademicDepartmentItemRow();
+                            }),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 45.0),
               ],
             ),
             Positioned(
               bottom: 0,
-              left: 0,
-              right: 0,
+              left:  MediaQuery.of(context).size.width * 0.05,
+              right:  MediaQuery.of(context).size.width * 0.05,
               child: Column(
                 children: [ 
                   Row(
