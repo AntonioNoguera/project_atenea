@@ -132,6 +132,7 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                             )
                           ),
                           
+                          SizedBox(height: 20.0,),
                           Column(
                             children: List.generate(20, (index) {
                               return AcademyItemRow();
@@ -150,7 +151,9 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
               bottom: 0,
               left: 0,
               right: 0,
-              child: Column(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
                 children: [
                  Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -194,6 +197,8 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                   ),
                 ],
               ),
+              ) 
+               
             ),
           ],
         ),

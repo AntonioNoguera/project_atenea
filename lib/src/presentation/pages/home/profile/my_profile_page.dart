@@ -89,7 +89,7 @@ class MyProfilePage extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AteneaDialog(
                       title: '¿Cerrar Cuenta?',
-                      content: 'Tendrás que volver a ingresar tus datos al volver, y tu contenido descargado se perderá.',
+                      content: Text('Tendrás que volver a ingresar tus datos al volver, y tu contenido descargado se perderá.'),
                       buttonCallbacks: [
                         AteneaButtonCallback(
                           textButton:'Cancelar',
