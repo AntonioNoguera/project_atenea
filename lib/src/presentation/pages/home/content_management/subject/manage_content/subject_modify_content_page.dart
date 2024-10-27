@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/subjects/subject_create_new_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/academy_contributor_row.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/create/subject_create_new_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
@@ -11,8 +12,8 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dar
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart'; 
 
-class AcademyDetailPage extends StatelessWidget {
-  const AcademyDetailPage({super.key});
+class SubjectModifyContentPage  extends StatelessWidget {
+  const SubjectModifyContentPage ({super.key});
 
   void _handleToggle(BuildContext context, int index) {
     Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
@@ -41,7 +42,7 @@ class AcademyDetailPage extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                            'Detalle de Academia',
+                            'Temas Selectos de Ingeniería de Software',
                             textAlign: TextAlign.center,
                             style: AppTextStyles.builder(
                               color: AppColors.primaryColor,
@@ -49,6 +50,7 @@ class AcademyDetailPage extends StatelessWidget {
                               weight: FontWeights.semibold,
                             ),
                           ),
+
                             const SizedBox(height: 10),
                             Text(
                               'Planes de estudio',
@@ -57,12 +59,12 @@ class AcademyDetailPage extends StatelessWidget {
                                 weight: FontWeights.bold,
                               ),
                             ),
+
                             const SizedBox(height: 5),
                             ToggleButtonsWidget(
                               onToggle: (index) => _handleToggle(context, index),
-                              toggleOptions: const ['401', '440'],
+                              toggleOptions: const ['Temas', 'Recursos'],
                             ),
-
 
                             const SizedBox(height: 10),
                           ],
@@ -80,52 +82,11 @@ class AcademyDetailPage extends StatelessWidget {
                             ),
                             child: Column(
                               children: [
-                                AteneaCard(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Redactado por:',
-                                        textAlign: TextAlign.center,
-                                        style: AppTextStyles.builder(
-                                          color: AppColors.ateneaBlack,
-                                          size: FontSizes.body1,
-                                          weight: FontWeights.semibold,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Michael Antonio Noguera Guzmán',
-                                        textAlign: TextAlign.center,
-                                        style: AppTextStyles.builder(
-                                          color: AppColors.grayColor,
-                                          size: FontSizes.body2,
-                                          weight: FontWeights.regular,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        'Última Actualización:',
-                                        textAlign: TextAlign.center,
-                                        style: AppTextStyles.builder(
-                                          color: AppColors.ateneaBlack,
-                                          size: FontSizes.body1,
-                                          weight: FontWeights.semibold,
-                                        ),
-                                      ),
-                                      Text(
-                                        '23 Sep 2024 | 15:20',
-                                        textAlign: TextAlign.center,
-                                        style: AppTextStyles.builder(
-                                          color: AppColors.grayColor,
-                                          size: FontSizes.body2,
-                                          weight: FontWeights.regular,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                 
                                 const SizedBox(height: 10.0),
                                 _renderedContent(activeIndexNotifier.activeIndex),
+
+                                const SizedBox(height: 40.0,),
                               ],
                             ),
                           ),
@@ -151,7 +112,7 @@ class AcademyDetailPage extends StatelessWidget {
                                 width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
                                 child: AteneaButton(
                                   padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
-                                  text: scrollNotifier.isButtonCollapsed ? null : 'Crear Asignatura',
+                                  text: scrollNotifier.isButtonCollapsed ? null : 'Añadir Tema',
                                   iconSize: 30.0,
                                   svgIcon: 'assets/svg/add.svg',
                                   svgTint: AppColors.primaryColor,
@@ -199,7 +160,9 @@ class AcademyDetailPage extends StatelessWidget {
     final Map<int, Widget> renderedContent = {
       0: Column(
         children: List.generate(3, (index) {
-          return const HomeSubject();
+          return AcademyContributorRow(index : index, content:  'ASDF', onClose:() {
+            print(index);
+          }, );
         }),
       ),
       1: Column(

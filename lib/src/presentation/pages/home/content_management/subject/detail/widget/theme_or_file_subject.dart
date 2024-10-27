@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/subjects/widgets/member_row.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/widget/member_row.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class ThemeOrFileSubject extends StatelessWidget {

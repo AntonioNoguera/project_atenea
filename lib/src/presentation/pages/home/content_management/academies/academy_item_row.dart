@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_detail_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/detail/academy_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';

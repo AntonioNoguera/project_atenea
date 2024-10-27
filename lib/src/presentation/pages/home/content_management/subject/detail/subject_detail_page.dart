@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/detail/academy_detail_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/subject_modify_content_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
-import 'package:proyect_atenea/src/presentation/subjects/widgets/theme_or_file_subject.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart'; 
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/widget/theme_or_file_subject.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
@@ -113,7 +116,10 @@ class SubjectDetailPage extends StatelessWidget {
                         child: AteneaButton(
                           text: 'Modificar Contenido',
                           onPressed: () {
-                            print("ModifyContent");
+                            Navigator.push(
+                              context,
+                              AteneaPageAnimator(page: SubjectModifyContentPage())
+                            );
                           },
                         ),
                       ),
