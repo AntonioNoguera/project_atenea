@@ -35,13 +35,19 @@ class AddContributorDialog extends StatelessWidget {
                     size: FontSizes.body1,
                   ),
                 ),
+
+                SizedBox(height: 10,),
+
                 const AteneaField(
                   placeHolder: 'Nuevo Nombre',
-                  inputNameText: 'Nombres',
-                ),
+                  inputNameText: 'Matrícula',
+                ), 
+
+                SizedBox(height: 10,),
+                
                 ToggleButtonsWidget(
                   onToggle: _handleToggle,
-                  toggleOptions: ['A', 'B'],
+                  toggleOptions: ['Solamente Editar Academia', 'Editar, Eliminar y Añadir'],
                 ),
  
 

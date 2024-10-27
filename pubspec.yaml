@@ -43,7 +43,8 @@ flutter:
     - assets/svg/eye.svg
     - assets/svg/trashcan.svg
     
-    - assets/svg/view_file.svg
+    - assets/svg/view_file.svg 
+    - assets/svg/add_user.svg
 
 
     - assets/images/backgrounds/top_left_asset.png

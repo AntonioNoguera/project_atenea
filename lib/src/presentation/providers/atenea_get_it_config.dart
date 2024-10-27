@@ -14,7 +14,7 @@ import 'package:proyect_atenea/src/domain/use_cases/session_use_cases.dart';
 import 'package:proyect_atenea/src/domain/use_cases/user_use_case.dart';
 import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart'; 
-import '../domain/repositories/user_repository.dart'; 
+import '../../domain/repositories/user_repository.dart'; 
 
 final GetIt locator = GetIt.instance;
 
@@ -22,44 +22,44 @@ Future<void> setupLocator() async {
   
   //SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
-  locator.registerLazySingleton(() => sharedPreferences);
+  locator.registerFactory(() => sharedPreferences);
   
   //Firestore
-  locator.registerLazySingleton(() => FirebaseFirestore.instance);
+  locator.registerFactory(() => FirebaseFirestore.instance);
 
   // Registro del DataSource de RED
     // [ USER ]
-  locator.registerLazySingleton<UserDataSource>( () => UserDataSource(locator<FirebaseFirestore>()) );  //DataSource
-  locator.registerLazySingleton<UserRepository>( () => UserRepositoryImpl(locator<UserDataSource>()) ); //Repositorio
+  locator.registerFactory<UserDataSource>( () => UserDataSource(locator<FirebaseFirestore>()) );  //DataSource
+  locator.registerFactory<UserRepository>( () => UserRepositoryImpl(locator<UserDataSource>()) ); //Repositorio
 
 
     // [ ACADEMY ]
-  locator.registerLazySingleton<AcademyDataSource>( () => AcademyDataSource(locator<FirebaseFirestore>()) );  //DataSource
-  locator.registerLazySingleton<AcademyRepository>( () => AcademyRepositoryImpl(locator<AcademyDataSource>()) ); //Repositorio
+  locator.registerFactory<AcademyDataSource>( () => AcademyDataSource(locator<FirebaseFirestore>()) );  //DataSource
+  locator.registerFactory<AcademyRepository>( () => AcademyRepositoryImpl(locator<AcademyDataSource>()) ); //Repositorio
 
     // Registro del DataSource Locales 
 
     // [ Session ]
-  locator.registerLazySingleton<LocalSessionDataSource>( () => LocalSessionDataSource(locator<SharedPreferences>())); //DataSource
-  locator.registerLazySingleton<SessionRepository>( () => SessionRepositoryImpl(locator<LocalSessionDataSource>())); // Repo
+  locator.registerFactory<LocalSessionDataSource>( () => LocalSessionDataSource(locator<SharedPreferences>())); //DataSource
+  locator.registerFactory<SessionRepository>( () => SessionRepositoryImpl(locator<LocalSessionDataSource>())); // Repo
  
   // Registro de los Casos de Uso agrupados
     // [USER]
-  locator.registerLazySingleton(() => GetUser(locator<UserRepository>()));
-  locator.registerLazySingleton(() => AddUser(locator<UserRepository>()));
-  locator.registerLazySingleton(() => UpdateUser(locator<UserRepository>()));
-  locator.registerLazySingleton(() => DeleteUser(locator<UserRepository>()));
+  locator.registerFactory(() => GetUser(locator<UserRepository>()));
+  locator.registerFactory(() => AddUser(locator<UserRepository>()));
+  locator.registerFactory(() => UpdateUser(locator<UserRepository>()));
+  locator.registerFactory(() => DeleteUser(locator<UserRepository>()));
 
     // [ACADEMY]
-  locator.registerLazySingleton(() => GetAcademies(locator<AcademyRepository>()));
-  locator.registerLazySingleton(() => AddAcademy(locator<AcademyRepository>()));
-  locator.registerLazySingleton(() => UpdateAcademy(locator<AcademyRepository>()));
-  locator.registerLazySingleton(() => DeleteAcademy(locator<AcademyRepository>()));
+  locator.registerFactory(() => GetAcademies(locator<AcademyRepository>()));
+  locator.registerFactory(() => AddAcademy(locator<AcademyRepository>()));
+  locator.registerFactory(() => UpdateAcademy(locator<AcademyRepository>()));
+  locator.registerFactory(() => DeleteAcademy(locator<AcademyRepository>()));
 
     // [SESSION]
-  locator.registerLazySingleton(() => GetSessionUseCase(locator<SessionRepository>()));
-  locator.registerLazySingleton(() => SaveSessionUseCase(locator<SessionRepository>()));
-  locator.registerLazySingleton(() => ClearSessionUseCase(locator<SessionRepository>()));
+  locator.registerFactory(() => GetSessionUseCase(locator<SessionRepository>()));
+  locator.registerFactory(() => SaveSessionUseCase(locator<SessionRepository>()));
+  locator.registerFactory(() => ClearSessionUseCase(locator<SessionRepository>()));
 
 // Registro del SessionProvider
   locator.registerFactory(() => SessionProvider(

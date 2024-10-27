@@ -24,7 +24,7 @@ class AteneaPermitsRow extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(
-                'assets/svg/eye.svg',
+                'assets/svg/add_user.svg',
                 width: 24,
                 height: 24,
                 color: AppColors.grayColor,

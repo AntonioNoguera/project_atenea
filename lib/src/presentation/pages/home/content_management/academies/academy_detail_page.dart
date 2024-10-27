@@ -29,36 +29,48 @@ class AcademyDetailPage extends StatelessWidget {
         builder: (context, activeIndexNotifier, scrollNotifier, child) {
           return AteneaScaffold(
             body: Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 30.0,
               ),
               child: Stack(
                 children: [
                   Column(
-                    children: [
-                      Text(
-                        'Detalle de Academia',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.builder(
-                          color: AppColors.primaryColor,
-                          size: FontSizes.h3,
-                          weight: FontWeights.semibold,
+                    children: [ 
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            Text(
+                            'Detalle de Academia',
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.builder(
+                              color: AppColors.primaryColor,
+                              size: FontSizes.h3,
+                              weight: FontWeights.semibold,
+                            ),
+                          ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Planes de estudio',
+                              style: AppTextStyles.builder(
+                                size: FontSizes.body2,
+                                weight: FontWeights.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            ToggleButtonsWidget(
+                              onToggle: (index) => _handleToggle(context, index),
+                              toggleOptions: const ['401', '440'],
+                            ),
+
+
+                            const SizedBox(height: 10),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Planes de estudio',
-                        style: AppTextStyles.builder(
-                          size: FontSizes.body2,
-                          weight: FontWeights.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      ToggleButtonsWidget(
-                        onToggle: (index) => _handleToggle(context, index),
-                        toggleOptions: const ['401', '440'],
-                      ),
-                      const SizedBox(height: 10),
+
+                      
+                      
                       Expanded(
                         child: SingleChildScrollView(
                           controller: scrollNotifier.scrollController,
@@ -126,50 +138,53 @@ class AcademyDetailPage extends StatelessWidget {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            AnimatedContainer(
-                              curve: Curves.decelerate,
-                              duration: const Duration(milliseconds: 230),
-                              width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
-                              child: AteneaButton(
-                                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
-                                text: scrollNotifier.isButtonCollapsed ? null : 'Crear Asignatura',
-                                iconSize: 30.0,
-                                svgIcon: 'assets/svg/add.svg',
-                                svgTint: AppColors.primaryColor,
-                                enabledBorder: true,
-                                backgroundColor: AppColors.ateneaWhite,
-                                textStyle: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    AteneaPageAnimator(page: SubjectCreateNewPage()),
-                                  );
-                                },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AnimatedContainer(
+                                curve: Curves.decelerate,
+                                duration: const Duration(milliseconds: 230),
+                                width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
+                                child: AteneaButton(
+                                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
+                                  text: scrollNotifier.isButtonCollapsed ? null : 'Crear Asignatura',
+                                  iconSize: 30.0,
+                                  svgIcon: 'assets/svg/add.svg',
+                                  svgTint: AppColors.primaryColor,
+                                  enabledBorder: true,
+                                  backgroundColor: AppColors.ateneaWhite,
+                                  textStyle: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      AteneaPageAnimator(page: SubjectCreateNewPage()),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AteneaButton(
-                                text: 'Volver',
-                                backgroundColor: AppColors.secondaryColor,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: AteneaButton(
+                                  text: 'Volver',
+                                  backgroundColor: AppColors.secondaryColor,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            ],
+                          ),
+                        ],
+                      ), 
+                    ) 
                   ),
                 ],
               ),
@@ -183,12 +198,12 @@ class AcademyDetailPage extends StatelessWidget {
   Widget _renderedContent(int activeIndex) {
     final Map<int, Widget> renderedContent = {
       0: Column(
-        children: List.generate(11, (index) {
+        children: List.generate(3, (index) {
           return const HomeSubject();
         }),
       ),
       1: Column(
-        children: List.generate(12, (index) {
+        children: List.generate(5, (index) {
           return const HomeSubject();
         }),
       ),

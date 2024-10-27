@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_create_new_page.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_item_row.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
@@ -41,9 +39,7 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
   Widget build(BuildContext context) {
     return AteneaScaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric( 
-          vertical: 30.0,
-        ),
+        padding: EdgeInsets.symmetric( vertical: 30.0, ),
         child: Stack(
           children: [
             Column(
