@@ -130,7 +130,7 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                           
                           SizedBox(height: 20.0,),
                           Column(
-                            children: List.generate(20, (index) {
+                            children: List.generate(4, (index) {
                               return AcademyItemRow();
                             }),
                           ), 
