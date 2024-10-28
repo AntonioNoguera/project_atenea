@@ -42,7 +42,7 @@ class AcademyDetailPage extends StatelessWidget {
                   Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05,),
                         child: Column(
                           children: [
                             Text(
@@ -126,6 +126,8 @@ class AcademyDetailPage extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10.0),
                                 _renderedContent(activeIndexNotifier.activeIndex),
+
+                                const SizedBox(height:  50.0),
                               ],
                             ),
                           ),
@@ -138,52 +140,57 @@ class AcademyDetailPage extends StatelessWidget {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            AnimatedContainer(
-                              curve: Curves.decelerate,
-                              duration: const Duration(milliseconds: 230),
-                              width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
-                              child: AteneaButton(
-                                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
-                                text: scrollNotifier.isButtonCollapsed ? null : 'Crear Asignatura',
-                                iconSize: 30.0,
-                                svgIcon: 'assets/svg/add.svg',
-                                svgTint: AppColors.primaryColor,
-                                enabledBorder: true,
-                                backgroundColor: AppColors.ateneaWhite,
-                                textStyle: AppTextStyles.builder(
-                                  color: AppColors.primaryColor,
-                                  size: FontSizes.body1,
+                    child:
+                    Padding(
+                      padding:EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width * 0.05,),
+                      child :
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AnimatedContainer(
+                                curve: Curves.decelerate,
+                                duration: const Duration(milliseconds: 230),
+                                width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
+                                child: AteneaButton(
+                                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
+                                  text: scrollNotifier.isButtonCollapsed ? null : 'Nueva Asignatura',
+                                  iconSize: 30.0,
+                                  svgIcon: 'assets/svg/add.svg',
+                                  svgTint: AppColors.primaryColor,
+                                  enabledBorder: true,
+                                  backgroundColor: AppColors.ateneaWhite,
+                                  textStyle: AppTextStyles.builder(
+                                    color: AppColors.primaryColor,
+                                    size: FontSizes.body1,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      AteneaPageAnimator(page: SubjectCreateNewPage()),
+                                    );
+                                  },
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    AteneaPageAnimator(page: SubjectCreateNewPage()),
-                                  );
-                                },
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AteneaButton(
-                                text: 'Volver',
-                                backgroundColor: AppColors.secondaryColor,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: AteneaButton(
+                                  text: 'Volver',
+                                  backgroundColor: AppColors.secondaryColor,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

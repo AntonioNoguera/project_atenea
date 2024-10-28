@@ -56,9 +56,24 @@ class AddFileDialog extends StatelessWidget {
                   inputNameText: 'Nombre del tema',
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
+                AteneaButton(
                   onPressed: () => _pickFile(context),
-                  child: const Text('Seleccionar Archivo'),
+                  text: 'Seleccionar Archivo',
+                  svgIcon: 'assets/svg/add.svg',
+                  textStyle: AppTextStyles.builder(
+                    size: FontSizes.body1,
+                    color: AppColors.ateneaWhite,
+                    weight: FontWeights.regular,
+                  ),
+                ),
+
+                Text(
+                  'Estatus del Archivo',
+                  style: AppTextStyles.builder(
+                    color: AppColors.grayColor,
+                    weight: FontWeights.regular,
+                    size: FontSizes.body2
+                  ),
                 ),
               ],
             ),
@@ -70,6 +85,10 @@ class AddFileDialog extends StatelessWidget {
             onPressedCallback: () {
               Navigator.of(context).pop();
             },
+            buttonStyles: AteneaButtonStyles(
+              backgroundColor: AppColors.secondaryColor,
+              textColor: AppColors.ateneaWhite,
+            ),
           ),
           AteneaButtonCallback(
             textButton: 'Aceptar',

@@ -29,7 +29,7 @@ class MyProfilePage extends StatelessWidget {
               style: AppTextStyles.builder(
                 color: AppColors.primaryColor,
                 size: FontSizes.h2,
-                weight: FontWeights.semibold,
+                weight: FontWeights.regular,
               ),
             ),
 

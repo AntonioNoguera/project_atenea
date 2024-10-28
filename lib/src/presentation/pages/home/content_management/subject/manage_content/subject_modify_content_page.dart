@@ -152,7 +152,17 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                   ),
                                 ),
 
-                                const SizedBox(width: 10.0,),
+                                const SizedBox(width: 5.0,),
+                                
+                                Text(
+                                  '|',
+                                  style: AppTextStyles.builder(
+                                    size: FontSizes.body2,
+                                    weight: FontWeights.light,
+                                  ),
+                                ),
+
+                                const SizedBox(width: 5.0,),
 
                                 Text(
                                   'Folio:',
