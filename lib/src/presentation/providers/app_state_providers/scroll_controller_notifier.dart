@@ -21,6 +21,13 @@ class ScrollControllerNotifier extends ChangeNotifier {
     }
   }
 
+  void setButtonCollapsed () { 
+    if (_isButtonCollapsed && _scrollController.offset <= 50) {
+      _isButtonCollapsed = false;
+      notifyListeners();
+    }
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();

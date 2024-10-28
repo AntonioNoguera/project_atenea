@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/add_contributor_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/create/subject_create_new_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_file_dialog.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_theme_dialog.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/theme_or_file_subject_manage_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
@@ -34,6 +39,11 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
 
   void _handleToggle(BuildContext context, int index) {
     Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ScrollControllerNotifier>(context, listen: false).setButtonCollapsed();
+    });
+
   }
 
   void _onReorder(int oldIndex, int newIndex, List<String> list) {
@@ -153,35 +163,32 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                       padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05,),
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              AnimatedContainer(
-                                curve: Curves.decelerate,
-                                duration: const Duration(milliseconds: 230),
-                                width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
-                                child: AteneaButton(
-                                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
-                                  text: scrollNotifier.isButtonCollapsed ? null : 'Añadir Tema',
-                                  iconSize: 30.0,
-                                  svgIcon: 'assets/svg/add.svg',
-                                  svgTint: AppColors.primaryColor,
-                                  enabledBorder: true,
-                                  backgroundColor: AppColors.ateneaWhite,
-                                  textStyle: AppTextStyles.builder(
-                                    color: AppColors.primaryColor,
-                                    size: FontSizes.body1,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      AteneaPageAnimator(page: SubjectCreateNewPage()),
-                                    );
+                          if (activeIndexNotifier.activeIndex == 0)
+                            AteneaFoldingButton(
+                              data: 'Añadir Tema',
+                              svgIcon: 'assets/svg/add.svg',
+                              onPressedCallback: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddThemeDialog();
                                   },
-                                ),
-                              ),
-                            ],
-                          ),
+                                );
+                              },
+                            ),
+                          if (activeIndexNotifier.activeIndex == 1)
+                            AteneaFoldingButton(
+                              data: 'Añadir Recurso',
+                              svgIcon: 'assets/svg/add.svg',
+                              onPressedCallback: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddFileDialog();
+                                  },
+                                );
+                              },
+                            ),
                           const SizedBox(height: 10),
                           Row(
                             children: [
@@ -210,60 +217,35 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   Widget _renderedContent(int activeIndex) {
-  final List<String> currentList = activeIndex == 0 ? topics : resources;
+    final List<String> currentList = activeIndex == 0 ? topics : resources;
 
-  return ReorderableListView(
-    shrinkWrap: true,
-    buildDefaultDragHandles: false,
-    padding: EdgeInsets.zero, // Elimina el padding del ListView
-    onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex, currentList),
-    children: [
-      for (int index = 0; index < currentList.length; index++)
-        Container(
-          key: ValueKey(currentList[index]),
-          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 0.0),
-          decoration: BoxDecoration(
-            color: Colors.blueAccent, // Cambia el color de fondo aquí
-            borderRadius: BorderRadius.circular(12.0), // Bordes redondeados
+    return ReorderableListView(
+      shrinkWrap: true,
+      buildDefaultDragHandles: false,
+      padding: EdgeInsets.zero,
+      onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex, currentList),
+      proxyDecorator: (Widget child, int index, Animation<double> animation) {
+        return Material(
+          elevation: 6.0,
+          color: Colors.transparent,
+          shadowColor: Colors.black.withOpacity(0.3),
+          child: child,
+        );
+      },
+      children: [
+        for (int index = 0; index < currentList.length; index++)
+          ThemeOrFileSubjectManageRow(
+            key: ValueKey(currentList[index]),
+            content: currentList[index],
+            index: index,
+            onEdit: () => _editItem(context, index, currentList),
+            onDelete: () {
+              setState(() {
+                currentList.removeAt(index);
+              });
+            },
           ),
-          child: ListTile(
-            contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            title: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    currentList[index],
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white, // Cambia el color del texto aquí si lo necesitas
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit, color: Colors.white),
-                  onPressed: () {
-                    _editItem(context, index, currentList);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete, color: Colors.white),
-                  onPressed: () {
-                    setState(() {
-                      currentList.removeAt(index);
-                    });
-                  },
-                ),
-                ReorderableDragStartListener(
-                  index: index,
-                  child: Icon(Icons.drag_handle, color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 }
