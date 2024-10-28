@@ -110,6 +110,17 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                         child: Column(
                           children: [
                             Text(
+                              'Estas editando los contenidos de:',
+                              style: AppTextStyles.builder(
+                                color: AppColors.primaryColor,
+                                size: FontSizes.body2,
+                                weight: FontWeights.regular,
+                              ),
+                            ),
+
+                            //const SizedBox(height: 10.0,),
+
+                            Text(
                               'Temas Selectos de Ingeniería de Software',
                               textAlign: TextAlign.center,
                               style: AppTextStyles.builder(
@@ -119,14 +130,50 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              'Planes de estudio',
-                              style: AppTextStyles.builder(
-                                size: FontSizes.body2,
-                                weight: FontWeights.bold,
-                              ),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Plan de estudio:',
+                                  style: AppTextStyles.builder(
+                                    size: FontSizes.body2,
+                                    weight: FontWeights.bold,
+                                  ),
+                                ),
+                                
+                                const SizedBox(width: 5,),
+
+                                Text(
+                                  '401',
+                                  style: AppTextStyles.builder(
+                                    size: FontSizes.body2,
+                                    weight: FontWeights.regular,
+                                  ),
+                                ),
+
+                                const SizedBox(width: 10.0,),
+
+                                Text(
+                                  'Folio:',
+                                  style: AppTextStyles.builder(
+                                    size: FontSizes.body2,
+                                    weight: FontWeights.bold,
+                                  ),
+                                ),
+                                const SizedBox(width: 5,),
+                                Text(
+                                  '6641168477',
+                                  style: AppTextStyles.builder(
+                                    size: FontSizes.body2,
+                                    weight: FontWeights.regular,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 5),
+
+                           
+                            const SizedBox(height: 15),
                             ToggleButtonsWidget(
                               onToggle: (index) => _handleToggle(context, index),
                               toggleOptions: const ['Temas', 'Recursos'],
