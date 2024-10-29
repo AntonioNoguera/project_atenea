@@ -6,10 +6,12 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 class AteneaButtonStyles {
   final Color backgroundColor;
   final Color textColor;
+  final bool hasBorder;
 
   AteneaButtonStyles({
     required this.backgroundColor,
     required this.textColor,
+    this.hasBorder = false
   });
 }
 

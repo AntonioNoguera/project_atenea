@@ -45,14 +45,14 @@ class AddContributorDialog extends StatelessWidget {
                 ), 
 
                 SizedBox(height: 10,),
-                
+                /*
                 AteneaCheckboxButton(
                   initialState: true, 
                   onChanged: (value) {
                     print("Esta seleccionado: " + value.toString());
                   },
                   )
-
+*/
               ],
             ),
           ),

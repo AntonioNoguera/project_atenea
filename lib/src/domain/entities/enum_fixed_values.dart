@@ -43,4 +43,5 @@ class AteneaRowStyleValues {
   };
 }
 
- 
+const selectedState = 1;
+const unselectedState = 0;
