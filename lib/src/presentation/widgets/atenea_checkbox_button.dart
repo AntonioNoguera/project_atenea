@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
 class AteneaCheckboxButton extends StatefulWidget {
@@ -9,16 +10,30 @@ class AteneaCheckboxButton extends StatefulWidget {
   final String checkboxText; 
 
   static Map<bool, AteneaButtonStyles> checkStates = {
-      true : AteneaButtonStyles(
+      true : const AteneaButtonStyles(
         backgroundColor: AppColors.primaryColor, 
         textColor: AppColors.ateneaWhite,
         hasBorder: false
       ),
 
-      false: AteneaButtonStyles(
+      false: const AteneaButtonStyles(
         backgroundColor: AppColors.ateneaWhite, 
         textColor: AppColors.primaryColor,
         hasBorder: true
+      ),
+  };
+
+  static Map<bool, TextStyle> checkStatesText = {
+      true : AppTextStyles.builder(
+        color: AppColors.ateneaWhite,
+        size: FontSizes.body2,
+        weight: FontWeights.semibold,   
+      ),
+
+      false: AppTextStyles.builder(
+        color: AppColors.primaryColor.withOpacity(0.4),
+        size: FontSizes.body2,
+        weight: FontWeights.semibold,   
       ),
   };
 
@@ -51,10 +66,11 @@ class _ToggleButtonState extends State<AteneaCheckboxButton> {
   @override
   Widget build(BuildContext context) {
     
-    return AteneaButton(
+    return AteneaButtonV2(
       onPressed: _toggleSelection,
-      backgroundColor:   _isSelected ? Colors.blue : Colors.grey, 
-      text : widget.checkboxText,
+      btnStyles:  AteneaCheckboxButton.checkStates[_isSelected]!,
+      textStyle: AteneaCheckboxButton.checkStatesText[_isSelected]!,
+      text : widget.checkboxText, 
     );
   }
 }

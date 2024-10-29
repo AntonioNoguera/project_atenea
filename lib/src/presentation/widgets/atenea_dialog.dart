@@ -8,7 +8,7 @@ class AteneaButtonStyles {
   final Color textColor;
   final bool hasBorder;
 
-  AteneaButtonStyles({
+  const AteneaButtonStyles({
     required this.backgroundColor,
     required this.textColor,
     this.hasBorder = false

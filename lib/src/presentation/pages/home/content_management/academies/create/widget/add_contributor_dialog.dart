@@ -37,22 +37,44 @@ class AddContributorDialog extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
 
                 const AteneaField(
                   placeHolder: 'Nuevo Nombre',
                   inputNameText: 'Matrícula',
                 ), 
 
-                SizedBox(height: 10,),
-                /*
-                AteneaCheckboxButton(
-                  initialState: true, 
-                  onChanged: (value) {
-                    print("Esta seleccionado: " + value.toString());
-                  },
+                const SizedBox(height: 10,),
+                
+                Wrap(
+                  spacing: 10.0, // Espacio horizontal entre los elementos
+                  runSpacing: 10.0,
+                  children: [
+                    AteneaCheckboxButton(
+                      checkboxText: 'Eliminar',
+                      initialState: true, 
+                      onChanged: (value) {
+                        print("Esta seleccionado: " + value.toString());
+                      },
+                    ), 
+                    AteneaCheckboxButton(
+                      checkboxText: 'Editar',
+                      initialState: true, 
+                      onChanged: (value) {
+                        print("Esta seleccionado: " + value.toString());
+                      },
+                    ), 
+                    AteneaCheckboxButton(
+                      checkboxText: 'Añadir nuevo contribuidores',
+                      initialState: true, 
+                      onChanged: (value) {
+                        print("Esta seleccionado: " + value.toString());
+                      },
+                    ), 
+                  ],
                   )
-*/
+                 
+
               ],
             ),
           ),
