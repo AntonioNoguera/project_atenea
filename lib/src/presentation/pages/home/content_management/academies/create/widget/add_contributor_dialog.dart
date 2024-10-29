@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_checkbox_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
@@ -45,11 +46,12 @@ class AddContributorDialog extends StatelessWidget {
 
                 SizedBox(height: 10,),
                 
-                ToggleButtonsWidget(
-                  onToggle: _handleToggle,
-                  toggleOptions: ['Solamente Editar Academia', 'Editar, Eliminar y Añadir'],
-                ),
- 
+                AteneaCheckboxButton(
+                  initialState: true, 
+                  onChanged: (value) {
+                    print("Esta seleccionado: " + value.toString());
+                  },
+                  )
 
               ],
             ),
