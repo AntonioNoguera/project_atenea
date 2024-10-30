@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/values/app_utils.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
@@ -28,15 +29,23 @@ class AteneaFoldingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ScrollControllerNotifier>(
       builder: (context, scrollNotifier, child) {
+         final textStyle = AppTextStyles.builder(
+          color: AppColors.primaryColor,
+          size: FontSizes.body1,
+        );
+
+        final textWidth = calculateTextWidth(data, textStyle); // Usa el método de utilidades
+
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             AnimatedContainer(
               curve: Curves.decelerate,
               duration: const Duration(milliseconds: 230),
-              width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
+              width: scrollNotifier.isButtonCollapsed ? 60.0 : textWidth +  80, // Ajusta el ancho en base al texto
               child: AteneaButtonV2(
-                //padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
+                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
                 text: scrollNotifier.isButtonCollapsed ? null : data,
                 
                 svgIcon : SvgButtonStyle(
@@ -46,7 +55,7 @@ class AteneaFoldingButton extends StatelessWidget {
 
                 btnStyles: const AteneaButtonStyles(
                   backgroundColor: AppColors.ateneaWhite, 
-                  textColor: AppColors.ateneaWhite,
+                  textColor: AppColors.primaryColor,
                   hasBorder : true,
                 ),
                 

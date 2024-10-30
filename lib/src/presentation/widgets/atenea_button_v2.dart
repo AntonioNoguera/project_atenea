@@ -11,7 +11,7 @@ class SvgButtonStyle {
 
   SvgButtonStyle({
     required this.svgPath, 
-    required this.svgDimentions, 
+    this.svgDimentions = 30, 
     }
   );
 }
@@ -30,16 +30,17 @@ class AteneaButtonV2 extends StatelessWidget {
 
   final bool xpndText;
 
-  var padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0);
-
+  final EdgeInsets padding;
+  
   AteneaButtonV2({
     super.key, 
     this.text,
     this.onPressed, 
     this.textStyle = const TextStyle(
-      color: AppColors.primaryColor,
-      fontSize: FontSizes.h4,
-      fontWeight: FontWeights.semibold,
+      fontFamily: 'RadioCanada',
+      color: AppColors.ateneaWhite,
+      fontSize: FontSizes.h5,
+      fontWeight: FontWeights.regular,
     ),
     this.btnStyles = const AteneaButtonStyles(
       backgroundColor: AppColors.primaryColor,
@@ -47,6 +48,7 @@ class AteneaButtonV2 extends StatelessWidget {
     ),
     this.svgIcon,
     this.xpndText = false,
+    this.padding = const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0),
   });
 
   @override

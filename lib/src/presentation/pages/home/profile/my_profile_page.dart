@@ -40,10 +40,7 @@ class MyProfilePage extends StatelessWidget {
               AteneaButtonV2(
                 text: 'Editar Contenidos',
                 xpndText: true,
-                svgIcon : SvgButtonStyle(
-                  svgPath: 'assets/svg/subjects.svg',
-                  svgDimentions: 20.0,
-                ),
+                svgIcon : SvgButtonStyle( svgPath: 'assets/svg/subjects.svg', ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -58,10 +55,7 @@ class MyProfilePage extends StatelessWidget {
             AteneaButtonV2(
               text: 'Editar Perfil',
               xpndText: true,
-              svgIcon: SvgButtonStyle(
-                svgPath: 'assets/svg/account_settings.svg',
-                svgDimentions: 20.0
-              ),
+              svgIcon: SvgButtonStyle( svgPath: 'assets/svg/account_settings.svg', ),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -76,10 +70,7 @@ class MyProfilePage extends StatelessWidget {
               AteneaButtonV2(
                 text: 'Administrar Usuarios',
                 xpndText: true,
-                 svgIcon : SvgButtonStyle(
-                svgPath: 'assets/svg/user_list.svg',
-                svgDimentions: 20.0,
-              ),  
+                svgIcon : SvgButtonStyle( svgPath: 'assets/svg/user_list.svg',  ),  
                 onPressed: () {
                   print('Administrar Usuarios Pressed');
                 },

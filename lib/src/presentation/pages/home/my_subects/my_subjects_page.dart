@@ -32,19 +32,18 @@ class MySubjectsPage extends StatelessWidget {
             Padding(padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.05,),
               child: AteneaButtonV2(
-              text : 'Añadir Nueva Materia',
-              xpndText : true,
+                text : 'Añadir Nueva Materia',
+                xpndText : true,
 
-              svgIcon : SvgButtonStyle(
-                svgPath: 'assets/svg/plus.svg',
-                svgDimentions: 20.0,
-              ), 
-              
-              onPressed: () {
-                print("Pressed");
-              }
+                svgIcon : SvgButtonStyle(
+                  svgPath: 'assets/svg/add.svg' 
+                ), 
+                
+                onPressed: () {
+                  print("Pressed");
+                }
+              ),
             ),
-          ),
             
 
             Expanded(
