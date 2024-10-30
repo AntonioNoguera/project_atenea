@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 //DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED 
-class AteneaButton extends StatelessWidget {
+class AteneaDeprecatedButton extends StatelessWidget {
   final String? text;
   final VoidCallback? onPressed;
   final Color backgroundColor;   
@@ -16,7 +16,7 @@ class AteneaButton extends StatelessWidget {
   final bool enabledBorder;
   final bool expandedText; 
 
-  AteneaButton({
+  AteneaDeprecatedButton({
     super.key, 
     this.text,
     required this.onPressed,

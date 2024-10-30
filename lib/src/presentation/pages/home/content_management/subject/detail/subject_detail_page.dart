@@ -4,7 +4,9 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/ac
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/subject_modify_content_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/widget/theme_or_file_subject.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
@@ -104,16 +106,20 @@ class SubjectDetailPage extends StatelessWidget {
                   const SizedBox(height: 20.0),
                   Row(
                     children: [
-                      AteneaButton(
+                      AteneaButtonV2(
                         text: 'Volver',
-                        backgroundColor: AppColors.secondaryColor,
+                        btnStyles: AteneaButtonStyles(
+                          backgroundColor: AppColors.secondaryColor,
+                          textColor: AppColors.ateneaWhite
+                        ),
+                        
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
                       const SizedBox(width: 10.0),
                       Expanded(
-                        child: AteneaButton(
+                        child: AteneaButtonV2(
                           text: 'Modificar Contenido',
                           onPressed: () {
                             Navigator.push(

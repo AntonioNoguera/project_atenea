@@ -9,6 +9,8 @@ import 'package:proyect_atenea/src/presentation/providers/app_state_providers/ac
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
@@ -250,9 +252,13 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                           Row(
                             children: [
                               Expanded(
-                                child: AteneaButton(
+                                child: AteneaButtonV2(
                                   text: 'Guardar Cambios',
-                                  backgroundColor: AppColors.secondaryColor,
+                                  btnStyles: const AteneaButtonStyles(
+                                    backgroundColor: AppColors.secondaryColor,
+                                    textColor: AppColors.ateneaWhite,
+                                  ),
+
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },

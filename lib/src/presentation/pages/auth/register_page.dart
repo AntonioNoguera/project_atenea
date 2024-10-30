@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
@@ -47,6 +49,7 @@ class RegisterPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20.0), // Espaciado
                     // Botones de selección
+                    /*
                     Row(
                       children: [
                         Flexible(
@@ -75,6 +78,8 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ],
                     ),
+
+                  */
                     const SizedBox(height: 10.0),
                     // Campos de texto
                     const AteneaField(
@@ -132,16 +137,24 @@ class RegisterPage extends StatelessWidget {
             // Botones en la parte inferior, fuera del scroll
             Row(
               children: [
-                AteneaButton(
-                  svgIcon: 'assets/svg/back_action.svg',
-                  backgroundColor: AppColors.secondaryColor,
+                AteneaButtonV2(
+
+                  svgIcon : SvgButtonStyle(
+                    svgPath: 'assets/svg/back_action.svg', 
+                    svgDimentions: 30,
+                  ),
+
+                  btnStyles: const AteneaButtonStyles(
+                    backgroundColor: AppColors.secondaryColor, 
+                    textColor: AppColors.ateneaWhite,
+                    hasBorder : true,
+                  ),
                   onPressed: () {},
                 ),
                 const SizedBox(width: 10),
                 Flexible(
-                  child: AteneaButton(
+                  child: AteneaButtonV2(
                     text: 'Registrar',
-                    backgroundColor: AppColors.primaryColor,
                     onPressed: () {},
                   ),
                 ),

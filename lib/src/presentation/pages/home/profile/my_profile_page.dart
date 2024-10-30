@@ -5,6 +5,7 @@ import 'package:proyect_atenea/src/presentation/pages/demos/color_picker_demo.da
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
@@ -36,10 +37,13 @@ class MyProfilePage extends StatelessWidget {
             const SizedBox(height: 20.0),
  
             if (userSession.userPermissions.academy.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
-              AteneaButton(
+              AteneaButtonV2(
                 text: 'Editar Contenidos',
-                expandedText: true,
-                svgIcon: 'assets/svg/subjects.svg',
+                xpndText: true,
+                svgIcon : SvgButtonStyle(
+                  svgPath: 'assets/svg/subjects.svg',
+                  svgDimentions: 20.0,
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -51,10 +55,13 @@ class MyProfilePage extends StatelessWidget {
             ],
 
             // Mostrar 'Editar Perfil' para todos los tipos de usuarios
-            AteneaButton(
+            AteneaButtonV2(
               text: 'Editar Perfil',
-              expandedText: true,
-              svgIcon: 'assets/svg/account_settings.svg',
+              xpndText: true,
+              svgIcon: SvgButtonStyle(
+                svgPath: 'assets/svg/account_settings.svg',
+                svgDimentions: 20.0
+              ),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -66,10 +73,13 @@ class MyProfilePage extends StatelessWidget {
 
             // Mostrar 'Administrar Usuarios' solo si el usuario es super admin 
             if (userSession.userPermissions.academy.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
-              AteneaButton(
+              AteneaButtonV2(
                 text: 'Administrar Usuarios',
-                expandedText: true,
-                svgIcon: 'assets/svg/user_list.svg',
+                xpndText: true,
+                 svgIcon : SvgButtonStyle(
+                svgPath: 'assets/svg/user_list.svg',
+                svgDimentions: 20.0,
+              ),  
                 onPressed: () {
                   print('Administrar Usuarios Pressed');
                 },
@@ -80,9 +90,14 @@ class MyProfilePage extends StatelessWidget {
             const SizedBox(height: 20.0),
 
             // Botón de Cerrar Sesión (disponible para todos los tipos de usuarios)
-            AteneaButton(
+            AteneaButtonV2(
               text: 'Cerrar Sesión',
-              backgroundColor: AppColors.ateneaRed,
+
+              btnStyles: const AteneaButtonStyles(
+                backgroundColor: AppColors.ateneaRed,
+                textColor: AppColors.ateneaWhite,
+              ), 
+              
               onPressed: () {
                 showDialog(
                   context: context,

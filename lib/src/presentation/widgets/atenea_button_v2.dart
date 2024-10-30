@@ -7,13 +7,11 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
 class SvgButtonStyle {
   final String svgPath;
-  final double svgDimentions;
-  final Color svgTint;
+  final double svgDimentions; 
 
   SvgButtonStyle({
     required this.svgPath, 
-    required this.svgDimentions,
-    required this.svgTint
+    required this.svgDimentions, 
     }
   );
 }

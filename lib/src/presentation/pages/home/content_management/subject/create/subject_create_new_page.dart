@@ -6,6 +6,8 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/ac
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
@@ -110,7 +112,7 @@ class SubjectCreateNewPage extends StatelessWidget {
                           ),
                         ),
 
-                        AteneaButton(
+                        AteneaButtonV2(
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -119,17 +121,25 @@ class SubjectCreateNewPage extends StatelessWidget {
                               },
                             );
                           },
-                          enabledBorder: true,
-                          backgroundColor: AppColors.ateneaWhite,
-                          iconSize: 25,
+                          
+                          btnStyles: const AteneaButtonStyles(
+                            backgroundColor: AppColors.ateneaWhite, 
+                            textColor: AppColors.primaryColor,
+                            hasBorder: true
+                          ),
+
+                          svgIcon:SvgButtonStyle(
+                            svgPath: 'assets/svg/add_user.svg', 
+                            svgDimentions: 25
+                          ),
+
                           textStyle: AppTextStyles.builder(
                             color: AppColors.primaryColor,
                             size: FontSizes.h5,
                             weight: FontWeights.light,
                           ),
-                          svgTint: AppColors.primaryColor,
-                          text: 'Añadir Contribuidor',
-                          svgIcon: 'assets/svg/add_user.svg',
+
+                          text: 'Añadir Contribuidor', 
                         ),
 
                         const SizedBox(height: 60.0),
@@ -145,16 +155,22 @@ class SubjectCreateNewPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Row(
                         children: [
-                          AteneaButton(
+                          AteneaButtonV2(
                             onPressed: () {
                               Navigator.pop(context);
                             },
                             text: 'Cancelar',
                           ),
+                          
                           const SizedBox(width: 10.0),
+
                           Expanded(
-                            child: AteneaButton(
-                              backgroundColor: AppColors.secondaryColor,
+                            child: AteneaButtonV2(
+                              btnStyles: const AteneaButtonStyles(
+                                backgroundColor: AppColors.secondaryColor, 
+                                textColor: AppColors.ateneaWhite,
+                              ),
+
                               onPressed: () {
                                 Navigator.pop(context);
                               },

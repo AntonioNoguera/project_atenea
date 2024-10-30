@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class MySubjectsPage extends StatelessWidget {
@@ -30,10 +31,15 @@ class MySubjectsPage extends StatelessWidget {
 
             Padding(padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.05,),
-              child: AteneaButton(
+              child: AteneaButtonV2(
               text : 'Añadir Nueva Materia',
-              expandedText : true,
-              svgIcon: 'assets/svg/search.svg',
+              xpndText : true,
+
+              svgIcon : SvgButtonStyle(
+                svgPath: 'assets/svg/plus.svg',
+                svgDimentions: 20.0,
+              ), 
+              
               onPressed: () {
                 print("Pressed");
               }

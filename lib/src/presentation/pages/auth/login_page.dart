@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_switch.dart';
@@ -42,7 +44,7 @@ class LoginPage extends StatelessWidget {
             ),
             const AteneaSwitch(),
             const SizedBox(height: 20),
-            AteneaButton(
+            AteneaButtonV2(
               text: 'Iniciar',
               onPressed: () {},
             ),
@@ -55,8 +57,11 @@ class LoginPage extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            AteneaButton(
-              backgroundColor: AppColors.secondaryColor,
+            AteneaButtonV2(
+              btnStyles: const AteneaButtonStyles(
+                backgroundColor: AppColors.secondaryColor, 
+                textColor: AppColors.ateneaWhite,
+              ),
               text: 'Regístrate',
               onPressed: () {},
             ),

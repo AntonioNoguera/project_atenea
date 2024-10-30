@@ -3,7 +3,9 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/ac
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
@@ -158,15 +160,22 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                         curve: Curves.decelerate,
                         duration: const Duration(milliseconds: 230),
                         width: isButtonCollapsed ? 60.0 : 200.0,
-                        child: AteneaButton(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
+                        child: AteneaButtonV2(
+                          //padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
                           text: isButtonCollapsed ? null : 'Crear Academia',
-                          iconSize: 30.0,
-                          svgIcon: 'assets/svg/add.svg',
-                          svgTint: AppColors.primaryColor,
-                          enabledBorder: true,
-                          backgroundColor: AppColors.ateneaWhite,
+                          svgIcon: SvgButtonStyle(
+                            svgPath: 'assets/svg/add.svg', 
+                            svgDimentions: 30,
+                          ),  
+
+                          btnStyles: const AteneaButtonStyles(
+                            backgroundColor: AppColors.ateneaWhite,
+                            textColor: AppColors.primaryColor,
+                            hasBorder: true,
+                          ),
+                          
                           textStyle: AppTextStyles.builder(color: AppColors.primaryColor, size: FontSizes.body1),
+                          
                           onPressed: () {
                             Navigator.push(
                               context, 
@@ -181,9 +190,13 @@ class _AcademicDepartmentDetailPageState extends State<AcademicDepartmentDetailP
                   Row(
                     children: [
                       Expanded(
-                        child: AteneaButton(
+                        child: AteneaButtonV2(
                           text: 'Volver',
-                          backgroundColor: AppColors.secondaryColor,
+                          btnStyles: const AteneaButtonStyles(
+                            backgroundColor: AppColors.secondaryColor,
+                            textColor: AppColors.ateneaWhite
+                          ), 
+
                           onPressed: () {
                             Navigator.pop(context);
                           },

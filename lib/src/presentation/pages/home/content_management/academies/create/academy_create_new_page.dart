@@ -5,6 +5,8 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/ac
  
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
@@ -85,7 +87,7 @@ class AcademyCreateNewPage extends StatelessWidget {
                     ), 
                   ),
 
-                  AteneaButton(
+                  AteneaButtonV2(
                     onPressed: () { 
                       showDialog(
                         context: context,
@@ -94,23 +96,25 @@ class AcademyCreateNewPage extends StatelessWidget {
                         }
                       );
                     }, 
-
-                    enabledBorder: true,
-
-                    backgroundColor: AppColors.ateneaWhite,
-
-                    iconSize: 25,
+                    
+                    btnStyles: const AteneaButtonStyles(
+                      backgroundColor: AppColors.ateneaWhite, 
+                      textColor: AppColors.primaryColor, 
+                      hasBorder: true,
+                    ),
 
                     textStyle: AppTextStyles.builder(
                       color: AppColors.primaryColor,
                       size: FontSizes.h5,
                       weight: FontWeights.light
-                    ),
-
-                    svgTint: AppColors.primaryColor,
+                    ), 
 
                     text: 'Añadir Contribuidor',
-                    svgIcon : 'assets/svg/add_user.svg',
+
+                    svgIcon : SvgButtonStyle(
+                      svgPath: 'assets/svg/add_user.svg',
+                     svgDimentions: 25
+                    ), 
 
                   ),
 
@@ -127,7 +131,7 @@ class AcademyCreateNewPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
-                      AteneaButton(
+                      AteneaButtonV2(
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -135,8 +139,12 @@ class AcademyCreateNewPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 10.0),
                       Expanded(
-                        child: AteneaButton(
-                          backgroundColor: AppColors.secondaryColor,
+                        child: AteneaButtonV2(
+                          btnStyles: const AteneaButtonStyles(
+                            backgroundColor: AppColors.secondaryColor,
+                            textColor: AppColors.ateneaWhite
+                          ),
+                          
                           onPressed: () {
                             Navigator.pop(context);
                           },

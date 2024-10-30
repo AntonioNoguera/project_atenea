@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
@@ -56,10 +58,15 @@ class AddFileDialog extends StatelessWidget {
                   inputNameText: 'Nombre del tema',
                 ),
                 const SizedBox(height: 20),
-                AteneaButton(
+                AteneaButtonV2(
                   onPressed: () => _pickFile(context),
                   text: 'Seleccionar Archivo',
-                  svgIcon: 'assets/svg/add.svg',
+                  
+                  svgIcon: SvgButtonStyle(
+                    svgPath: 'assets/svg/add.svg',
+                    svgDimentions: 20.0
+                  ),
+
                   textStyle: AppTextStyles.builder(
                     size: FontSizes.body1,
                     color: AppColors.ateneaWhite,

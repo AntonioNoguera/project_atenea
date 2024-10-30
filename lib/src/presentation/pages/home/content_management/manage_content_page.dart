@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_item_row.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 
@@ -89,9 +91,12 @@ class ManageContentPage extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: AteneaButton(
+                        child: AteneaButtonV2(
                           text: 'Volver',
-                          backgroundColor: AppColors.secondaryColor,
+                          btnStyles: const AteneaButtonStyles(
+                            backgroundColor: AppColors.secondaryColor,
+                            textColor: AppColors.ateneaWhite,
+                          ),
                           onPressed: () {
                             Navigator.pop(context);
                           },
