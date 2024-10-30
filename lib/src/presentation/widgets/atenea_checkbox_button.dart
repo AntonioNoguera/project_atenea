@@ -27,13 +27,13 @@ class AteneaCheckboxButton extends StatefulWidget {
       true : AppTextStyles.builder(
         color: AppColors.ateneaWhite,
         size: FontSizes.body2,
-        weight: FontWeights.semibold,   
+        weight: FontWeights.regular,   
       ),
 
       false: AppTextStyles.builder(
         color: AppColors.primaryColor.withOpacity(0.4),
         size: FontSizes.body2,
-        weight: FontWeights.semibold,   
+        weight: FontWeights.regular,   
       ),
   };
 

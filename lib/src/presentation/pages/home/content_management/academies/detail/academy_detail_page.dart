@@ -152,7 +152,7 @@ class AcademyDetailPage extends StatelessWidget {
                               AnimatedContainer(
                                 curve: Curves.decelerate,
                                 duration: const Duration(milliseconds: 230),
-                                width: scrollNotifier.isButtonCollapsed ? 60.0 : 200.0,
+                                width: scrollNotifier.isButtonCollapsed ? 60.0 : 220.0,
                                 child: AteneaButton(
                                   padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
                                   text: scrollNotifier.isButtonCollapsed ? null : 'Nueva Asignatura',
@@ -178,10 +178,22 @@ class AcademyDetailPage extends StatelessWidget {
                           const SizedBox(height: 10),
                           Row(
                             children: [
+                                
+                              AteneaButton(
+                                text: 'Volver',
+                                backgroundColor: AppColors.secondaryColor,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+
+                              const SizedBox(width: 10,),
+                              
+
                               Expanded(
                                 child: AteneaButton(
-                                  text: 'Volver',
-                                  backgroundColor: AppColors.secondaryColor,
+                                  text: 'Modificar Academia',
+                                  backgroundColor: AppColors.primaryColor,
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },

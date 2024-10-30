@@ -46,9 +46,18 @@ class AddContributorDialog extends StatelessWidget {
 
                 const SizedBox(height: 10,),
                 
-                Wrap(
-                  spacing: 10.0, // Espacio horizontal entre los elementos
-                  runSpacing: 10.0,
+                Text(
+                  textAlign: TextAlign.center,
+                  '¿Qué permisos tendrá el nuevo contribuidor?',
+                  style: AppTextStyles.builder(
+                    color: AppColors.primaryColor.withOpacity(0.85),
+                    size: FontSizes.body2,
+                  ),
+                ),
+
+                const SizedBox(height: 10,),
+
+                Row(
                   children: [
                     AteneaCheckboxButton(
                       checkboxText: 'Eliminar',
@@ -64,17 +73,20 @@ class AddContributorDialog extends StatelessWidget {
                         print("Esta seleccionado: " + value.toString());
                       },
                     ), 
-                    AteneaCheckboxButton(
-                      checkboxText: 'Añadir nuevo contribuidores',
-                      initialState: true, 
-                      onChanged: (value) {
-                        print("Esta seleccionado: " + value.toString());
-                      },
-                    ), 
+                    
                   ],
-                  )
-                 
+                ),
 
+                  
+                const SizedBox(height: 5,),
+
+                AteneaCheckboxButton(
+                    checkboxText: 'Añadir nuevo contribuidores',
+                    initialState: true, 
+                    onChanged: (value) {
+                      print("Esta seleccionado: " + value.toString());
+                    },
+                  ), 
               ],
             ),
           ),
@@ -85,7 +97,7 @@ class AddContributorDialog extends StatelessWidget {
             onPressedCallback: () {
               Navigator.of(context).pop();
             },
-            buttonStyles: AteneaButtonStyles(
+            buttonStyles: const AteneaButtonStyles(
               backgroundColor: AppColors.secondaryColor,
               textColor: AppColors.ateneaWhite,
             ),

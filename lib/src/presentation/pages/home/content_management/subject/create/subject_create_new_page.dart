@@ -65,7 +65,7 @@ class SubjectCreateNewPage extends StatelessWidget {
                         const SizedBox(height: 15.0),
                         
                         Text(
-                          'Ingresa el nombre de la nueva academia',
+                          'Ingresa el nombre de la nueva asignatura',
                           textAlign: TextAlign.center,
                           style: AppTextStyles.builder(
                             size: FontSizes.h5,
