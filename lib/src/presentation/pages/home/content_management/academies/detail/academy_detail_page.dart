@@ -9,6 +9,7 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
@@ -148,42 +149,17 @@ class AcademyDetailPage extends StatelessWidget {
                       child :
                       Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              AnimatedContainer(
-                                curve: Curves.decelerate,
-                                duration: const Duration(milliseconds: 230),
-                                width: scrollNotifier.isButtonCollapsed ? 60.0 : 220.0,
-                                child: AteneaButtonV2(
-                                  //padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0),
-                                  text: scrollNotifier.isButtonCollapsed ? null : 'Nueva Asignatura',
-                                  svgIcon : SvgButtonStyle(
-                                    svgPath:  'assets/svg/add.svg', 
-                                    svgDimentions: 30.0
-                                  ), 
-                                  
-                                  btnStyles: const AteneaButtonStyles(
-                                    backgroundColor: AppColors.ateneaWhite,
-                                    textColor: AppColors.primaryColor,
-                                    hasBorder: true,
-                                  ),
-
-                                  textStyle: AppTextStyles.builder(
-                                    color: AppColors.primaryColor,
-                                    size: FontSizes.body1,
-                                  ),
-
-                                  onPressed: () {
-                                    Navigator.push(
+                              AteneaFoldingButton(
+                              data: 'Nuevo Departamento',
+                              svgIcon: 'assets/svg/add.svg',
+                              onPressedCallback: () {
+                                  Navigator.push(
                                       context,
                                       AteneaPageAnimator(page: SubjectCreateNewPage()),
                                     );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                                },
+                            ),  
+                          
                           const SizedBox(height: 10),
                           Row(
                             children: [

@@ -141,7 +141,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             AteneaFoldingButton(
-                              data: 'Añadir Tema',
+                              data: 'Nuevo Departamento',
                               svgIcon: 'assets/svg/add.svg',
                               onPressedCallback: () {
                                   Navigator.push(

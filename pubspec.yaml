@@ -44,6 +44,8 @@ flutter:
     - assets/svg/eye.svg
     - assets/svg/trashcan.svg
     
+    - assets/svg/check.svg
+    
     - assets/svg/view_file.svg 
     - assets/svg/add_user.svg
 

@@ -23,6 +23,18 @@ class AteneaCheckboxButton extends StatefulWidget {
       ),
   };
 
+  static Map<bool, SvgButtonStyle> svgStates = {
+      true : SvgButtonStyle(
+        svgPath: 'assets/svg/close.svg', 
+        svgDimentions: 15.0
+      ),
+
+      false: SvgButtonStyle(
+        svgPath: 'assets/svg/check.svg', 
+        svgDimentions: 15.0
+      ),
+  };
+
   static Map<bool, TextStyle> checkStatesText = {
       true : AppTextStyles.builder(
         color: AppColors.ateneaWhite,
@@ -70,6 +82,8 @@ class _ToggleButtonState extends State<AteneaCheckboxButton> {
       onPressed: _toggleSelection,
       btnStyles:  AteneaCheckboxButton.checkStates[_isSelected]!,
       textStyle: AteneaCheckboxButton.checkStatesText[_isSelected]!,
+      svgIcon: AteneaCheckboxButton.svgStates[_isSelected],
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       text : widget.checkboxText, 
     );
   }

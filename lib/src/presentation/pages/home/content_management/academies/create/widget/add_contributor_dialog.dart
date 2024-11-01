@@ -52,28 +52,35 @@ class AddContributorDialog extends StatelessWidget {
                   style: AppTextStyles.builder(
                     color: AppColors.primaryColor.withOpacity(0.85),
                     size: FontSizes.body2,
-                  ),
+                  )
                 ),
 
                 const SizedBox(height: 10,),
 
                 Row(
                   children: [
-                    AteneaCheckboxButton(
-                      checkboxText: 'Eliminar',
-                      initialState: true, 
-                      onChanged: (value) {
-                        print("Esta seleccionado: " + value.toString());
-                      },
-                    ), 
-                    AteneaCheckboxButton(
-                      checkboxText: 'Editar',
-                      initialState: true, 
-                      onChanged: (value) {
-                        print("Esta seleccionado: " + value.toString());
-                      },
-                    ), 
+                    Expanded(
+                      child: 
+                        AteneaCheckboxButton(
+                          checkboxText: 'Eliminar',
+                          initialState: true, 
+                          onChanged: (value) {
+                            print("Esta seleccionado: " + value.toString());
+                          },
+                        ), 
+                    ),
+
+                    const SizedBox(width: 10,),
                     
+                    Expanded(
+                      child : AteneaCheckboxButton(
+                        checkboxText: 'Editar',
+                        initialState: true, 
+                        onChanged: (value) {
+                          print("Esta seleccionado: " + value.toString());
+                        },
+                      ), 
+                    ),
                   ],
                 ),
 
