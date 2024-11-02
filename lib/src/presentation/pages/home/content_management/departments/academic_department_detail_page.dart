@@ -154,12 +154,26 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Row(
-                          children: [
+                          children: [ 
+                            AteneaButtonV2(
+                              text: 'Volver',
+                              btnStyles: const AteneaButtonStyles(
+                                backgroundColor: AppColors.secondaryColor,
+                                textColor: AppColors.ateneaWhite
+                              ), 
+
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+
+                            const SizedBox(width: 10),
+
                             Expanded(
                               child: AteneaButtonV2(
-                                text: 'Volver',
+                                text: 'Modificar Departamento',
                                 btnStyles: const AteneaButtonStyles(
-                                  backgroundColor: AppColors.secondaryColor,
+                                  backgroundColor: AppColors.primaryColor,
                                   textColor: AppColors.ateneaWhite
                                 ), 
 

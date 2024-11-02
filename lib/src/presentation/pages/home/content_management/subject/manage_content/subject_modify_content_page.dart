@@ -264,6 +264,22 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                   },
                                 ),
                               ),
+
+                              const SizedBox(width: 10.0),
+
+                              Expanded(
+                                child: AteneaButtonV2(
+                                  text: 'Guardar Cambios',
+                                  btnStyles: const AteneaButtonStyles(
+                                    backgroundColor: AppColors.primaryColor,
+                                    textColor: AppColors.ateneaWhite,
+                                  ),
+
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
                             ],
                           ),
                         ],

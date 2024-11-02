@@ -107,7 +107,7 @@ class MyProfilePage extends StatelessWidget {
                         AteneaButtonCallback(
                           textButton:'Aceptar',
                           onPressedCallback: () {  
-                            Navigator.of(context).pop();
+                            Navigator.pushNamedAndRemoveUntil(context, '/splash', (route) => false);
                           }
                         ),
                       ],

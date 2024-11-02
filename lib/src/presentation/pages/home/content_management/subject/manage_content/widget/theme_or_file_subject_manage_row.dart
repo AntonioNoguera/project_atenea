@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
@@ -53,7 +54,12 @@ class ThemeOrFileSubjectManageRow extends StatelessWidget {
             ),
             ReorderableDragStartListener(
               index: index,
-              child: Icon(Icons.drag_handle, color: textColor),
+              child: SvgPicture.asset(
+                'assets/svg/drag_indicator.svg', 
+                height: 20,
+                width: 20,
+                color: textColor,
+              ),
             ),
           ],
         ),
