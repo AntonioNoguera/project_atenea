@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/demos/color_picker_demo.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_bottom_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
@@ -52,17 +53,37 @@ class MyProfilePage extends StatelessWidget {
             ],
 
             // Mostrar 'Editar Perfil' para todos los tipos de usuarios
-            AteneaButtonV2(
+            AteneaButtonV2 (
               text: 'Editar Perfil',
               xpndText: true,
-              svgIcon: SvgButtonStyle( svgPath: 'assets/svg/account_settings.svg', ),
+              svgIcon: SvgButtonStyle(svgPath: 'assets/svg/account_settings.svg'),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    AteneaPageAnimator(page: ColorPickerDemo())
-                  ); 
-              },
-            ),
+                showModalBottomSheet(
+  context: context,
+  isScrollControlled: true,
+  builder: (BuildContext context) {
+    return Wrap(
+      children: [
+        AteneaBottomDialog(
+          parentContext: context,
+          childContent: Column(
+            children: [
+              Text('Mi perfil', style: AppTextStyles.builder(size: FontSizes.h2, weight : FontWeights.semibold, ),   textAlign: TextAlign.center,),
+              Text('Mi usuario:'),
+              Text("asdfasdf"),
+              Text("asdfasdf"),
+              Text("asdfasdf"),
+            ],
+          ),
+        ),
+      ],
+    );
+  },
+);
+
+            }, 
+          ),
+            
             const SizedBox(height: 10.0),
 
             // Mostrar 'Administrar Usuarios' solo si el usuario es super admin 
