@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/academy_create_new_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/manage_content/academic_department_manage_content.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
@@ -141,13 +142,14 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             AteneaFoldingButton(
-                              data: 'Nuevo Departamento',
+                              data: 'Nueva Academia',
                               svgIcon: 'assets/svg/add.svg',
                               onPressedCallback: () {
                                   Navigator.push(
                                     context, 
                                     
-                                    AteneaPageAnimator(page: AcademyCreateNewPage()) );
+                                    AteneaPageAnimator(page: AcademyCreateNewPage()) 
+                                  );
                                 },
                             ), 
                           ],
@@ -178,7 +180,11 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                 ), 
 
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  print('Modificar Departamento');
+                                  Navigator.push(
+                                    context,  
+                                    AteneaPageAnimator(page: AcademicDepartmentManageContent()) 
+                                  );
                                 },
                               ),
                             ),

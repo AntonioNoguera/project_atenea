@@ -1,7 +1,8 @@
  import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_detail_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/detail/academic_department_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
 
 
 class AcademicDepartmentItemRow extends StatelessWidget {
@@ -90,22 +91,16 @@ class AcademicDepartmentItemRow extends StatelessWidget {
                         
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
+                          children: [ 
                             Text(
-                              'Academias disponibles',
-                              style: AppTextStyles.builder(
-                                color: AppColors.primaryColor,
-                                size: FontSizes.body2,
+                                'Permisos',
+                                style: AppTextStyles.builder(
+                                  color:AppColors.primaryColor,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.regular
+                                ),
                               ),
-                            ),
-                            Text(
-                              '12',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.builder(
-                                color: AppColors.grayColor,
-                                size: FontSizes.body2,
-                              ),
-                            ),
+                            AteneaPermitsRow()
                           ],
                         ), 
                       ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/manage_content/academy_manage_content.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/create/subject_create_new_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
@@ -150,7 +151,7 @@ class AcademyDetailPage extends StatelessWidget {
                       Column(
                         children: [
                               AteneaFoldingButton(
-                              data: 'Nuevo Departamento',
+                              data: 'Nueva Materia ',
                               svgIcon: 'assets/svg/add.svg',
                               onPressedCallback: () {
                                   Navigator.push(
@@ -183,9 +184,13 @@ class AcademyDetailPage extends StatelessWidget {
                                   text: 'Modificar Academia',
                                   btnStyles: const AteneaButtonStyles(
                                     backgroundColor: AppColors.primaryColor, 
-                                    textColor: AppColors.ateneaWhite)  ,
+                                    textColor: AppColors.ateneaWhite
+                                  )  ,
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Navigator.push(
+                                      context,
+                                      AteneaPageAnimator(page: AcademyManageContent()),
+                                    );
                                   },
                                 ),
                               ),

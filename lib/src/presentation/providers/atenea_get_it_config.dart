@@ -61,7 +61,7 @@ Future<void> setupLocator() async {
   locator.registerFactory(() => SaveSessionUseCase(locator<SessionRepository>()));
   locator.registerFactory(() => ClearSessionUseCase(locator<SessionRepository>()));
 
-// Registro del SessionProvider
+  // Registro del SessionProvider
   locator.registerFactory(() => SessionProvider(
     getSessionUseCase: locator<GetSessionUseCase>(),
     saveSessionUseCase: locator<SaveSessionUseCase>(),

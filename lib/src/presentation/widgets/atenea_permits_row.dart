@@ -19,7 +19,8 @@ class AteneaPermitsRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center, // Centra horizontalmente los íconos en el Row
         children: [
-          SizedBox(height: 6.0,),
+          SizedBox(height: 6.0,), 
+
           if (userPermits.contains(Permits.view))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
