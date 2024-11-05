@@ -3,22 +3,23 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
-class AteneaPermitsRow extends StatelessWidget {
+class UserContributorsPermitRow extends StatelessWidget {
   final List<Permits> userPermits;
+  final Color svgTint;
 
-  const AteneaPermitsRow({
+  const UserContributorsPermitRow({
     super.key,
     this.userPermits = const [Permits.view],
+    this.svgTint = AppColors.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center, // Centra el contenido tanto vertical como horizontalmente
+      alignment: Alignment.center,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center, // Centra horizontalmente los íconos en el Row
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 6.0,), 
 
           if (userPermits.contains(Permits.view))
             Padding(
@@ -27,9 +28,10 @@ class AteneaPermitsRow extends StatelessWidget {
                 'assets/svg/add_user.svg',
                 width: 24,
                 height: 24,
-                color: AppColors.grayColor,
+                color: svgTint,
               ),
             ),
+
           if (userPermits.contains(Permits.view))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -37,9 +39,10 @@ class AteneaPermitsRow extends StatelessWidget {
                 'assets/svg/edit.svg',
                 width: 24,
                 height: 24,
-                color: AppColors.grayColor,
+                color: svgTint,
               ),
             ),
+
           if (userPermits.contains(Permits.view))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -47,7 +50,7 @@ class AteneaPermitsRow extends StatelessWidget {
                 'assets/svg/trashcan.svg',
                 width: 24,
                 height: 24,
-                color: AppColors.grayColor,
+                color: svgTint,
               ),
             ),
         ],

@@ -6,7 +6,6 @@ import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/ho
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
@@ -156,7 +155,9 @@ class AcademyDetailPage extends StatelessWidget {
                               onPressedCallback: () {
                                   Navigator.push(
                                       context,
-                                      AteneaPageAnimator(page: SubjectCreateNewPage()),
+                                      AteneaPageAnimator(
+                                        page: SubjectCreateNewPage()
+                                      ),
                                     );
                                 },
                             ),  

@@ -250,10 +250,9 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                             ),
                           const SizedBox(height: 10),
                           Row(
-                            children: [
-                              Expanded(
-                                child: AteneaButtonV2(
-                                  text: 'Guardar Cambios',
+                            children: [ 
+                              AteneaButtonV2(
+                                  text: 'Cancelar',
                                   btnStyles: const AteneaButtonStyles(
                                     backgroundColor: AppColors.secondaryColor,
                                     textColor: AppColors.ateneaWhite,
@@ -261,8 +260,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
 
                                   onPressed: () {
                                     Navigator.pop(context);
-                                  },
-                                ),
+                                  }, 
                               ),
 
                               const SizedBox(width: 10.0),

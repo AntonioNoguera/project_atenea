@@ -54,7 +54,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(
                         textAlign: TextAlign.center,
-                        'Departamentos Académicos Disponibles',
+                        'Academías Disponibles',
                         style: AppTextStyles.builder(  
                           color: AppColors.primaryColor.withOpacity(.8),
                           size: FontSizes.h5,

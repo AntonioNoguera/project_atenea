@@ -23,16 +23,13 @@ class AteneaCheckboxButton extends StatefulWidget {
       ),
   };
 
-  static Map<bool, SvgButtonStyle> svgStates = {
+  static Map<bool, SvgButtonStyle?> svgStates = {
       true : SvgButtonStyle(
         svgPath: 'assets/svg/check.svg',  
         svgDimentions: 15.0
       ),
 
-      false: SvgButtonStyle(
-        svgPath: 'assets/svg/close.svg', 
-        svgDimentions: 15.0
-      ),
+      false: null,
   };
 
   static Map<bool, TextStyle> checkStatesText = {

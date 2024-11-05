@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/academy_contributor_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/add_contributor_dialog.dart';
  
-import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
@@ -118,7 +117,7 @@ class AcademyCreateNewPage extends StatelessWidget {
 
                   ),
 
-                  SizedBox(height: 60.0,)
+                  const SizedBox(height: 60.0,)
                 ],
               ),
 
@@ -146,7 +145,61 @@ class AcademyCreateNewPage extends StatelessWidget {
                           ),
                           
                           onPressed: () {
-                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AteneaDialog(
+                                  title: 'Nueva Academia',
+                                  content: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      minWidth: 600,
+                                      maxHeight: 100,
+                                    ),
+                                    child: Column(
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Estas a punto de crear una nueva academia! ',
+                                                  style: AppTextStyles.builder(
+                                                    color: AppColors.textColor,
+                                                    size: FontSizes.body2,
+                                                  ),
+                                                ),
+                                                const TextSpan(
+                                                  text: 'Verifica los datos antes de Continuar',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Text('Nombre de la carrera'),
+                                        ],
+                                      ),
+                                    ),
+                                    buttonCallbacks: [
+                                    AteneaButtonCallback(
+                                      textButton:'Cancelar',
+                                      onPressedCallback: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      buttonStyles: AteneaButtonStyles(backgroundColor: AppColors.secondaryColor, textColor: AppColors.ateneaWhite)
+                                    ),
+                                    AteneaButtonCallback(
+                                      textButton:'Aceptar',
+                                      onPressedCallback: () {
+                                        Navigator.of(context).pop();
+                                      }
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           text: 'Crear Academia',
                         ),
