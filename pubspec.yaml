@@ -15,13 +15,12 @@ dependencies:
   firebase_core: ^3.5.0
   flutter_svg: ^2.0.10+1
   path_provider: ^2.0.11
-  provider: ^6.0.5 
-  fluttertoast: ^8.1.1  
+  provider: ^6.0.5
+  fluttertoast: ^8.1.1
   flutter_colorpicker: ^1.1.0
   shared_preferences: ^2.0.15
   get_it: ^7.2.0
   file_picker: ^5.0.0
-
 
 dev_dependencies:
   flutter_test:
@@ -33,7 +32,7 @@ flutter:
   assets:
     - assets/svg/account.svg
     - assets/svg/account_settings.svg
-    - assets/svg/back_action.svg 
+    - assets/svg/back_action.svg
     - assets/svg/search.svg
     - assets/svg/close.svg
     - assets/svg/Bearny.svg
@@ -48,17 +47,17 @@ flutter:
     - assets/svg/check.svg
       
     - assets/svg/drag_indicator.svg
-    - assets/svg/view_file.svg 
+    - assets/svg/view_file.svg
     - assets/svg/add_user.svg
-
-
+    
     - assets/images/backgrounds/top_left_asset.png
     - assets/images/backgrounds/dart_vector.png
-    - assets/images/backgrounds/down_left_asset.png 
+    - assets/images/backgrounds/down_left_asset.png
     - assets/images/backgrounds/living_fime.png
     - assets/images/backgrounds/top_right.png
     - assets/images/backgrounds/fime.png
-    - assets/images/backgrounds/uanl.png  
+    - assets/images/backgrounds/uanl.png
+
   fonts:
     - family: RadioCanada
       fonts:

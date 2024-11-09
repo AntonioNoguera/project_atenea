@@ -10,8 +10,8 @@ plugins {
 
 android {
     namespace = "com.mike.proyect_atenea"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 34  // Cambia esto a la versión más reciente disponible, asegúrate de que sea la misma que en el build.gradle a nivel raíz
+    ndkVersion = "23.1.7779620" // O elimina si no es necesario
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -19,30 +19,33 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.mike.proyect_atenea"
-
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config. 
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
-
-        minSdkVersion 23
+        minSdkVersion 23  // Mantén 23 o una superior si lo requiere alguna dependencia
+        targetSdkVersion 34  // Asegúrate de que sea compatible con compileSdkVersion
+        versionCode 1
+        versionName "1.0"
     }
 
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
-        }
+    release {
+        // Habilita la reducción de recursos no utilizados, lo cual requiere también la reducción de código.
+        minifyEnabled true
+        shrinkResources true
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+    debug {
+        // Si estás trabajando en una versión de prueba, no necesitas reducción de recursos.
+        minifyEnabled false
+        shrinkResources false
     }
 }
+
+}
+
 
 flutter {
     source = "../.."

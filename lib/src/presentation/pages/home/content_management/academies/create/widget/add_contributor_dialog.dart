@@ -59,22 +59,11 @@ class AddContributorDialog extends StatelessWidget {
 
                 Row(
                   children: [
-                    Expanded(
-                      child: 
-                        AteneaCheckboxButton(
-                          checkboxText: 'Eliminar',
-                          initialState: true, 
-                          onChanged: (value) {
-                            print("Esta seleccionado: " + value.toString());
-                          },
-                        ), 
-                    ),
-
-                    const SizedBox(width: 10,),
+                     
                     
                     Expanded(
                       child : AteneaCheckboxButton(
-                        checkboxText: 'Editar',
+                        checkboxText: 'Modificar Contenidos',
                         initialState: true, 
                         onChanged: (value) {
                           print("Esta seleccionado: " + value.toString());
@@ -88,7 +77,7 @@ class AddContributorDialog extends StatelessWidget {
                 const SizedBox(height: 5,),
 
                 AteneaCheckboxButton(
-                    checkboxText: 'Añadir nuevo contribuidores',
+                    checkboxText: 'Añadir nuevos contribuidores',
                     initialState: true, 
                     onChanged: (value) {
                       print("Esta seleccionado: " + value.toString());

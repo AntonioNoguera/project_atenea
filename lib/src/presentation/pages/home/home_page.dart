@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:proyect_atenea/src/domain/entities/atomic_permission_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
-import 'package:proyect_atenea/src/domain/entities/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/profile/my_profile_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/my_subjects_page.dart';
@@ -11,128 +8,136 @@ import 'package:proyect_atenea/src/presentation/providers/session_provider.dart'
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
-class HomePage extends StatefulWidget {
+
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
-}
-
-class HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-  late SessionEntity mock;
-  late List<Widget> _pages;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSession(); // Llamamos a la función asíncrona para cargar la sesión
+  Widget build(BuildContext context) {
+    return FutureBuilder<SessionEntity>(
+      future: _loadSession(context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error al cargar la sesión'));
+        } else {
+          final session = snapshot.data ?? SessionEntity.defaultValues();
+          return _buildHomePage(context, session);
+        }
+      },
+    );
   }
 
-  Future<void> _loadSession() async {
+  Future<SessionEntity> _loadSession(BuildContext context) async {
     final SessionProvider sessionProvider = Provider.of<SessionProvider>(context, listen: false);
     await sessionProvider.loadSession();
-    mock = await sessionProvider.getSession() ?? SessionEntity.defaultValues(); // Proporciona un valor predeterminado si es null
 
-    setState(() {
-      _pages = <Widget>[
-        const MySubjectsPage(),
-        MyProfilePage(mock), // Ahora puedes usar 'mock' correctamente
-      ];
-    });
+    SessionEntity? session = await sessionProvider.getSession();
+    return session ?? SessionEntity.defaultValues();
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
+  Widget _buildHomePage(BuildContext context, SessionEntity session) {
+    int _selectedIndex = 0;
+
+    void _onItemTapped(int index) {
       _selectedIndex = index;
-    });
-  }
+    }
 
-  //Note: Navbar still on working
-  @override
-  Widget build(BuildContext context) { 
+    final List<Widget> _pages = [
+      const MySubjectsPage(),
+      MyProfilePage(session),
+    ];
 
-    return AteneaScaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: <Widget>[
-            IndexedStack(
-              index: _selectedIndex,
-              children: _pages,
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AteneaScaffold(
+          body: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
             ),
-            Positioned(
-              left: 20,
-              right: 20,
-              bottom: 20,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
+            clipBehavior: Clip.hardEdge,
+            child: Stack(
+              children: <Widget>[
+                IndexedStack(
+                  index: _selectedIndex,
+                  children: _pages,
                 ),
-                child: Stack(
-                  children: [
-                    AnimatedPositioned(
-                      duration: const Duration(milliseconds: 5000),
-                      curve: Curves.easeInOut,
-                      left: _selectedIndex == 0 ? 0 : null,
-                      right: _selectedIndex == 1 ? 0 : null,
-                      top: 0,
-                      bottom: 0,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 5000),
-                        curve: Curves.easeInOut,
-                        width: MediaQuery.of(context).size.width / 2 - 20,
-                        decoration: BoxDecoration(
-                          color: AppColors.ateneaWhite.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    ),
-                    BottomNavigationBar(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      selectedItemColor: AppColors.ateneaWhite,
-                      unselectedItemColor: AppColors.ateneaWhite.withOpacity(0.6),
-                      currentIndex: _selectedIndex,
-                      onTap: _onItemTapped,
-                      type: BottomNavigationBarType.fixed,
-                      items: [
-                        BottomNavigationBarItem(
-                          icon: SvgPicture.asset(
-                            'assets/svg/book.svg',
-                            height: 27.0,
-                            width: 27.0,
-                          ),
-                          label: 'Mis Materias',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: SvgPicture.asset(
-                            'assets/svg/account.svg',
-                            height: 27.0,
-                            width: 27.0,
-                          ),
-                          label: 'Mi Perfil',
+                Positioned(
+                  left: 20,
+                  right: 20,
+                  bottom: 20,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
                         ),
                       ],
                     ),
-                  ],
+                    child: Stack(
+                      children: [
+                        AnimatedPositioned(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                          left: _selectedIndex == 0 ? 0 : null,
+                          right: _selectedIndex == 1 ? 0 : null,
+                          top: 0,
+                          bottom: 0,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            width: MediaQuery.of(context).size.width / 2 - 20,
+                            decoration: BoxDecoration(
+                              color: AppColors.ateneaWhite.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                        ),
+                        BottomNavigationBar(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          selectedItemColor: AppColors.ateneaWhite,
+                          unselectedItemColor: AppColors.ateneaWhite.withOpacity(0.6),
+                          currentIndex: _selectedIndex,
+                          onTap: (index) {
+                            setState(() {
+                              _onItemTapped(index);
+                            });
+                          },
+                          type: BottomNavigationBarType.fixed,
+                          items: [
+                            BottomNavigationBarItem(
+                              icon: SvgPicture.asset(
+                                'assets/svg/book.svg',
+                                height: 27.0,
+                                width: 27.0,
+                              ),
+                              label: 'Mis Materias',
+                            ),
+                            BottomNavigationBarItem(
+                              icon: SvgPicture.asset(
+                                'assets/svg/account.svg',
+                                height: 27.0,
+                                width: 27.0,
+                              ),
+                              label: 'Mi Perfil',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

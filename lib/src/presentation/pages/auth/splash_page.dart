@@ -103,12 +103,16 @@ class SplashPage extends StatelessWidget {
           return splashContent;
         } else { 
           WidgetsBinding.instance.addPostFrameCallback((_) {
+
+            print('Session: ${sessionProvider.getSession()}');
             
             Future.delayed( const Duration(seconds:3) , () {
-              if (!sessionProvider.hasSession()) {
+
+              if (sessionProvider.hasSession()) {
+
                 Navigator.pushReplacementNamed(context, '/home');
               } else {
-                Navigator.pushReplacementNamed(context, '/auth/login');
+                Navigator.pushReplacementNamed(context, '/auth/register');
               }
             }
             );

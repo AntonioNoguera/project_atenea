@@ -4,13 +4,13 @@ import 'package:proyect_atenea/src/domain/entities/permission_entity.dart';
 
 class SessionEntity {
   final String token;
-  final String userId; 
+  final String userId;
   final PermissionEntity userPermissions;
   final DateTime tokenValidUntil;
 
   SessionEntity({
     required this.token,
-    required this.userId, 
+    required this.userId,
     required this.userPermissions,
     required this.tokenValidUntil,
   });
@@ -20,15 +20,14 @@ class SessionEntity {
       : token = 'default_token',
         userId = 'default_user_id',
         userPermissions = PermissionEntity(
-            isSuper: false, 
-            academy: [
-              AtomicPermissionEntity(  
-                permissionId: 'permissionId', 
-                permissionTypes: PermitTypes.edit
-              )
-            ], 
-            subject: [
-            ]
-          ), 
+          isSuper: false,
+          academy: [
+            AtomicPermissionEntity(
+              permissionId: 'permissionId',
+              permissionTypes: PermitTypes.edit,
+            ),
+          ],
+          subject: [],
+        ),
         tokenValidUntil = DateTime.now().add(const Duration(days: 30));
 }

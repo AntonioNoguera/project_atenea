@@ -153,7 +153,7 @@ class AcademyCreateNewPage extends StatelessWidget {
                                   content: ConstrainedBox(
                                     constraints: const BoxConstraints(
                                       minWidth: 600,
-                                      maxHeight: 170,
+                                      maxHeight: 190,
                                     ),
                                     child: Column(
                                         children: [
@@ -171,55 +171,41 @@ class AcademyCreateNewPage extends StatelessWidget {
                                               ],
                                             ),
                                           ),
-                                          const SizedBox(height: 15.0,),
-                                          RichText(
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan( 
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Nombre de la Academia:  ',
-                                                  style: AppTextStyles.builder(
-                                                    color: AppColors.textColor,
-                                                    size: FontSizes.body2,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: 'Mecánica',
-                                                  style:AppTextStyles.builder(
-                                                    color: AppColors.primaryColor,
-                                                    size: FontSizes.body2,
-                                                    weight: FontWeights.semibold
-                                                  ),
-                                                ),
-
-                                              ],
+                                          const SizedBox(height: 15.0,), 
+                                          Text(
+                                            'Nombre de la Academia:  ',
+                                            style: AppTextStyles.builder(
+                                              color: AppColors.textColor,
+                                              size: FontSizes.body2,
                                             ),
                                           ),
-
+                                          Text(
+                                            'Mecánica',
+                                            style:AppTextStyles.builder(
+                                              color: AppColors.primaryColor,
+                                              size: FontSizes.body2,
+                                              weight: FontWeights.semibold
+                                            ),
+                                          ),
+  
                                           const SizedBox(height: 15.0,),
                                           
-                                          RichText(
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Contribuidores Registrados:  ',
-                                                  style: AppTextStyles.builder(
-                                                    color: AppColors.textColor,
-                                                    size: FontSizes.body2,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: 'Michael Noguera, Fernando Paredes, Juan Perez',
-                                                  style:AppTextStyles.builder(
-                                                    color: AppColors.primaryColor,
-                                                    size: FontSizes.body2,
-                                                    weight: FontWeights.semibold
-                                                  ),
-                                                ),
-                                              ],
+                                          Text(
+                                            'Contribuidores Registrados:  ',
+                                            style: AppTextStyles.builder(
+                                              color: AppColors.textColor,
+                                              size: FontSizes.body2,
                                             ),
                                           ),
+
+                                          Text(
+                                            'Michael Noguera, Fernando Paredes, Juan Perez',
+                                            style:AppTextStyles.builder(
+                                              color: AppColors.primaryColor,
+                                              size: FontSizes.body2,
+                                              weight: FontWeights.semibold
+                                            ),
+                                          ),  
 
                                           const SizedBox(height: 15.0,),
                                           
@@ -232,7 +218,7 @@ class AcademyCreateNewPage extends StatelessWidget {
                                                   style: AppTextStyles.builder(
                                                     color: AppColors.textColor,
                                                     size: FontSizes.body2,
-                                                    weight: FontWeights.semibold
+                                                    weight: FontWeights.regular
                                                   ),
                                                 ),
                                                 TextSpan(
