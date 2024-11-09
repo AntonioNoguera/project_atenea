@@ -24,19 +24,23 @@ class AcademicDepartmentManageContent extends StatelessWidget {
           child:
               Column(
                 children: [
+
                   Text(
                     'Modificando Departamento',
                     style: AppTextStyles.builder(size: FontSizes.h3, weight: FontWeights.semibold),
                     textAlign: TextAlign.center,
-                    
                   ),
-                  SizedBox(height: 20.0),
+
+                  const SizedBox(height: 20.0),
+
                   AteneaField(
                     placeHolder: 'Ingresa el nombre del departamento',
                     inputNameText: 'Nombre del Departamento',
                     controller: _departmentInputController,
                   ),
+
                   const SizedBox(height: 20.0),
+                  
                   Text(
                     'Ingenieros con permisos',
                     style: AppTextStyles.builder(
@@ -44,6 +48,7 @@ class AcademicDepartmentManageContent extends StatelessWidget {
                       color: AppColors.primaryColor,
                     ),
                   ),
+
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -120,7 +125,130 @@ class AcademicDepartmentManageContent extends StatelessWidget {
                                 textColor: AppColors.ateneaWhite,
                               ),
                               onPressed: () {
-                                // Lógica para guardar cambios
+                                // Lógica para guardar cambios 
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AteneaDialog(
+                                    title: 'Nueva Academia',
+                                    content: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 600,
+                                        maxHeight: 170,
+                                      ),
+                                      child: Column(
+                                          children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: '¡Estás a punto de crear una nueva academia! ',
+                                                    style: AppTextStyles.builder(
+                                                      color: AppColors.textColor,
+                                                      size: FontSizes.body2,
+                                                      weight: FontWeights.semibold
+                                                    ),
+                                                  ), 
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 15.0,),
+                                            RichText(
+                                              textAlign: TextAlign.center,
+                                              text: TextSpan( 
+                                                children: [
+                                                  TextSpan(
+                                                    text: 'Nombre de la Academia:  ',
+                                                    style: AppTextStyles.builder(
+                                                      color: AppColors.textColor,
+                                                      size: FontSizes.body2,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: 'Mecánica',
+                                                    style:AppTextStyles.builder(
+                                                      color: AppColors.primaryColor,
+                                                      size: FontSizes.body2,
+                                                      weight: FontWeights.semibold
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+
+                                            const SizedBox(height: 15.0,),
+                                            
+                                            RichText(
+                                              textAlign: TextAlign.center,
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: 'Contribuidores Registrados:  ',
+                                                    style: AppTextStyles.builder(
+                                                      color: AppColors.textColor,
+                                                      size: FontSizes.body2,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: 'Michael Noguera, Fernando Paredes, Juan Perez',
+                                                    style:AppTextStyles.builder(
+                                                      color: AppColors.primaryColor,
+                                                      size: FontSizes.body2,
+                                                      weight: FontWeights.semibold
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+
+                                            const SizedBox(height: 15.0,),
+                                            
+                                            RichText(
+                                              textAlign: TextAlign.center,
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: 'No te preocupes, pués podrás añadir/eliminar/modificar contribuidores en',
+                                                    style: AppTextStyles.builder(
+                                                      color: AppColors.textColor,
+                                                      size: FontSizes.body2,
+                                                      weight: FontWeights.semibold
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: ' cualquier momento.',
+                                                    style:AppTextStyles.builder(
+                                                      color: AppColors.primaryColor,
+                                                      size: FontSizes.body2,
+                                                      weight: FontWeights.semibold
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                              
+                                          ],
+                                        ),
+                                      ),
+                                      buttonCallbacks: [
+                                      AteneaButtonCallback(
+                                        textButton:'Cancelar',
+                                        onPressedCallback: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        buttonStyles: AteneaButtonStyles(backgroundColor: AppColors.secondaryColor, textColor: AppColors.ateneaWhite)
+                                      ),
+                                      AteneaButtonCallback(
+                                        textButton:'Aceptar',
+                                        onPressedCallback: () {
+                                          Navigator.of(context).pop();
+                                        }
+                                      ),
+                                    ],
+                                  ); 
+                                  }
+                                );
                               },
                             ),
                           ),

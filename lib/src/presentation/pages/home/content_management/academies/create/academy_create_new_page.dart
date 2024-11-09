@@ -153,7 +153,7 @@ class AcademyCreateNewPage extends StatelessWidget {
                                   content: ConstrainedBox(
                                     constraints: const BoxConstraints(
                                       minWidth: 600,
-                                      maxHeight: 100,
+                                      maxHeight: 170,
                                     ),
                                     child: Column(
                                         children: [
@@ -161,24 +161,92 @@ class AcademyCreateNewPage extends StatelessWidget {
                                             text: TextSpan(
                                               children: [
                                                 TextSpan(
-                                                  text: 'Estas a punto de crear una nueva academia! ',
+                                                  text: '¡Estás a punto de crear una nueva academia! ',
+                                                  style: AppTextStyles.builder(
+                                                    color: AppColors.textColor,
+                                                    size: FontSizes.body2,
+                                                    weight: FontWeights.semibold
+                                                  ),
+                                                ), 
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 15.0,),
+                                          RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan( 
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Nombre de la Academia:  ',
                                                   style: AppTextStyles.builder(
                                                     color: AppColors.textColor,
                                                     size: FontSizes.body2,
                                                   ),
                                                 ),
-                                                const TextSpan(
-                                                  text: 'Verifica los datos antes de Continuar',
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontSize: 16.0,
-                                                    fontWeight: FontWeight.bold,
+                                                TextSpan(
+                                                  text: 'Mecánica',
+                                                  style:AppTextStyles.builder(
+                                                    color: AppColors.primaryColor,
+                                                    size: FontSizes.body2,
+                                                    weight: FontWeights.semibold
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 15.0,),
+                                          
+                                          RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'Contribuidores Registrados:  ',
+                                                  style: AppTextStyles.builder(
+                                                    color: AppColors.textColor,
+                                                    size: FontSizes.body2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: 'Michael Noguera, Fernando Paredes, Juan Perez',
+                                                  style:AppTextStyles.builder(
+                                                    color: AppColors.primaryColor,
+                                                    size: FontSizes.body2,
+                                                    weight: FontWeights.semibold
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          Text('Nombre de la carrera'),
+
+                                          const SizedBox(height: 15.0,),
+                                          
+                                          RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: 'No te preocupes, pués podrás añadir/eliminar/modificar contribuidores en',
+                                                  style: AppTextStyles.builder(
+                                                    color: AppColors.textColor,
+                                                    size: FontSizes.body2,
+                                                    weight: FontWeights.semibold
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: ' cualquier momento.',
+                                                  style:AppTextStyles.builder(
+                                                    color: AppColors.primaryColor,
+                                                    size: FontSizes.body2,
+                                                    weight: FontWeights.semibold
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                            
                                         ],
                                       ),
                                     ),
