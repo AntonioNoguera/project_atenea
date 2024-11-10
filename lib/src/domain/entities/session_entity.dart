@@ -21,6 +21,7 @@ class SessionEntity {
         userId = 'default_user_id',
         userPermissions = PermissionEntity(
           isSuper: false,
+          department: [],
           academy: [
             AtomicPermissionEntity(
               permissionId: 'permissionId',

@@ -16,7 +16,7 @@ class LocalSessionDataSource {
       final tokenValidUntilString = sharedPreferences.getString('token_valid_until');
 
       if (token != null && userId != null && userPermissionsJson != null && tokenValidUntilString != null) {
-        final  userPermissions = PermissionEntity(isSuper: false, academy: [], subject: []);
+        final  userPermissions = PermissionEntity(isSuper: false, department: [], academy: [], subject: []);
         
            /*
         Still deciding hows gona be this part

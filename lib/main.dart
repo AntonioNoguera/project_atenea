@@ -7,6 +7,7 @@ import 'package:proyect_atenea/src/presentation/pages/auth/login_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/auth/register_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/auth/splash_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/home_page.dart';
+import 'package:proyect_atenea/src/presentation/providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/firebase_options.dart'; 
@@ -26,9 +27,11 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => locator<SessionProvider>(), // Utiliza get_it para el SessionProvider
+          create: (_) => locator<SessionProvider>(),
         ),
-        // Otros Providers globales aquí
+        ChangeNotifierProvider(
+          create: (_) => locator<DepartmentProvider>(),
+        ),
       ],
       child: const MyApp(),
     ),

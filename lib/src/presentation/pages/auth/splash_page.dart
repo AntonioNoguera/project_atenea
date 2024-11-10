@@ -1,6 +1,8 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/domain/entities/academic_department/department_entity.dart';
+import 'package:proyect_atenea/src/presentation/providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
@@ -12,6 +14,10 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SessionProvider sessionProvider = Provider.of<SessionProvider>(context, listen: false);
+    final DepartmentProvider departmentProvider = Provider.of<DepartmentProvider>(context, listen: false);
+
+    // Ejemplo de uso de los métodos del DepartmentProvider con logs
+    _initializeData(departmentProvider);
 
     final splashContent = SafeArea(
       child: Scaffold(
@@ -122,5 +128,18 @@ class SplashPage extends StatelessWidget {
         }
       },
     );
+
+    
+  }
+
+  void _initializeData(DepartmentProvider departmentProvider) async {
+    // Ejemplo de uso de los métodos del DepartmentProvider con logs
+     
+    await departmentProvider.saveDepartment(DepartmentEntity(
+      id: 'some_department_id',
+      name: 'New DepaASDF ASDF ASDFrtment',
+      usersWithPermits: [],
+    ));
+     
   }
 }
