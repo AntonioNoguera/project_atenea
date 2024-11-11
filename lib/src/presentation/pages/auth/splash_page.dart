@@ -14,7 +14,9 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SessionProvider sessionProvider = Provider.of<SessionProvider>(context, listen: false);
-    final DepartmentProvider departmentProvider = Provider.of<DepartmentProvider>(context, listen: false);
+    final DepartmentProvider departmentProvider = Provider.of<DepartmentProvider>(context, listen: false); 
+    
+    //final DepartmentProvider departmentProvider = Provider.of<DepartmentProvider>(context, listen: false);
 
     // Ejemplo de uso de los métodos del DepartmentProvider con logs
     _initializeData(departmentProvider);

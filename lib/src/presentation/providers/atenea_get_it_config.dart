@@ -1,13 +1,16 @@
 // core/service_locator.dart
+
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyect_atenea/src/data/data_sources/academy_data_source.dart';
 import 'package:proyect_atenea/src/data/data_sources/deparment_data_source.dart';
 import 'package:proyect_atenea/src/data/data_sources/local_session_data_source.dart';
+import 'package:proyect_atenea/src/data/data_sources/subject_data_source.dart';
 import 'package:proyect_atenea/src/data/data_sources/user_data_source.dart';
 import 'package:proyect_atenea/src/data/repositories_implementations/academy_repository_impl.dart';
 import 'package:proyect_atenea/src/data/repositories_implementations/deparment_repository_impl.dart';
 import 'package:proyect_atenea/src/data/repositories_implementations/session_repository_impl.dart';
+import 'package:proyect_atenea/src/data/repositories_implementations/subject_repository_impl.dart';
 import 'package:proyect_atenea/src/data/repositories_implementations/user_repository_impl.dart';
 import 'package:proyect_atenea/src/domain/repositories/academy_repository.dart';
 import 'package:proyect_atenea/src/domain/repositories/department_repository.dart';
@@ -22,8 +25,8 @@ import 'package:proyect_atenea/src/presentation/providers/remote_providers/acade
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart'; 
-import '../../domain/repositories/user_repository.dart'; 
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../domain/repositories/user_repository.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -41,6 +44,9 @@ Future<void> setupLocator() async {
   locator.registerFactory<UserDataSource>( () => UserDataSource(locator<FirebaseFirestore>()) );  //DataSource
   locator.registerFactory<UserRepository>( () => UserRepositoryImpl(locator<UserDataSource>()) ); //Repositorio
 
+    // [ SUBJECT ]
+  locator.registerFactory<SubjectDataSource>( () => SubjectDataSource(locator<FirebaseFirestore>()) );  //DataSource
+  locator.registerFactory<SubjectRepository>( () => SubjectRepositoryImpl(locator<SubjectDataSource>()) ); //Repositorio
 
     // [ ACADEMY ]
   locator.registerFactory<AcademyDataSource>( () => AcademyDataSource(locator<FirebaseFirestore>()) );  //DataSource
@@ -59,10 +65,12 @@ Future<void> setupLocator() async {
   // Registro de los Casos de Uso agrupados
 
     // [USER]
-  locator.registerFactory(() => GetUser(locator<UserRepository>()));
-  locator.registerFactory(() => AddUser(locator<UserRepository>()));
-  locator.registerFactory(() => UpdateUser(locator<UserRepository>()));
-  locator.registerFactory(() => DeleteUser(locator<UserRepository>()));
+  locator.registerFactory(() => LoginUserUseCase(locator<UserRepository>()));
+  locator.registerFactory(() => GetUserByIdUseCase(locator<UserRepository>()));
+  locator.registerFactory(() => AddUserUseCase(locator<UserRepository>()));
+  locator.registerFactory(() => UpdateUserUseCase(locator<UserRepository>()));
+  locator.registerFactory(() => DeleteUserUseCase(locator<UserRepository>()));
+  locator.registerFactory(() => GetAllUsersUseCase(locator<UserRepository>())); 
 
     // [ACADEMY]
   locator.registerFactory(() => GetAllAcademies(locator<AcademyRepository>()));
@@ -108,6 +116,14 @@ Future<void> setupLocator() async {
     updateAcademyUseCase : locator<UpdateAcademy>(),
     deleteAcademyUseCase : locator<DeleteAcademy>(),
     getAllAcademiesUseCase : locator<GetAllAcademies>(),
+  ));
+
+  locator.registerFactory(() => SubjectProvider(
+    getSubjectByIdUseCase : locator<GetSubjectById>(),
+    addSubjectUseCase : locator<AddSubject>(),
+    updateSubjectUseCase : locator<UpdateSubject>(),
+    deleteSubjectUseCase : locator<DeleteSubject>(),
+    getAllSubjectsUseCase : locator<GetAllSubjects>(),
   ));
 
   locator.registerFactory(() => SubjectProvider(

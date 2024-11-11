@@ -1,9 +1,12 @@
-import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
+// domain/repositories/user_repository.dart
+
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 
 abstract class UserRepository {
-  Future<UserEntity?> getUser(String id);
-  Future<void> addUser(UserEntity userInstance);
-  Future<void> updateUser(UserEntity userInstance);
+  Future<UserEntity?> login(String fullName, String passwordHash);
+  Future<UserEntity?> getUserById(String id);
+  Future<void> addUser(UserEntity user);
+  Future<void> updateUser(UserEntity user);
   Future<void> deleteUser(String id);
+  Future<List<UserEntity>> getAllUsers();
 }

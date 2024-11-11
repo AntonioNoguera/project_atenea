@@ -1,29 +1,39 @@
-// data/data_sources/firebase_data_source.dart
-
-//Firestore based datasources have to be this heavy
+// data/datasources/user_data_source.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../domain/entities/user_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 
 class UserDataSource {
   final FirebaseFirestore firestore;
+  final String collectionName = 'users';
 
   UserDataSource(this.firestore);
 
-  /// Obtiene un usuario desde Firestore basado en su ID
-  Future<UserEntity?> getUserFromFirestore(String userId) async {
+  // Método para el login
+  Future<UserEntity?> login(String fullName, String passwordHash) async {
     try {
-      DocumentSnapshot snapshot = await firestore.collection('users').doc(userId).get();
-      if (snapshot.exists) {
-        var data = snapshot.data() as Map<String, dynamic>;
-        /*
-        return UserEntity(
-          id: snapshot.id,
-          name: data['name'] ?? '',
-          email: data['email'] ?? '',
-          age: data['age'] ?? 0,
-        );
-        */
+      QuerySnapshot snapshot = await firestore.collection(collectionName)
+          .where('fullName', isEqualTo: fullName)
+          .where('passwordHash', isEqualTo: passwordHash)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        return UserEntity.fromMap(snapshot.docs.first.data() as Map<String, dynamic>);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error en el login: $e');
+      throw Exception('Error en el login');
+    }
+  }
+
+  // Obtener un usuario por ID
+  Future<UserEntity?> getUserById(String id) async {
+    try {
+      DocumentSnapshot doc = await firestore.collection(collectionName).doc(id).get();
+      if (doc.exists) {
+        return UserEntity.fromMap(doc.data() as Map<String, dynamic>);
       } else {
         return null;
       }
@@ -33,42 +43,41 @@ class UserDataSource {
     }
   }
 
-  /// Agrega un nuevo usuario a Firestore
-  Future<void> addUserToFirestore(UserEntity user) async {
+  // Agregar un nuevo usuario
+  Future<void> addUser(UserEntity user) async {
     try {
-      await firestore.collection('users').add({
-        /*
-        'name': user.name,
-        'email': user.email,
-        'age': user.age,
-        */
-      });
+      await firestore.collection(collectionName).doc(user.id).set(user.toMap());
     } catch (e) {
       print('Error agregando el usuario: $e');
     }
   }
 
-  /// Actualiza un usuario existente en Firestore
-  Future<void> updateUserInFirestore(UserEntity user) async {
+  // Actualizar un usuario existente
+  Future<void> updateUser(UserEntity user) async {
     try {
-      await firestore.collection('users').doc(user.id).update({
-        /*
-        'name': user.name,
-        'email': user.email,
-        'age': user.age,
-        */
-      });
+      await firestore.collection(collectionName).doc(user.id).update(user.toMap());
     } catch (e) {
       print('Error actualizando el usuario: $e');
     }
   }
 
-  /// Elimina un usuario de Firestore basado en su ID
-  Future<void> deleteUserFromFirestore(String userId) async {
+  // Eliminar un usuario
+  Future<void> deleteUser(String id) async {
     try {
-      await firestore.collection('users').doc(userId).delete();
+      await firestore.collection(collectionName).doc(id).delete();
     } catch (e) {
       print('Error eliminando el usuario: $e');
+    }
+  }
+
+  // Obtener todos los usuarios
+  Future<List<UserEntity>> getAllUsers() async {
+    try {
+      QuerySnapshot snapshot = await firestore.collection(collectionName).get();
+      return snapshot.docs.map((doc) => UserEntity.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    } catch (e) {
+      print('Error obteniendo todos los usuarios: $e');
+      return [];
     }
   }
 }

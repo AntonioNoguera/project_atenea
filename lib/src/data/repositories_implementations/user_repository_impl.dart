@@ -1,8 +1,8 @@
-// data/repositories/user_repository_impl.dart 
+// data/repositories/user_repository_impl.dart
+ 
 import 'package:proyect_atenea/src/data/data_sources/user_data_source.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
-
-import '../../domain/repositories/user_repository.dart'; 
+import 'package:proyect_atenea/src/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserDataSource dataSource;
@@ -10,22 +10,32 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl(this.dataSource);
 
   @override
-  Future<UserEntity?> getUser(String id) async {
-    return await dataSource.getUserFromFirestore(id);
+  Future<UserEntity?> login(String fullName, String passwordHash) async {
+    return await dataSource.login(fullName, passwordHash);
+  }
+
+  @override
+  Future<UserEntity?> getUserById(String id) async {
+    return await dataSource.getUserById(id);
   }
 
   @override
   Future<void> addUser(UserEntity user) async {
-    await dataSource.addUserToFirestore(user);
+    await dataSource.addUser(user);
   }
 
   @override
   Future<void> updateUser(UserEntity user) async {
-    await dataSource.updateUserInFirestore(user);
+    await dataSource.updateUser(user);
   }
 
   @override
   Future<void> deleteUser(String id) async {
-    await dataSource.deleteUserFromFirestore(id);
+    await dataSource.deleteUser(id);
+  }
+
+  @override
+  Future<List<UserEntity>> getAllUsers() async {
+    return await dataSource.getAllUsers();
   }
 }
