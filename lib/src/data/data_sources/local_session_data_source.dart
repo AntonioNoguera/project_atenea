@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/session_entity.dart';
-import '../../domain/entities/permission_entity.dart';
+import '../../domain/entities/shared/permission_entity.dart';
 
 class LocalSessionDataSource {
   final SharedPreferences sharedPreferences;

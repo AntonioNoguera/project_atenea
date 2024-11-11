@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/profile/my_profile_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/my_subects/my_subjects_page.dart';
-import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 

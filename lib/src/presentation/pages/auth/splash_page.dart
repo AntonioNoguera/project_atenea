@@ -1,9 +1,9 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyect_atenea/src/domain/entities/academic_department/department_entity.dart';
-import 'package:proyect_atenea/src/presentation/providers/department_provider.dart';
-import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
+import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class SplashPage extends StatelessWidget {
@@ -101,7 +101,6 @@ class SplashPage extends StatelessWidget {
       ), 
     );
 
-
     return FutureBuilder(
       future: sessionProvider.loadSession(),
       builder: (context, snapshot) {
@@ -140,6 +139,11 @@ class SplashPage extends StatelessWidget {
       name: 'New DepaASDF ASDF ASDFrtment',
       usersWithPermits: [],
     ));
-     
+
+    await departmentProvider.getAllDepartments();
+    
+    await departmentProvider.getDepartment('some_department_id');
+    
+    await departmentProvider.deleteDepartment('nvffRw9VWCTgpZ7ykLoy');
   }
 }

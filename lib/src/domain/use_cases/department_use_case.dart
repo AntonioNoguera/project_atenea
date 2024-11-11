@@ -1,4 +1,4 @@
-import 'package:proyect_atenea/src/domain/entities/academic_department/department_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
 import 'package:proyect_atenea/src/domain/repositories/department_repository.dart';
 
 class GetDepartmentUseCase {

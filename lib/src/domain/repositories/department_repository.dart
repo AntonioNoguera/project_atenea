@@ -1,4 +1,4 @@
-import 'package:proyect_atenea/src/domain/entities/academic_department/department_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
 
 abstract class DepartmentRepository {
   Future<DepartmentEntity?> getDepartment(String id);

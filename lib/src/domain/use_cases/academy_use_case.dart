@@ -1,17 +1,20 @@
-// domain/use_cases/user_use_cases.dart
+// domain/use_cases/academy_use_cases.dart
 import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
-import 'package:proyect_atenea/src/domain/repositories/academy_repository.dart';
 
-class GetAcademies {
+import '../repositories/academy_repository.dart'; 
+
+/// Caso de uso para obtener una academia por ID
+class GetAcademyById {
   final AcademyRepository repository;
 
-  GetAcademies(this.repository);
-  
-  Future<List<AcademyEntity?>> call() async {
-    return await repository.getAcademies();
+  GetAcademyById(this.repository);
+
+  Future<AcademyEntity?> call(String id) async {
+    return await repository.getAcademyById(id);
   }
 }
 
+/// Caso de uso para agregar una nueva academia
 class AddAcademy {
   final AcademyRepository repository;
 
@@ -21,7 +24,8 @@ class AddAcademy {
     await repository.addAcademy(academy);
   }
 }
- 
+
+/// Caso de uso para actualizar una academia existente
 class UpdateAcademy {
   final AcademyRepository repository;
 
@@ -32,12 +36,24 @@ class UpdateAcademy {
   }
 }
 
+/// Caso de uso para eliminar una academia por ID
 class DeleteAcademy {
   final AcademyRepository repository;
 
   DeleteAcademy(this.repository);
 
-  Future<void> call(AcademyEntity academy) async {
-    await repository.deleteAcademy(academy);
+  Future<void> call(String id) async {
+    await repository.deleteAcademy(id);
+  }
+}
+
+/// Caso de uso para obtener todas las academias
+class GetAllAcademies {
+  final AcademyRepository repository;
+
+  GetAllAcademies(this.repository);
+
+  Future<List<AcademyEntity>> call() async {
+    return await repository.getAllAcademies();
   }
 }

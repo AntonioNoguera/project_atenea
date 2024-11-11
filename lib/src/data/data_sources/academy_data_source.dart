@@ -1,78 +1,72 @@
-// data/data_sources/firebase_data_source.dart
-
-//Firestore based datasources have to be this heavy
+// data/datasources/academy_data_source.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/academy_entity.dart'; 
+import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 
 class AcademyDataSource {
   final FirebaseFirestore firestore;
-
-  final colectionName = 'academies';
+  final String collectionName = 'academies';
 
   AcademyDataSource(this.firestore);
 
-  /// Obtiene un usuario desde Firestore basado en su ID
-  Future<List<AcademyEntity?>> getAcademiesFromFirestore() async {
+  /// Obtiene todas las academias desde Firestore
+  Future<List<AcademyEntity>> getAcademiesFromFirestore() async {
     try {
-      DocumentSnapshot snapshot = await firestore.collection(colectionName).doc('*').get();
-      if (snapshot.exists) {
-        var data = snapshot.data() as Map<String, dynamic>;
-        /*
+      QuerySnapshot snapshot = await firestore.collection(collectionName).get();
+      return snapshot.docs.map((doc) {
+        var data = doc.data() as Map<String, dynamic>;
         return AcademyEntity(
-          id: snapshot.id,
+          id: doc.id,
           name: data['name'] ?? '',
-          email: data['email'] ?? '',
-          age: data['age'] ?? 0,
+          autorizedAdmins: (data['autorizedAdmins'] as List<dynamic>?)
+                  ?.map((admin) => UserEntity.fromMap(admin))
+                  .toList() ??
+              [],
         );
-        */
-        return [];
-      } else {
-        return [];
-      }
+      }).toList();
     } catch (e) {
-      print('Error obteniendo el usuario: $e');
+      print('Error obteniendo las academias: $e');
       return [];
     }
-     
   }
 
-  /// Agrega un nuevo usuario a Firestore
+  /// Agrega una nueva academia a Firestore
   Future<void> addAcademyOnFirestore(AcademyEntity academy) async {
     try {
-      await firestore.collection(colectionName).add({
-        /*
-        'name': user.name,
-        'email': user.email,
-        'age': user.age,
-        */
+      await firestore.collection(collectionName).doc(academy.id).set({
+        'name': academy.name,
+        'autorizedAdmins': academy.autorizedAdmins.map((admin) => admin.toMap()).toList(),
+        'subjects': academy.subjects.map((subject) => subject.path).toList(),
+        'lastModificationDateTime': academy.lastModificationDateTime,
+        'lastModificationContributor': academy.lastModificationContributor,
       });
     } catch (e) {
-      print('Error agregando el usuario: $e');
+      print('Error agregando la academia: $e');
     }
   }
 
-  /// Actualiza un usuario existente en Firestore
+  /// Actualiza una academia existente en Firestore
   Future<void> updateAcademyOnFirestore(AcademyEntity academy) async {
     try {
-      await firestore.collection(colectionName).doc(academy.id).update({
-        /*
-        'name': user.name,
-        'email': user.email,
-        'age': user.age,
-        */
+      await firestore.collection(collectionName).doc(academy.id).update({
+        'name': academy.name,
+        'autorizedAdmins': academy.autorizedAdmins.map((admin) => admin.toMap()).toList(),
+        'subjects': academy.subjects.map((subject) => subject.path).toList(),
+        'lastModificationDateTime': academy.lastModificationDateTime,
+        'lastModificationContributor': academy.lastModificationContributor,
       });
     } catch (e) {
-      print('Error actualizando el usuario: $e');
+      print('Error actualizando la academia: $e');
     }
   }
 
-  /// Elimina un usuario de Firestore basado en su ID
-  Future<void> deleteAcademyFromFirestore(AcademyEntity academy) async {
+  /// Elimina una academia desde Firestore
+  Future<void> deleteAcademyFromFirestore(String id) async {
     try {
-      await firestore.collection(colectionName).doc(academy.id).delete();
+      await firestore.collection(collectionName).doc(id).delete();
     } catch (e) {
-      print('Error eliminando el usuario: $e');
+      print('Error eliminando la academia: $e');
     }
   }
 }

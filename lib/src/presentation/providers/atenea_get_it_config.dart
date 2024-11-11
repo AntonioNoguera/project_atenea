@@ -12,12 +12,16 @@ import 'package:proyect_atenea/src/data/repositories_implementations/user_reposi
 import 'package:proyect_atenea/src/domain/repositories/academy_repository.dart';
 import 'package:proyect_atenea/src/domain/repositories/department_repository.dart';
 import 'package:proyect_atenea/src/domain/repositories/session_repository.dart';
+import 'package:proyect_atenea/src/domain/repositories/subject_repository.dart';
 import 'package:proyect_atenea/src/domain/use_cases/academy_use_case.dart';
 import 'package:proyect_atenea/src/domain/use_cases/department_use_case.dart';
 import 'package:proyect_atenea/src/domain/use_cases/session_use_cases.dart';
+import 'package:proyect_atenea/src/domain/use_cases/subject_use_case.dart';
 import 'package:proyect_atenea/src/domain/use_cases/user_use_case.dart';
-import 'package:proyect_atenea/src/presentation/providers/department_provider.dart';
-import 'package:proyect_atenea/src/presentation/providers/session_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/academy_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart'; 
 import '../../domain/repositories/user_repository.dart'; 
 
@@ -61,7 +65,7 @@ Future<void> setupLocator() async {
   locator.registerFactory(() => DeleteUser(locator<UserRepository>()));
 
     // [ACADEMY]
-  locator.registerFactory(() => GetAcademies(locator<AcademyRepository>()));
+  locator.registerFactory(() => GetAllAcademies(locator<AcademyRepository>()));
   locator.registerFactory(() => AddAcademy(locator<AcademyRepository>()));
   locator.registerFactory(() => UpdateAcademy(locator<AcademyRepository>()));
   locator.registerFactory(() => DeleteAcademy(locator<AcademyRepository>()));
@@ -77,6 +81,13 @@ Future<void> setupLocator() async {
   locator.registerFactory(() => DeleteDepartmentUseCase( locator<DepartmentRepository>()));
   locator.registerFactory(() => GetAllDepartmentsUseCase( locator<DepartmentRepository>()));
 
+    // [SUBJECT]
+  locator.registerFactory(() => GetSubjectById( locator<SubjectRepository>() ));
+  locator.registerFactory(() => AddSubject( locator<SubjectRepository>() ));
+  locator.registerFactory(() => UpdateSubject( locator<SubjectRepository>() ));
+  locator.registerFactory(() => DeleteSubject( locator<SubjectRepository>() ));
+  locator.registerFactory(() => GetAllSubjects( locator<SubjectRepository>() ));
+
   // Registro del SessionProvider
   locator.registerFactory(() => SessionProvider(
     getSessionUseCase: locator<GetSessionUseCase>(),
@@ -89,5 +100,21 @@ Future<void> setupLocator() async {
     saveDepartmentUseCase : locator<SaveDepartmentUseCase>(),
     deleteDepartmentUseCase : locator<DeleteDepartmentUseCase>(),
     getAllDepartmentsUseCase : locator<GetAllDepartmentsUseCase>(),
+  ));
+
+  locator.registerFactory(() => AcademyProvider(
+    getAcademyByIdUseCase : locator<GetAcademyById>(),
+    addAcademyUseCase : locator<AddAcademy>(),
+    updateAcademyUseCase : locator<UpdateAcademy>(),
+    deleteAcademyUseCase : locator<DeleteAcademy>(),
+    getAllAcademiesUseCase : locator<GetAllAcademies>(),
+  ));
+
+  locator.registerFactory(() => SubjectProvider(
+    getSubjectByIdUseCase : locator<GetSubjectById>(),
+    addSubjectUseCase : locator<AddSubject>(),
+    updateSubjectUseCase : locator<UpdateSubject>(),
+    deleteSubjectUseCase : locator<DeleteSubject>(),
+    getAllSubjectsUseCase : locator<GetAllSubjects>(),
   ));
 }

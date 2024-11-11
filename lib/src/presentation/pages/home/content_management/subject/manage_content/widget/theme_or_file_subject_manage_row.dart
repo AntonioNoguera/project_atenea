@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class ThemeOrFileSubjectManageRow extends StatelessWidget {

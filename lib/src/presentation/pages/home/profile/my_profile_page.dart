@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/demos/color_picker_demo.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart'; 

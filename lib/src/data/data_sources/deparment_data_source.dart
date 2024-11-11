@@ -1,8 +1,7 @@
+// data/datasources/department_data_source.dart
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:proyect_atenea/src/domain/entities/academic_department/department_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/atomic_permission_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
-import 'package:proyect_atenea/src/domain/entities/permission_entity.dart'; 
+import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 
 class DepartmentDataSource {
@@ -21,49 +20,11 @@ class DepartmentDataSource {
           id: doc.id,
           name: data['name'] ?? '',
           usersWithPermits: (data['usersWithPermits'] as List<dynamic>?)
-                  ?.map((user) => UserEntity(
-                        id: user['id'] ?? '',
-                        userLevel: UserType.values.firstWhere(
-                          (e) => e.toString() == 'UserType.${user['userLevel']}',
-                          orElse: () => UserType.regularUser,
-                        ),
-                        fullName: user['fullName'] ?? '',
-                        passwordHash: user['passwordHash'] ?? '',
-                        createdAt: user['createdAt'] ?? '',
-                        userPermissions: PermissionEntity(
-                          isSuper: user['userPermissions']['isSuper'] ?? false,
-                          department: (user['userPermissions']['department'] as List<dynamic>?)
-                                  ?.map((perm) => AtomicPermissionEntity(
-                                        permissionId: perm['permissionId'] ?? '',
-                                        permissionTypes: PermitTypes.values.firstWhere(
-                                          (e) => e.toString() == 'PermitTypes.${perm['permissionTypes']}',
-                                          orElse: () => PermitTypes.edit,
-                                        ),
-                                      ))
-                                  .toList() ??
-                              [],
-                          academy: (user['userPermissions']['academy'] as List<dynamic>?)
-                                  ?.map((perm) => AtomicPermissionEntity(
-                                        permissionId: perm['permissionId'] ?? '',
-                                        permissionTypes: PermitTypes.values.firstWhere(
-                                          (e) => e.toString() == 'PermitTypes.${perm['permissionTypes']}',
-                                          orElse: () => PermitTypes.edit,
-                                        ),
-                                      ))
-                                  .toList() ??
-                              [],
-                          subject: (user['userPermissions']['subject'] as List<dynamic>?)
-                                  ?.map((perm) => AtomicPermissionEntity(
-                                        permissionId: perm['permissionId'] ?? '',
-                                        permissionTypes: PermitTypes.values.firstWhere(
-                                          (e) => e.toString() == 'PermitTypes.${perm['permissionTypes']}',
-                                          orElse: () => PermitTypes.edit,
-                                        ),
-                                      ))
-                                  .toList() ??
-                              [],
-                        ),
-                      ))
+                  ?.map((user) => UserEntity.fromMap(user))
+                  .toList() ??
+              [],
+          academies: (data['academies'] as List<dynamic>?)
+                  ?.map((path) => firestore.doc(path as String))
                   .toList() ??
               [],
         );
@@ -77,38 +38,12 @@ class DepartmentDataSource {
   /// Agrega un nuevo departamento a Firestore
   Future<void> addDepartmentOnFirestore(DepartmentEntity department) async {
     try {
-      await firestore.collection(collectionName).add({
+      await firestore.collection(collectionName).doc(department.id).set({
         'name': department.name,
-        'usersWithPermits': department.usersWithPermits
-            .map((user) => {
-                  'id': user.id,
-                  'userLevel': user.userLevel.toString().split('.').last,
-                  'fullName': user.fullName,
-                  'passwordHash': user.passwordHash,
-                  'createdAt': user.createdAt,
-                  'userPermissions': {
-                    'isSuper': user.userPermissions.isSuper,
-                    'department': user.userPermissions.department
-                        .map((perm) => {
-                              'permissionId': perm.permissionId,
-                              'permissionTypes': perm.permissionTypes.toString().split('.').last,
-                            })
-                        .toList(),
-                    'academy': user.userPermissions.academy
-                        .map((perm) => {
-                              'permissionId': perm.permissionId,
-                              'permissionTypes': perm.permissionTypes.toString().split('.').last,
-                            })
-                        .toList(),
-                    'subject': user.userPermissions.subject
-                        .map((perm) => {
-                              'permissionId': perm.permissionId,
-                              'permissionTypes': perm.permissionTypes.toString().split('.').last,
-                            })
-                        .toList(),
-                  },
-                })
-            .toList(),
+        'usersWithPermits': department.usersWithPermits.map((user) => user.toMap()).toList(),
+        'academies': department.academies.map((academy) => academy.path).toList(),
+        'lastModificationDateTime': department.lastModificationDateTime,
+        'lastModificationContributor': department.lastModificationContributor,
       });
     } catch (e) {
       print('Error agregando el departamento: $e');
@@ -120,36 +55,10 @@ class DepartmentDataSource {
     try {
       await firestore.collection(collectionName).doc(department.id).update({
         'name': department.name,
-        'usersWithPermits': department.usersWithPermits
-            .map((user) => {
-                  'id': user.id,
-                  'userLevel': user.userLevel.toString().split('.').last,
-                  'fullName': user.fullName,
-                  'passwordHash': user.passwordHash,
-                  'createdAt': user.createdAt,
-                  'userPermissions': {
-                    'isSuper': user.userPermissions.isSuper,
-                    'department': user.userPermissions.department
-                        .map((perm) => {
-                              'permissionId': perm.permissionId,
-                              'permissionTypes': perm.permissionTypes.toString().split('.').last,
-                            })
-                        .toList(),
-                    'academy': user.userPermissions.academy
-                        .map((perm) => {
-                              'permissionId': perm.permissionId,
-                              'permissionTypes': perm.permissionTypes.toString().split('.').last,
-                            })
-                        .toList(),
-                    'subject': user.userPermissions.subject
-                        .map((perm) => {
-                              'permissionId': perm.permissionId,
-                              'permissionTypes': perm.permissionTypes.toString().split('.').last,
-                            })
-                        .toList(),
-                  },
-                })
-            .toList(),
+        'usersWithPermits': department.usersWithPermits.map((user) => user.toMap()).toList(),
+        'academies': department.academies.map((academy) => academy.path).toList(),
+        'lastModificationDateTime': department.lastModificationDateTime,
+        'lastModificationContributor': department.lastModificationContributor,
       });
     } catch (e) {
       print('Error actualizando el departamento: $e');

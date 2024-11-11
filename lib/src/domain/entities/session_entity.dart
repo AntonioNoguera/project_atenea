@@ -1,6 +1,6 @@
-import 'package:proyect_atenea/src/domain/entities/atomic_permission_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
-import 'package:proyect_atenea/src/domain/entities/permission_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 
 class SessionEntity {
   final String token;

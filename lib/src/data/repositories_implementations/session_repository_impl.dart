@@ -1,7 +1,7 @@
 import 'package:proyect_atenea/src/data/data_sources/local_session_data_source.dart';
-import 'package:proyect_atenea/src/domain/entities/atomic_permission_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/enum_fixed_values.dart';
-import 'package:proyect_atenea/src/domain/entities/permission_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/domain/repositories/session_repository.dart';
 

@@ -6,7 +6,8 @@ enum AcademyDepartments {
   manufactura,
 }
 
-enum PlanOptions {
+enum PlanOption {
+  none,
   plan401,
   plan4XX,
 }

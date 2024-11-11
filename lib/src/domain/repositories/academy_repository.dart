@@ -1,9 +1,9 @@
 import 'package:proyect_atenea/src/domain/entities/academy_entity.dart'; 
-import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 
 abstract class AcademyRepository {
-  Future<List<AcademyEntity?>> getAcademies();
-  Future<void> addAcademy(AcademyEntity academyInstance);
-  Future<void> updateAcademy(AcademyEntity academyInstance);
-  Future<void> deleteAcademy(AcademyEntity academyInstance);
+  Future<void> addAcademy(AcademyEntity academy);
+  Future<AcademyEntity?> getAcademyById(String id);
+  Future<void> updateAcademy(AcademyEntity academy);
+  Future<void> deleteAcademy(String id);
+  Future<List<AcademyEntity>> getAllAcademies();
 }
