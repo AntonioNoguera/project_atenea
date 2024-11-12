@@ -126,8 +126,7 @@ class SplashPage extends StatelessWidget {
     await departmentProvider.saveDepartment(
       DepartmentEntity(
         id: 'department_id',
-        name: 'Department Name',
-        usersWithPermits: [],
+        name: 'Department Name', 
       ),
     );
 
@@ -136,8 +135,7 @@ class SplashPage extends StatelessWidget {
     await departmentProvider.deleteDepartment('department_id');
 
     // Ejemplo de uso de los métodos de UserProvider
-    final newUser = UserEntity(
-      id: 'user_id',
+    final newUser = UserEntity( 
       userLevel: UserType.admin,
       fullName: 'John Doe',
       passwordHash: 'hashedPassword',
@@ -171,7 +169,7 @@ class SplashPage extends StatelessWidget {
     await userProvider.updateUser(updatedUser);
 
     // Eliminar usuario
-    await userProvider.deleteUser('user_id');
+    await userProvider.deleteUser('Otli3ozUX82094kC87Lv');
 
     // Obtener todos los usuarios
     final users = await userProvider.getAllUsers();

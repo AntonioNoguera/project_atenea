@@ -17,14 +17,7 @@ enum UserType {
   admin,
   regularUser,
 }
-
-//Gotta deprecate
-enum Permits {
-  edit,
-  delete,
-  view,
-}
-
+ 
 enum PermitTypes {
   edit,
   delete

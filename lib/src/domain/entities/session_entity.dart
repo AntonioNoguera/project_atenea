@@ -22,12 +22,7 @@ class SessionEntity {
         userPermissions = PermissionEntity(
           isSuper: false,
           department: [],
-          academy: [
-            AtomicPermissionEntity(
-              permissionId: 'permissionId',
-              permissionTypes: PermitTypes.edit,
-            ),
-          ],
+          academy: [],
           subject: [],
         ),
         tokenValidUntil = DateTime.now().add(const Duration(days: 30));

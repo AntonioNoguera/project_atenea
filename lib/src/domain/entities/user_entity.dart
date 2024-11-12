@@ -1,4 +1,5 @@
 // domain/entities/user_entity.dart
+import 'package:uuid/uuid.dart';
 
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
@@ -12,13 +13,13 @@ class UserEntity {
   final PermissionEntity userPermissions;
 
   UserEntity({
-    required this.id,
+    String? id,
     required this.userLevel,
     required this.fullName,
     required this.passwordHash,
     required this.createdAt,
     required this.userPermissions,
-  });
+  }) : id = id ?? const Uuid().v4(); 
 
   // Método fromMap para convertir datos de Firestore a UserEntity
   factory UserEntity.fromMap(Map<String, dynamic> data) {

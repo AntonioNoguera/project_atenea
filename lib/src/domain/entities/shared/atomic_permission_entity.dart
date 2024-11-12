@@ -1,32 +1,34 @@
-// domain/entities/atomic_permission_entity.dart
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 
 class AtomicPermissionEntity {
-  final String permissionId;
-  final PermitTypes permissionTypes;
+  final DocumentReference permissionId;
+  final List<PermitTypes> permissionTypes;
 
   AtomicPermissionEntity({
     required this.permissionId,
     required this.permissionTypes,
   });
+ 
+  factory AtomicPermissionEntity.fromMap(Map<String, dynamic> data) { 
+    final List<PermitTypes> permissions = (data['permissionTypes'] as List<dynamic>?)
+        ?.map((type) => PermitTypes.values.firstWhere(
+              (e) => e.toString() == 'PermitTypes.$type',
+              orElse: () => PermitTypes.edit,
+            ))
+        .toList() ??
+        [];
 
-  // Método fromMap para convertir datos de Firestore a AtomicPermissionEntity
-  factory AtomicPermissionEntity.fromMap(Map<String, dynamic> data) {
     return AtomicPermissionEntity(
-      permissionId: data['permissionId'] ?? '',
-      permissionTypes: PermitTypes.values.firstWhere(
-        (e) => e.toString() == 'PermitTypes.${data['permissionTypes']}',
-        orElse: () => PermitTypes.edit,
-      ),
+      permissionId: data['permissionId'] as DocumentReference, 
+      permissionTypes: permissions,
     );
   }
-
-  // Método toMap para convertir AtomicPermissionEntity a Map<String, dynamic>
+ 
   Map<String, dynamic> toMap() {
     return {
       'permissionId': permissionId,
-      'permissionTypes': permissionTypes.toString().split('.').last,
+      'permissionTypes': permissionTypes.map((type) => type.toString().split('.').last).toList(),
     };
   }
 }

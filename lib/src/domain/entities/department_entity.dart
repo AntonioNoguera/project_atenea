@@ -5,16 +5,14 @@ import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 
 class DepartmentEntity {
   final String id;
-  final String name;
-  final List<UserEntity> usersWithPermits;
+  final String name; 
   final String lastModificationDateTime;
   final String lastModificationContributor;
   final List<DocumentReference> academies;
 
   DepartmentEntity({
     required this.id,
-    required this.name,
-    required this.usersWithPermits,
+    required this.name, 
     this.lastModificationDateTime = '',
     this.lastModificationContributor = '',
     this.academies = const [],
@@ -23,8 +21,7 @@ class DepartmentEntity {
   // Constructor nombrado con valores por defecto
   DepartmentEntity.defaultValues()
       : id = 'default_id',
-        name = 'default_name',
-        usersWithPermits = [],
+        name = 'default_name', 
         lastModificationDateTime = DateTime.now().toString(),
         lastModificationContributor = '',
         academies = [];
@@ -33,11 +30,7 @@ class DepartmentEntity {
   factory DepartmentEntity.fromMap(String id, Map<String, dynamic> data, FirebaseFirestore firestore) {
     return DepartmentEntity(
       id: id,
-      name: data['name'] ?? '',
-      usersWithPermits: (data['usersWithPermits'] as List<dynamic>?)
-              ?.map((user) => UserEntity.fromMap(user as Map<String, dynamic>))
-              .toList() ??
-          [],
+      name: data['name'] ?? '', 
       lastModificationDateTime: data['lastModificationDateTime'] ?? '',
       lastModificationContributor: data['lastModificationContributor'] ?? '',
       academies: (data['academies'] as List<dynamic>?)
@@ -50,16 +43,11 @@ class DepartmentEntity {
   // Método toMap para convertir la entidad a un mapa
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'usersWithPermits': usersWithPermits.map((user) => user.toMap()).toList(),
+      'name': name, 
       'lastModificationDateTime': lastModificationDateTime,
       'lastModificationContributor': lastModificationContributor,
       'academies': academies.map((academy) => academy.path).toList(),
     };
   }
-
-  @override
-  String toString() {
-    return 'DepartmentEntity(id: $id, name: $name, usersWithPermits: ${usersWithPermits.map((user) => user.toString()).join(', ')})';
-  }
+ 
 }

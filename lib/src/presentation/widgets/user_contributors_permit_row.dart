@@ -4,12 +4,12 @@ import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class UserContributorsPermitRow extends StatelessWidget {
-  final List<Permits> userPermits;
+  final List<PermitTypes> userPermits;
   final Color svgTint;
 
   const UserContributorsPermitRow({
     super.key,
-    this.userPermits = const [Permits.view],
+    this.userPermits = const [PermitTypes.edit],
     this.svgTint = AppColors.textColor,
   });
 
@@ -21,7 +21,7 @@ class UserContributorsPermitRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
 
-          if (userPermits.contains(Permits.view))
+          if (userPermits.contains(PermitTypes.edit))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(
@@ -32,7 +32,7 @@ class UserContributorsPermitRow extends StatelessWidget {
               ),
             ),
 
-          if (userPermits.contains(Permits.view))
+          if (userPermits.contains(PermitTypes.edit))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(
@@ -43,7 +43,7 @@ class UserContributorsPermitRow extends StatelessWidget {
               ),
             ),
 
-          if (userPermits.contains(Permits.view))
+          if (userPermits.contains(PermitTypes.edit))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(

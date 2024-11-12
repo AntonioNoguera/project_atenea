@@ -4,11 +4,11 @@ import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class AteneaPermitsRow extends StatelessWidget {
-  final List<Permits> userPermits;
+  final List<PermitTypes> userPermits;
 
   const AteneaPermitsRow({
     super.key,
-    this.userPermits = const [Permits.view],
+    this.userPermits = const [PermitTypes.edit],
   });
 
   @override
@@ -20,7 +20,7 @@ class AteneaPermitsRow extends StatelessWidget {
         children: [
           SizedBox(height: 6.0,), 
 
-          if (userPermits.contains(Permits.view))
+          if (userPermits.contains(PermitTypes.edit))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(
@@ -30,7 +30,7 @@ class AteneaPermitsRow extends StatelessWidget {
                 color: AppColors.grayColor,
               ),
             ),
-          if (userPermits.contains(Permits.view))
+          if (userPermits.contains(PermitTypes.edit))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(
@@ -40,7 +40,7 @@ class AteneaPermitsRow extends StatelessWidget {
                 color: AppColors.grayColor,
               ),
             ),
-          if (userPermits.contains(Permits.view))
+          if (userPermits.contains(PermitTypes.edit))
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SvgPicture.asset(

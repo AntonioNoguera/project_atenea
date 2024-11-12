@@ -1,8 +1,5 @@
-// data/datasources/department_data_source.dart
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 
 class DepartmentDataSource {
   final FirebaseFirestore firestore;
@@ -16,18 +13,7 @@ class DepartmentDataSource {
       QuerySnapshot snapshot = await firestore.collection(collectionName).get();
       return snapshot.docs.map((doc) {
         var data = doc.data() as Map<String, dynamic>;
-        return DepartmentEntity(
-          id: doc.id,
-          name: data['name'] ?? '',
-          usersWithPermits: (data['usersWithPermits'] as List<dynamic>?)
-                  ?.map((user) => UserEntity.fromMap(user))
-                  .toList() ??
-              [],
-          academies: (data['academies'] as List<dynamic>?)
-                  ?.map((path) => firestore.doc(path as String))
-                  .toList() ??
-              [],
-        );
+        return DepartmentEntity.fromMap(doc.id, data, firestore); // Usa fromMap para crear la entidad
       }).toList();
     } catch (e) {
       print('Error obteniendo los departamentos: $e');
@@ -38,13 +24,7 @@ class DepartmentDataSource {
   /// Agrega un nuevo departamento a Firestore
   Future<void> addDepartmentOnFirestore(DepartmentEntity department) async {
     try {
-      await firestore.collection(collectionName).doc(department.id).set({
-        'name': department.name,
-        'usersWithPermits': department.usersWithPermits.map((user) => user.toMap()).toList(),
-        'academies': department.academies.map((academy) => academy.path).toList(),
-        'lastModificationDateTime': department.lastModificationDateTime,
-        'lastModificationContributor': department.lastModificationContributor,
-      });
+      await firestore.collection(collectionName).doc(department.id).set(department.toMap()); // Usa toMap para guardar el departamento
     } catch (e) {
       print('Error agregando el departamento: $e');
     }
@@ -53,13 +33,7 @@ class DepartmentDataSource {
   /// Actualiza un departamento existente en Firestore
   Future<void> updateDepartmentOnFirestore(DepartmentEntity department) async {
     try {
-      await firestore.collection(collectionName).doc(department.id).update({
-        'name': department.name,
-        'usersWithPermits': department.usersWithPermits.map((user) => user.toMap()).toList(),
-        'academies': department.academies.map((academy) => academy.path).toList(),
-        'lastModificationDateTime': department.lastModificationDateTime,
-        'lastModificationContributor': department.lastModificationContributor,
-      });
+      await firestore.collection(collectionName).doc(department.id).update(department.toMap()); // Usa toMap para actualizar el departamento
     } catch (e) {
       print('Error actualizando el departamento: $e');
     }
