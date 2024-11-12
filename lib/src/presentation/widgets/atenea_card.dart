@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class AteneaCard extends StatelessWidget {
   final Widget child;
 
-  AteneaCard({
+  const AteneaCard({
     super.key, 
     required this.child,
   });

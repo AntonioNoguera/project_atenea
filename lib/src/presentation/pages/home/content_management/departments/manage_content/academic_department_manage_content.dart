@@ -230,7 +230,7 @@ class AcademicDepartmentManageContent extends StatelessWidget {
                       onPressedCallback: () {
                         Navigator.of(context).pop();
                       },
-                      buttonStyles: AteneaButtonStyles(
+                      buttonStyles: const AteneaButtonStyles(
                         backgroundColor: AppColors.secondaryColor,
                         textColor: AppColors.ateneaWhite,
                       ),

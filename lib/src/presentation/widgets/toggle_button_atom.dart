@@ -49,11 +49,11 @@ class ToggleButtonAtom extends StatelessWidget {
                   style: BorderStyle.solid,
                 ), 
       ),
-      //Vaya si no esta activo, entonces no se lanza nada literal
+      
       onPressed: 
         !isActive ? onPressed : () {
             Fluttertoast.showToast(
-            msg: 'Ya te encuentras en la pestaña de: ${text} !',
+            msg: 'Ya te encuentras en la pestaña de: $text !',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             backgroundColor: AppColors.grayColor, // Color de fondo del toast

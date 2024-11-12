@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/profile/my_profile_page.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/my_subects/my_subjects_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/my_subjects_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
@@ -38,13 +38,13 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildHomePage(BuildContext context, SessionEntity session) {
-    int _selectedIndex = 0;
+    int selectedIndex = 0;
 
-    void _onItemTapped(int index) {
-      _selectedIndex = index;
+    void onItemTapped(int index) {
+      selectedIndex = index;
     }
 
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       const MySubjectsPage(),
       MyProfilePage(session),
     ];
@@ -60,8 +60,8 @@ class HomePage extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 IndexedStack(
-                  index: _selectedIndex,
-                  children: _pages,
+                  index: selectedIndex,
+                  children: pages,
                 ),
                 Positioned(
                   left: 20,
@@ -84,8 +84,8 @@ class HomePage extends StatelessWidget {
                         AnimatedPositioned(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeInOut,
-                          left: _selectedIndex == 0 ? 0 : null,
-                          right: _selectedIndex == 1 ? 0 : null,
+                          left: selectedIndex == 0 ? 0 : null,
+                          right: selectedIndex == 1 ? 0 : null,
                           top: 0,
                           bottom: 0,
                           child: AnimatedContainer(
@@ -103,10 +103,10 @@ class HomePage extends StatelessWidget {
                           elevation: 0,
                           selectedItemColor: AppColors.ateneaWhite,
                           unselectedItemColor: AppColors.ateneaWhite.withOpacity(0.6),
-                          currentIndex: _selectedIndex,
+                          currentIndex: selectedIndex,
                           onTap: (index) {
                             setState(() {
-                              _onItemTapped(index);
+                              onItemTapped(index);
                             });
                           },
                           type: BottomNavigationBarType.fixed,

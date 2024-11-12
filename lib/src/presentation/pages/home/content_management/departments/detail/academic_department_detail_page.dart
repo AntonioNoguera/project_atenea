@@ -5,7 +5,6 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/ac
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/manage_content/academic_department_manage_content.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
@@ -26,7 +25,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
         builder: (context, scrollNotifier, child) {
           return AteneaScaffold(
             body: Padding(
-              padding: EdgeInsets.symmetric( vertical: 30.0, ),
+              padding: const EdgeInsets.symmetric( vertical: 30.0, ),
               child: Stack(
                 children: [
                   Column(
@@ -115,10 +114,10 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                   )
                                 ),
                                 
-                                SizedBox(height: 20.0,),
+                                const SizedBox(height: 20.0,),
                                 Column(
                                   children: List.generate(4, (index) {
-                                    return AcademyItemRow();
+                                    return const AcademyItemRow();
                                   }),
                                 ), 
                               ],
@@ -135,7 +134,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                     left: 0,
                     right: 0,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                       children: [
                       Row(
@@ -148,7 +147,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                   Navigator.push(
                                     context, 
                                     
-                                    AteneaPageAnimator(page: AcademyCreateNewPage()) 
+                                    AteneaPageAnimator(page: const AcademyCreateNewPage()) 
                                   );
                                 },
                             ), 

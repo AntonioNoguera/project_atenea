@@ -34,7 +34,7 @@ class MemberRow extends StatelessWidget {
               style: AppTextStyles.builder(color: textColor, weight: FontWeights.regular, size: FontSizes.body2),
             ),
           ),
-          SizedBox(width: 10.0),
+          const SizedBox(width: 10.0),
 
           if(hasSvg)
 

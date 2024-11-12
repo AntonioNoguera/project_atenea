@@ -1,7 +1,4 @@
-// domain/entities/department_entity.dart
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 
 class DepartmentEntity {
   final String id;
@@ -17,16 +14,14 @@ class DepartmentEntity {
     this.lastModificationContributor = '',
     this.academies = const [],
   });
-
-  // Constructor nombrado con valores por defecto
+ 
   DepartmentEntity.defaultValues()
       : id = 'default_id',
         name = 'default_name', 
         lastModificationDateTime = DateTime.now().toString(),
         lastModificationContributor = '',
         academies = [];
-
-  // Método fromMap para crear una instancia desde un mapa
+ 
   factory DepartmentEntity.fromMap(String id, Map<String, dynamic> data, FirebaseFirestore firestore) {
     return DepartmentEntity(
       id: id,

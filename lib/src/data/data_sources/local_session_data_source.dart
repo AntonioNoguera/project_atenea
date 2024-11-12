@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/entities/session_entity.dart';
 import '../../domain/entities/shared/permission_entity.dart';

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class ColorPickerDemo extends StatefulWidget {
+  const ColorPickerDemo({super.key});
+
   @override
   _ColorPickerDemoState createState() => _ColorPickerDemoState();
 }
@@ -16,7 +18,7 @@ class _ColorPickerDemoState extends State<ColorPickerDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Selector de Color')),
+      appBar: AppBar(title: const Text('Selector de Color')),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
@@ -45,10 +47,10 @@ class _ColorPickerDemoState extends State<ColorPickerDemo> {
               },
             );
           },
-          child: Text('Abrir Selector de Color'),
           style: ElevatedButton.styleFrom(
             backgroundColor: selectedColor, // Reemplaza 'primary' con 'backgroundColor'
           ),
+          child: const Text('Abrir Selector de Color'),
         ),
       ),
     );

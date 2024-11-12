@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 
 //In order to send only the button styles
@@ -27,7 +26,7 @@ class AteneaButtonCallback {
     required this.onPressedCallback,
     AteneaButtonStyles? buttonStyles,
   }) : buttonStyles = buttonStyles ??
-            AteneaButtonStyles(
+            const AteneaButtonStyles(
               backgroundColor: AppColors.primaryColor,
               textColor: AppColors.ateneaWhite,
             );
@@ -59,7 +58,7 @@ class AteneaDialog extends StatelessWidget {
       ),
       content: content,
       actions: <Widget>[
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

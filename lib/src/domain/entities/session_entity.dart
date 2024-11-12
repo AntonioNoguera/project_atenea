@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart'; // Temp line in orde to debug
 import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
@@ -14,14 +15,18 @@ class SessionEntity {
     required this.userPermissions,
     required this.tokenValidUntil,
   });
-
-  // Constructor nombrado con valores por defecto
+ 
   SessionEntity.defaultValues()
       : token = 'default_token',
         userId = 'default_user_id',
         userPermissions = PermissionEntity(
           isSuper: false,
-          department: [],
+          department: [
+            AtomicPermissionEntity(
+              permissionId: FirebaseFirestore.instance.collection('departments').doc('default_department_id'),
+              permissionTypes: [PermitTypes.edit],
+            ),
+          ],
           academy: [],
           subject: [],
         ),

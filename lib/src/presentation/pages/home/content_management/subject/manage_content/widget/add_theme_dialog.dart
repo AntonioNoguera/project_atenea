@@ -9,8 +9,7 @@ import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20
 class AddThemeDialog extends StatelessWidget {
   const AddThemeDialog ({super.key});
 
-  void _handleToggle(int index) {
-    // Maneja el cambio de índice aquí
+  void _handleToggle(int index) { 
     print(index.toString());
   }
 
@@ -37,14 +36,14 @@ class AddThemeDialog extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
 
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
 
                 const AteneaField(
                   placeHolder: 'Nombre del Tema',
                   inputNameText: 'Nombre del tema',
                 ), 
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 Text(
                   'Esta unidad temática corresponde a',
                   style: AppTextStyles.builder(
@@ -55,7 +54,7 @@ class AddThemeDialog extends StatelessWidget {
                 ),
                 ToggleButtonsWidget(
                   onToggle: _handleToggle,
-                  toggleOptions: ['Medio Curso', 'Ordinario'],
+                  toggleOptions: const ['Medio Curso', 'Ordinario'],
                 ),
  
 
@@ -69,7 +68,7 @@ class AddThemeDialog extends StatelessWidget {
             onPressedCallback: () {
               Navigator.of(context).pop();
             },
-            buttonStyles: AteneaButtonStyles(
+            buttonStyles: const AteneaButtonStyles(
               backgroundColor: AppColors.secondaryColor,
               textColor: AppColors.ateneaWhite,
             ),

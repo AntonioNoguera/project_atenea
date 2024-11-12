@@ -32,7 +32,7 @@ class AteneaButtonV2 extends StatelessWidget {
 
   final EdgeInsets padding;
   
-  AteneaButtonV2({
+  const AteneaButtonV2({
     super.key, 
     this.text,
     this.onPressed, 

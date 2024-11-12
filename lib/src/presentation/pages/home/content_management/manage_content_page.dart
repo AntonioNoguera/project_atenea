@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/detail/widgets/academic_department_item_row.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
@@ -17,7 +16,7 @@ class ManageContentPage extends StatelessWidget {
 
     return AteneaScaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 30.0,
         ),
         child: Stack(
@@ -70,7 +69,7 @@ class ManageContentPage extends StatelessWidget {
                           const SizedBox(height: 10),
                           Column(
                             children: List.generate(8, (index) {
-                              return AcademicDepartmentItemRow();
+                              return const AcademicDepartmentItemRow();
                             }),
                           ),
                         ],

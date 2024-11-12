@@ -41,7 +41,7 @@ class AteneaBottomDialog extends StatelessWidget {
               left: 0,
               right: 0,
               bottom: 0,
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: childContent,
               ),

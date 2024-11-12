@@ -26,7 +26,7 @@ class HomeSubject extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: SubjectDetailPage())
+              AteneaPageAnimator(page: const SubjectDetailPage())
             );
           },
           child: Column(
@@ -98,7 +98,7 @@ class HomeSubject extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 3,),
-                            AteneaPermitsRow()
+                            const AteneaPermitsRow()
                           ],
                           
                         ),

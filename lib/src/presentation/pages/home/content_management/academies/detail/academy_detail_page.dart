@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/manage_content/academy_manage_content.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/create/subject_create_new_page.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/my_subects/widgets/home_subject.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/home_subject.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
@@ -156,7 +156,7 @@ class AcademyDetailPage extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       AteneaPageAnimator(
-                                        page: SubjectCreateNewPage()
+                                        page: const SubjectCreateNewPage()
                                       ),
                                     );
                                 },

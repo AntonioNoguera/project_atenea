@@ -5,7 +5,6 @@ import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_checkbox_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
-import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 
 class AddContributorDialog extends StatelessWidget {
   const AddContributorDialog({super.key});
@@ -66,7 +65,7 @@ class AddContributorDialog extends StatelessWidget {
                         checkboxText: 'Modificar Contenidos',
                         initialState: true, 
                         onChanged: (value) {
-                          print("Esta seleccionado: " + value.toString());
+                          print('Esta seleccionado: $value');
                         },
                       ), 
                     ),
@@ -80,7 +79,7 @@ class AddContributorDialog extends StatelessWidget {
                     checkboxText: 'Añadir nuevos contribuidores',
                     initialState: true, 
                     onChanged: (value) {
-                      print("Esta seleccionado: " + value.toString());
+                      print('Esta seleccionado: $value');
                     },
                   ), 
               ],

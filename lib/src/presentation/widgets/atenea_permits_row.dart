@@ -14,11 +14,11 @@ class AteneaPermitsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center, // Centra el contenido tanto vertical como horizontalmente
+      alignment: Alignment.center, 
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center, // Centra horizontalmente los íconos en el Row
+        mainAxisAlignment: MainAxisAlignment.center, 
         children: [
-          SizedBox(height: 6.0,), 
+          const SizedBox(height: 6.0,), 
 
           if (userPermits.contains(PermitTypes.edit))
             Padding(

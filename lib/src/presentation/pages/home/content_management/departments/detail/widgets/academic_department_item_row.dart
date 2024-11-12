@@ -26,7 +26,7 @@ class AcademicDepartmentItemRow extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: AcademicDepartmentDetailPage())
+              AteneaPageAnimator(page: const AcademicDepartmentDetailPage())
             );
           },
           child: Column(
@@ -100,7 +100,7 @@ class AcademicDepartmentItemRow extends StatelessWidget {
                                   weight: FontWeights.regular
                                 ),
                               ),
-                            AteneaPermitsRow()
+                            const AteneaPermitsRow()
                           ],
                         ), 
                       ],

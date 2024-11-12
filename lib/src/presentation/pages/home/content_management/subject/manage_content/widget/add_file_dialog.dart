@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
@@ -92,7 +90,7 @@ class AddFileDialog extends StatelessWidget {
             onPressedCallback: () {
               Navigator.of(context).pop();
             },
-            buttonStyles: AteneaButtonStyles(
+            buttonStyles: const AteneaButtonStyles(
               backgroundColor: AppColors.secondaryColor,
               textColor: AppColors.ateneaWhite,
             ),

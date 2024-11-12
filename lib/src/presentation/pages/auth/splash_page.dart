@@ -11,7 +11,7 @@ import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
 class SplashPage extends StatelessWidget {
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({super.key});
 
   @override
   Widget build(BuildContext context) {

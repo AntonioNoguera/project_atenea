@@ -242,7 +242,7 @@ class AcademyCreateNewPage extends StatelessWidget {
                                       onPressedCallback: () {
                                         Navigator.of(context).pop();
                                       },
-                                      buttonStyles: AteneaButtonStyles(backgroundColor: AppColors.secondaryColor, textColor: AppColors.ateneaWhite)
+                                      buttonStyles: const AteneaButtonStyles(backgroundColor: AppColors.secondaryColor, textColor: AppColors.ateneaWhite)
                                     ),
                                     AteneaButtonCallback(
                                       textButton:'Aceptar',

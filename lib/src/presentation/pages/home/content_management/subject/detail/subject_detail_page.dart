@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/detail/academy_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/subject_modify_content_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/widget/theme_or_file_subject.dart';
@@ -10,7 +9,6 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class SubjectDetailPage extends StatelessWidget {
@@ -95,7 +93,7 @@ class SubjectDetailPage extends StatelessWidget {
                           const SizedBox(height: 10),
                           ToggleButtonsWidget(
                             onToggle: (index) => _handleToggle(context, index),
-                            toggleOptions: ['Temas', 'Recursos'],
+                            toggleOptions: const ['Temas', 'Recursos'],
                           ),
                           const SizedBox(height: 10),
                           _renderedContent(activeIndexNotifier.activeIndex),
@@ -108,7 +106,7 @@ class SubjectDetailPage extends StatelessWidget {
                     children: [
                       AteneaButtonV2(
                         text: 'Volver',
-                        btnStyles: AteneaButtonStyles(
+                        btnStyles: const AteneaButtonStyles(
                           backgroundColor: AppColors.secondaryColor,
                           textColor: AppColors.ateneaWhite
                         ),
@@ -124,7 +122,7 @@ class SubjectDetailPage extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              AteneaPageAnimator(page: SubjectModifyContentPage())
+                              AteneaPageAnimator(page: const SubjectModifyContentPage())
                             );
                           },
                         ),

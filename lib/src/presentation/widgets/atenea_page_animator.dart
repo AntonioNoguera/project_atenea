@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_background.dart';
 
 class AteneaPageAnimator extends PageRouteBuilder {
   final Widget page;

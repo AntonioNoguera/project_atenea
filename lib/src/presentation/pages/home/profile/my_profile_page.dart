@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
-import 'package:proyect_atenea/src/presentation/pages/demos/color_picker_demo.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_bottom_dialog.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
@@ -47,7 +44,7 @@ class MyProfilePage extends StatelessWidget {
 
             const SizedBox(height: 20.0),
  
-            if (userSession.userPermissions.academy.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
+            if (userSession.userPermissions.department.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
               AteneaButtonV2(
                 text: 'Editar Contenidos',
                 xpndText: true,
@@ -55,7 +52,7 @@ class MyProfilePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    AteneaPageAnimator(page: ManageContentPage())
+                    AteneaPageAnimator(page: const ManageContentPage())
                   ); 
                 },
               ),
@@ -149,7 +146,7 @@ class MyProfilePage extends StatelessWidget {
                                     builder: (BuildContext context) {
                                       return AteneaDialog(
                                         title: 'Cambios Guardados',
-                                        content: Text('Tus cambios han sido guardados exitosamente.'),
+                                        content: const Text('Tus cambios han sido guardados exitosamente.'),
                                         buttonCallbacks: [
                                           AteneaButtonCallback(
                                             textButton:'Aceptar',
@@ -179,7 +176,7 @@ class MyProfilePage extends StatelessWidget {
             const SizedBox(height: 10.0),
 
             // Mostrar 'Administrar Usuarios' solo si el usuario es super admin 
-            if (userSession.userPermissions.academy.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
+            if (userSession.userPermissions.department.isNotEmpty || userSession.userPermissions.subject.isNotEmpty )  ...[
               AteneaButtonV2(
                 text: 'Administrar Usuarios',
                 xpndText: true,
@@ -208,14 +205,14 @@ class MyProfilePage extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AteneaDialog(
                       title: '¿Cerrar Cuenta?',
-                      content: Text('Tendrás que volver a ingresar tus datos al volver, y tu contenido descargado se perderá.'),
+                      content: const Text('Tendrás que volver a ingresar tus datos al volver, y tu contenido descargado se perderá.'),
                       buttonCallbacks: [
                         AteneaButtonCallback(
                           textButton:'Cancelar',
                           onPressedCallback: () {  
                             Navigator.of(context).pop();
                           },
-                          buttonStyles: AteneaButtonStyles(backgroundColor: AppColors.secondaryColor, textColor: AppColors.ateneaWhite)
+                          buttonStyles: const AteneaButtonStyles(backgroundColor: AppColors.secondaryColor, textColor: AppColors.ateneaWhite)
                         ),
                         AteneaButtonCallback(
                           textButton:'Aceptar',
