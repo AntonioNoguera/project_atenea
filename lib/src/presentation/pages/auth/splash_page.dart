@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class SplashPage extends StatelessWidget {
     final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
 
     // Inicializar los datos de usuario y departamento
-    initializeAllData(departmentProvider, userProvider, academyProvider, subjectProvider);
+    initializeAllData(departmentProvider, userProvider, academyProvider, subjectProvider, FirebaseFirestore.instance, );
 
     // Contenido de la pantalla de splashp
     final splashContent = SafeArea(
@@ -126,36 +127,7 @@ class SplashPage extends StatelessWidget {
     );
   }
 
-  Future<void> initializeDepartmentData(DepartmentProvider departmentProvider) async {
-    // Guardar un nuevo departamento
-    final newDepartment = DepartmentEntity(
-      id: 'department_id',
-      name: 'Department Name',
-    );
-    await departmentProvider.saveDepartment(newDepartment);
-    print('Departamento guardado: ${newDepartment.name}');
-
-    // Obtener todos los departamentos
-    final allDepartments = await departmentProvider.getAllDepartments();
-    print('Todos los departamentos obtenidos: ${allDepartments.map((d) => d.name).join(', ')}');
-
-    // Obtener un departamento por ID
-    final department = await departmentProvider.getDepartment(newDepartment.id);
-    if (department != null) {
-      print('Departamento obtenido: ${department.name}');
-    } else {
-      print('No se encontró el departamento con ID: department_id');
-    }
-
-    // Actualizar el departamento
-    final updatedDepartment = DepartmentEntity(
-      id: newDepartment.id,
-      name: 'Updated Department Name',
-    );
-    await departmentProvider.updateDepartment(updatedDepartment);
-    print('Departamento actualizado: ${updatedDepartment.name}');
-  }
-
+ 
 Future<void> initializeUserData(UserProvider userProvider) async {
   // Crear un nuevo usuario
   final newUser = UserEntity(
@@ -178,11 +150,11 @@ Future<void> initializeUserData(UserProvider userProvider) async {
   }
 
   // Obtener un usuario por ID
-  await userProvider.getUserById('user_id');
+  await userProvider.getUserById(newUser.id);
 
   // Actualizar usuario
   final updatedUser = UserEntity(
-    id: 'user_id',
+    id: newUser.id,
     userLevel: UserType.regularUser,
     fullName: 'John Updated',
     passwordHash: 'newPasswordHash',
@@ -196,47 +168,59 @@ Future<void> initializeUserData(UserProvider userProvider) async {
   print('Todos los usuarios obtenidos: ${users.map((u) => u.fullName).join(', ')}');
 }
 
-Future<void> initializeAcademyData(AcademyProvider academyProvider) async {
-  // Guardar una nueva academia
-  final newAcademy = AcademyEntity( 
+Future<void> initializeAllData(
+  DepartmentProvider departmentProvider,
+  UserProvider userProvider,
+  AcademyProvider academyProvider,
+  SubjectProvider subjectProvider,
+  FirebaseFirestore firestore,
+) async {
+  // 1. Inicializar y guardar un nuevo departamento
+  final newDepartment = DepartmentEntity(
+    id: 'department_id',
+    name: 'Department Name',
+  );
+  await departmentProvider.saveDepartment(newDepartment);
+  print('Departamento guardado: ${newDepartment.name}');
+
+  // Crear un DocumentReference para el departamento guardado
+  final parentDepartment = firestore.collection('departments').doc(newDepartment.id);
+
+  // Obtener el departamento para verificar
+  final department = await departmentProvider.getDepartment(newDepartment.id);
+  if (department != null) {
+    print('Departamento obtenido: ${department.name}');
+  } else {
+    print('No se encontró el departamento con ID: ${newDepartment.id}');
+  }
+
+  // 2. Inicializar y guardar una nueva academia, usando el DocumentReference del departamento como parentDepartment
+  final newAcademy = AcademyEntity(
     name: 'Academy Name',
+    parentDepartment: parentDepartment,
     lastModificationContributor: 'admin',
     lastModificationDateTime: DateTime.now().toString(),
   );
   await academyProvider.addAcademy(newAcademy);
   print('Academia guardada: ${newAcademy.name}');
 
-  // Obtener una academia por ID
+  // Crear un DocumentReference para la academia guardada
+  final parentAcademy = firestore.collection('academies').doc(newAcademy.id);
+
+  // Obtener la academia para verificar
   final academy = await academyProvider.getAcademy(newAcademy.id);
   if (academy != null) {
     print('Academia obtenida: ${academy.name}');
   } else {
-    print('No se encontró la academia con ID:${newAcademy.id}');
+    print('No se encontró la academia con ID: ${newAcademy.id}');
   }
 
-  // Actualizar academia
-  final updatedAcademy = AcademyEntity(
-    id: newAcademy.id,
-    name: 'Updated Academy Name',
-    lastModificationContributor: 'admin',
-    lastModificationDateTime: DateTime.now().toString(),
-  );
-  await academyProvider.updateAcademy(updatedAcademy);
-  print('Academia actualizada: ${updatedAcademy.name}');
-
-  // Obtener todas las academias
-  final academies = await academyProvider.getAllAcademies();
-  print('Todas las academias obtenidas: ${academies.map((a) => a.name).join(', ')}');
-}
-
-Future<void> initializeSubjectData(SubjectProvider subjectProvider) async {
-  // Crear contenido simulado para el plan de la materia
+  // 3. Inicializar y guardar una nueva materia, usando el DocumentReference de la academia como parentAcademy
   final mockContentEntity = ContentEntity(
     halfTerm: ['Tema1', 'Tema2', 'Tema3'],
     ordinary: ['Examen1', 'Examen2'],
   );
 
-  // Crear contenido simulado para el plan de contenido
   final mockPlanContentEntity = PlanContentEntity(
     planNumber: PlanOption.plan401,
     autorizedAdmins: ['admin1', 'admin2'],
@@ -244,52 +228,28 @@ Future<void> initializeSubjectData(SubjectProvider subjectProvider) async {
     subjectFiles: mockContentEntity,
   );
 
-  // Crear una nueva materia con datos de plan simulados
-  final newSubject = SubjectEntity( 
+  final newSubject = SubjectEntity(
     name: 'Subject Name',
-    lastModificationContributor: 'admin',
-    lastModificationDateTime: DateTime.now().toString(),
-    subjectPlanData: [mockPlanContentEntity], // Asignar el contenido simulado
-  );
-
-  // Guardar la nueva materia
-  await subjectProvider.addSubject(newSubject);
-  print('Materia guardada: ${newSubject.name}');
-
-  // Obtener la materia por ID
-  final subject = await subjectProvider.getSubject(newSubject.id);
-  if (subject != null) {
-    print('Materia obtenida: ${subject.name}');
-  } else {
-    print('No se encontró la materia con ID: subject_id');
-  }
-
-  // Actualizar la materia con datos modificados
-  final updatedSubject = SubjectEntity(
-    id: newSubject.id,
-    name: 'Updated Subject Name',
+    parentAcademy: parentAcademy,
     lastModificationContributor: 'admin',
     lastModificationDateTime: DateTime.now().toString(),
     subjectPlanData: [mockPlanContentEntity],
   );
-  await subjectProvider.updateSubject(updatedSubject);
-  print('Materia actualizada: ${updatedSubject.name}');
+  await subjectProvider.addSubject(newSubject);
+  print('Materia guardada: ${newSubject.name}');
 
-  // Obtener todas las materias
-  final subjects = await subjectProvider.getAllSubjects();
-  print('Todas las materias obtenidas: ${subjects.map((s) => s.name).join(', ')}');
-}
+  // Obtener la materia para verificar
+  final subject = await subjectProvider.getSubject(newSubject.id);
+  if (subject != null) {
+    print('Materia obtenida: ${subject.name}');
+  } else {
+    print('No se encontró la materia con ID: ${newSubject.id}');
+  }
 
-Future<void> initializeAllData(
-  DepartmentProvider departmentProvider,
-  UserProvider userProvider,
-  AcademyProvider academyProvider,
-  SubjectProvider subjectProvider,
-) async {
-  await initializeDepartmentData(departmentProvider);
+  // 4. Inicializar datos de usuario
   await initializeUserData(userProvider);
-  await initializeAcademyData(academyProvider);
-  await initializeSubjectData(subjectProvider);
+
+  print('Inicialización completa de todos los datos.');
 }
 
 

@@ -12,10 +12,10 @@ class SubjectDataSource {
       QuerySnapshot snapshot = await firestore.collection(collectionName).get();
       return snapshot.docs.map((doc) {
         var data = doc.data() as Map<String, dynamic>;
-        return SubjectEntity.fromMap(doc.id, data); // Usa fromMap para crear la entidad
+        return SubjectEntity.fromMap(doc.id, data, firestore); // Agrega firestore como tercer argumento
       }).toList();
     } catch (e) {
-      print('Error obteniendo los subjects: $e');
+      print('Error obteniendo las materias: $e');
       return [];
     }
   }

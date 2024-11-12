@@ -89,6 +89,7 @@ Future<void> setupLocator() async {
     // [DEPARTMENT]
   locator.registerFactory(() => GetDepartmentUseCase( locator<DepartmentRepository>()));
   locator.registerFactory(() => SaveDepartmentUseCase( locator<DepartmentRepository>()));
+  locator.registerFactory(() => UpdateDepartmentUseCase( locator<DepartmentRepository>())); 
   locator.registerFactory(() => DeleteDepartmentUseCase( locator<DepartmentRepository>()));
   locator.registerFactory(() => GetAllDepartmentsUseCase( locator<DepartmentRepository>()));
 

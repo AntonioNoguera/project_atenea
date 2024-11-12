@@ -13,13 +13,14 @@ class AcademyDataSource {
       QuerySnapshot snapshot = await firestore.collection(collectionName).get();
       return snapshot.docs.map((doc) {
         var data = doc.data() as Map<String, dynamic>;
-        return AcademyEntity.fromMap(data, doc.id); // Usa el fromMap actualizado
+        return AcademyEntity.fromMap(data, doc.id, firestore); // Agrega firestore como tercer argumento
       }).toList();
     } catch (e) {
       print('Error obteniendo las academias: $e');
       return [];
     }
   }
+
 
   /// Agrega una nueva academia a Firestore
   Future<void> addAcademyOnFirestore(AcademyEntity academy) async {
