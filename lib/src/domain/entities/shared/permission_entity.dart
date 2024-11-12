@@ -1,5 +1,3 @@
-// domain/entities/permission_entity.dart
-
 import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
 
 class PermissionEntity {
@@ -14,6 +12,13 @@ class PermissionEntity {
     required this.academy,
     required this.subject,
   });
+
+  // Constructor con valores por defecto
+  PermissionEntity.defaultValues()
+      : isSuper = false,
+        department = [],
+        academy = [],
+        subject = [];
 
   // Método fromMap para convertir datos de Firestore a PermissionEntity
   factory PermissionEntity.fromMap(Map<String, dynamic> data) {

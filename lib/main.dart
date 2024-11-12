@@ -9,6 +9,7 @@ import 'package:proyect_atenea/src/presentation/pages/auth/splash_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/home_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/firebase_options.dart'; 
 
@@ -31,6 +32,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => locator<DepartmentProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => locator<UserProvider>(),
         ),
       ],
       child: const MyApp(),

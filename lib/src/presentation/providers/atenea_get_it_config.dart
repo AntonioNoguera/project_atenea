@@ -25,6 +25,7 @@ import 'package:proyect_atenea/src/presentation/providers/remote_providers/acade
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/repositories/user_repository.dart';
 
@@ -126,11 +127,12 @@ Future<void> setupLocator() async {
     getAllSubjectsUseCase : locator<GetAllSubjects>(),
   ));
 
-  locator.registerFactory(() => SubjectProvider(
-    getSubjectByIdUseCase : locator<GetSubjectById>(),
-    addSubjectUseCase : locator<AddSubject>(),
-    updateSubjectUseCase : locator<UpdateSubject>(),
-    deleteSubjectUseCase : locator<DeleteSubject>(),
-    getAllSubjectsUseCase : locator<GetAllSubjects>(),
+  locator.registerFactory(() => UserProvider(
+    loginUserUseCase : locator<LoginUserUseCase>(),
+    getUserByIdUseCase : locator<GetUserByIdUseCase>(),
+    addUserUseCase : locator<AddUserUseCase>(),
+    updateUserUseCase : locator<UpdateUserUseCase>(),
+    deleteUserUseCase : locator<DeleteUserUseCase>(),
+    getAllUsersUseCase : locator<GetAllUsersUseCase>(),
   ));
 }
