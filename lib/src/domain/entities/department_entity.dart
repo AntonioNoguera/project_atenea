@@ -1,3 +1,5 @@
+
+import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; 
 
 class DepartmentEntity {
@@ -8,12 +10,12 @@ class DepartmentEntity {
   final List<DocumentReference> academies;
 
   DepartmentEntity({
-    required this.id,
+    String? id,
     required this.name, 
     this.lastModificationDateTime = '',
     this.lastModificationContributor = '',
     this.academies = const [],
-  });
+  }) : id = id ?? const Uuid().v4(); 
  
   DepartmentEntity.defaultValues()
       : id = 'default_id',

@@ -5,12 +5,14 @@ import 'package:proyect_atenea/src/domain/use_cases/department_use_case.dart';
 class DepartmentProvider with ChangeNotifier {
   final GetDepartmentUseCase getDepartmentUseCase;
   final SaveDepartmentUseCase saveDepartmentUseCase;
+  final UpdateDepartmentUseCase updateDepartmentUseCase; 
   final DeleteDepartmentUseCase deleteDepartmentUseCase;
   final GetAllDepartmentsUseCase getAllDepartmentsUseCase;
 
   DepartmentProvider({
     required this.getDepartmentUseCase,
     required this.saveDepartmentUseCase,
+    required this.updateDepartmentUseCase,
     required this.deleteDepartmentUseCase,
     required this.getAllDepartmentsUseCase,
   });
@@ -26,6 +28,13 @@ class DepartmentProvider with ChangeNotifier {
     print('Guardando departamento: $department');
     await saveDepartmentUseCase(department);
     print('Departamento guardado');
+    notifyListeners();
+  }
+
+  Future<void> updateDepartment(DepartmentEntity department) async {
+    print('Actualizando departamento: $department');
+    await updateDepartmentUseCase(department); // Llama al caso de uso de actualización
+    print('Departamento actualizado');
     notifyListeners();
   }
 

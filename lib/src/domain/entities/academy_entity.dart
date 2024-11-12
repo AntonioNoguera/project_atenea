@@ -1,3 +1,5 @@
+
+import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AcademyEntity {
@@ -8,12 +10,12 @@ class AcademyEntity {
   final String lastModificationContributor;
 
   AcademyEntity({
-    required this.id,
+    String? id,
     required this.name,
     this.subjects = const [],
     this.lastModificationDateTime = '',
     this.lastModificationContributor = '',
-  });
+  }) : id = id ?? const Uuid().v4(); 
 
   // Método fromMap para convertir datos de Firestore a AcademyEntity
   factory AcademyEntity.fromMap(Map<String, dynamic> data, String documentId) {

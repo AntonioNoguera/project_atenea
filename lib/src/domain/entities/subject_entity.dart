@@ -1,5 +1,6 @@
 // domain/entities/subject_entity.dart
 
+import 'package:uuid/uuid.dart';
 import 'package:proyect_atenea/src/domain/entities/plan_content_entity.dart';
 
 class SubjectEntity {
@@ -10,12 +11,12 @@ class SubjectEntity {
   final String lastModificationContributor;
 
   SubjectEntity({
-    required this.id,
+    String? id,
     required this.name,
     required this.subjectPlanData,
     required this.lastModificationContributor,
     required this.lastModificationDateTime,
-  });
+  }) : id = id ?? const Uuid().v4();
 
   // Método para convertir a Map
   Map<String, dynamic> toMap() {

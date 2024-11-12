@@ -74,6 +74,8 @@ Future<void> setupLocator() async {
   locator.registerFactory(() => GetAllUsersUseCase(locator<UserRepository>())); 
 
     // [ACADEMY]
+    
+  locator.registerFactory(() => GetAcademyById(locator<AcademyRepository>()));
   locator.registerFactory(() => GetAllAcademies(locator<AcademyRepository>()));
   locator.registerFactory(() => AddAcademy(locator<AcademyRepository>()));
   locator.registerFactory(() => UpdateAcademy(locator<AcademyRepository>()));
@@ -107,6 +109,7 @@ Future<void> setupLocator() async {
   locator.registerFactory(() => DepartmentProvider(
     getDepartmentUseCase: locator<GetDepartmentUseCase>(),
     saveDepartmentUseCase : locator<SaveDepartmentUseCase>(),
+    updateDepartmentUseCase: locator<UpdateDepartmentUseCase>(),
     deleteDepartmentUseCase : locator<DeleteDepartmentUseCase>(),
     getAllDepartmentsUseCase : locator<GetAllDepartmentsUseCase>(),
   ));

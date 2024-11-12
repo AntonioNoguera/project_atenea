@@ -21,6 +21,16 @@ class SaveDepartmentUseCase {
   }
 }
 
+class UpdateDepartmentUseCase {
+  final DepartmentRepository repository;
+
+  UpdateDepartmentUseCase(this.repository);
+
+  Future<void> call(DepartmentEntity department) async {
+    return await repository.updateDepartment(department);
+  }
+}
+
 class DeleteDepartmentUseCase {
   final DepartmentRepository repository;
 

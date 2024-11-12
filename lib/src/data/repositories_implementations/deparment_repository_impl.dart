@@ -29,6 +29,15 @@ class DepartmentRepositoryImpl implements DepartmentRepository {
   }
 
   @override
+  Future<void> updateDepartment(DepartmentEntity department) async {
+    try {
+      await dataSource.updateDepartmentOnFirestore(department);
+    } catch (e) {
+      print('Error actualizando el departamento: $e');
+    }
+  }
+
+  @override
   Future<void> deleteDepartment(String id) async {
     try {
       await dataSource.deleteDepartmentFromFirestore(id);
