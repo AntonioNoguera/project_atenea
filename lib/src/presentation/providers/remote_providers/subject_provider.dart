@@ -8,6 +8,7 @@ class SubjectProvider with ChangeNotifier {
   final UpdateSubject updateSubjectUseCase;
   final DeleteSubject deleteSubjectUseCase;
   final GetAllSubjects getAllSubjectsUseCase;
+  final GetSubjectsByAcademyID getSubjectsByAcademyIdUseCase;
 
   SubjectProvider({
     required this.getSubjectByIdUseCase,
@@ -15,6 +16,7 @@ class SubjectProvider with ChangeNotifier {
     required this.updateSubjectUseCase,
     required this.deleteSubjectUseCase,
     required this.getAllSubjectsUseCase,
+    required this.getSubjectsByAcademyIdUseCase,
   });
 
   Future<SubjectEntity?> getSubject(String id) async {
@@ -49,6 +51,13 @@ class SubjectProvider with ChangeNotifier {
     print('Obteniendo todas las materias');
     final subjects = await getAllSubjectsUseCase();
     print('Materias obtenidas: $subjects');
+    return subjects;
+  }
+
+  Future<List<SubjectEntity>> getSubjectsByAcademyID(String academyId) async {
+    print('Obteniendo materias para la academia con ID: $academyId');
+    final subjects = await getSubjectsByAcademyIdUseCase(academyId);
+    print('Materias obtenidas: ${subjects.map((s) => s.name).toList()}');
     return subjects;
   }
 }

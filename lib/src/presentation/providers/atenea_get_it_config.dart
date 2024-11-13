@@ -99,6 +99,7 @@ Future<void> setupLocator() async {
   locator.registerFactory(() => UpdateSubject( locator<SubjectRepository>() ));
   locator.registerFactory(() => DeleteSubject( locator<SubjectRepository>() ));
   locator.registerFactory(() => GetAllSubjects( locator<SubjectRepository>() ));
+  locator.registerFactory(() => GetSubjectsByAcademyID( locator<SubjectRepository>() ));
 
   // Registro del SessionProvider
   locator.registerFactory(() => SessionProvider(
@@ -129,6 +130,7 @@ Future<void> setupLocator() async {
     updateSubjectUseCase : locator<UpdateSubject>(),
     deleteSubjectUseCase : locator<DeleteSubject>(),
     getAllSubjectsUseCase : locator<GetAllSubjects>(),
+    getSubjectsByAcademyIdUseCase : locator<GetSubjectsByAcademyID>(),
   ));
 
   locator.registerFactory(() => UserProvider(

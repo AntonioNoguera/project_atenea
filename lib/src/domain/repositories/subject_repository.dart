@@ -8,4 +8,5 @@ abstract class SubjectRepository {
   Future<void> updateSubject(SubjectEntity subject);
   Future<void> deleteSubject(String id);
   Future<List<SubjectEntity>> getAllSubjects();
+  Future<List<SubjectEntity>> getSubjectsByAcademyID(String academyId);
 }

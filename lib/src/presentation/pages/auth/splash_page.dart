@@ -176,8 +176,7 @@ Future<void> initializeAllData(
   FirebaseFirestore firestore,
 ) async {
   // 1. Inicializar y guardar un nuevo departamento
-  final newDepartment = DepartmentEntity(
-    id: 'department_id',
+  final newDepartment = DepartmentEntity( 
     name: 'Department Name',
   );
   await departmentProvider.saveDepartment(newDepartment);
@@ -221,23 +220,26 @@ Future<void> initializeAllData(
     ordinary: ['Examen1', 'Examen2'],
   );
 
-  final mockPlanContentEntity = PlanContentEntity(
-    planNumber: PlanOption.plan401,
-    autorizedAdmins: ['admin1', 'admin2'],
+  final mockPlanContentEntity = PlanContentEntity( 
     subjectThemes: mockContentEntity,
     subjectFiles: mockContentEntity,
   );
 
-  final newSubject = SubjectEntity(
-    name: 'Subject Name',
-    parentAcademy: parentAcademy,
-    lastModificationContributor: 'admin',
-    lastModificationDateTime: DateTime.now().toString(),
-    subjectPlanData: [mockPlanContentEntity],
-  );
-  await subjectProvider.addSubject(newSubject);
-  print('Materia guardada: ${newSubject.name}');
+  for (int i = 1; i <= 3; i++) {
+    final newSubject = SubjectEntity(
+      name: 'Subject Name $i',  // Cambiar el nombre para cada iteración
+      parentAcademy: parentAcademy,
+      planName: '401',
+      lastModificationContributor: 'admin',
+      lastModificationDateTime: DateTime.now().toString(),
+      subjectPlanData: [mockPlanContentEntity],
+    );
+    
+    await subjectProvider.addSubject(newSubject);
+    print('Materia guardada: ${newSubject.name}');
+  }
 
+  /*
   // Obtener la materia para verificar
   final subject = await subjectProvider.getSubject(newSubject.id);
   if (subject != null) {
@@ -245,12 +247,12 @@ Future<void> initializeAllData(
   } else {
     print('No se encontró la materia con ID: ${newSubject.id}');
   }
+  */
 
   // 4. Inicializar datos de usuario
   await initializeUserData(userProvider);
 
   print('Inicialización completa de todos los datos.');
 }
-
 
 }

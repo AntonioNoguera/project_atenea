@@ -52,10 +52,14 @@ class MySubjectsPage extends StatelessWidget {
                     vertical: 20.0,
                     horizontal: MediaQuery.of(context).size.width * 0.05,),
                   
-                  child: Column(
+                  child: const Column(
+                    /*
+                    Todo, get Saved Subjects
+                    
                     children: List.generate(30, (index) {
                       return const HomeSubject();
                     })
+                    */
                   )
                 )
               )

@@ -1,12 +1,17 @@
  import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/detail/academic_department_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
 
-
 class AcademicDepartmentItemRow extends StatelessWidget {
-  const AcademicDepartmentItemRow({super.key});
+  final DepartmentEntity department;
+
+  const AcademicDepartmentItemRow({
+    Key? key,
+    required this.department,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +28,19 @@ class AcademicDepartmentItemRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(30.0),
             ),
           ),
-          onPressed: () { 
+          onPressed: () {
             Navigator.push(
               context,
-              AteneaPageAnimator(page: const AcademicDepartmentDetailPage())
+              AteneaPageAnimator(
+                page: AcademicDepartmentDetailPage(
+                  departmentId: department.id, // Pasar `department.id` aquí
+                ),
+              ),
             );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              
               Container(
                 height: 45.0,
                 decoration: const BoxDecoration(
@@ -43,28 +51,25 @@ class AcademicDepartmentItemRow extends StatelessWidget {
                   ),
                 ),
               ),
-
               Padding(
-                padding: const EdgeInsets.symmetric( horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    const SizedBox(height: 8.0,),
+                    const SizedBox(height: 8.0),
                     Text(
-                      'Temas Selectos de Materia Genérica',
+                      department.name,
                       style: AppTextStyles.builder(
                         color: AppColors.ateneaBlack,
                         size: FontSizes.body1,
                         weight: FontWeights.semibold,
                       ),
                     ),
-
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 5.0),
                       height: 1.0,
                       width: double.infinity,
                       color: AppColors.grayColor.withOpacity(.1),
                     ),
-
                     Row(
                       children: [
                         Expanded(
@@ -79,7 +84,7 @@ class AcademicDepartmentItemRow extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Noguera Guzman',
+                                department.lastModificationContributor,
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,
                                   size: FontSizes.body2,
@@ -88,25 +93,23 @@ class AcademicDepartmentItemRow extends StatelessWidget {
                             ],
                           ),
                         ),
-                        
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [ 
+                          children: [
                             Text(
-                                'Permisos',
-                                style: AppTextStyles.builder(
-                                  color:AppColors.primaryColor,
-                                  size: FontSizes.body2,
-                                  weight: FontWeights.regular
-                                ),
+                              'Permisos',
+                              style: AppTextStyles.builder(
+                                color: AppColors.primaryColor,
+                                size: FontSizes.body2,
+                                weight: FontWeights.regular,
                               ),
+                            ),
                             const AteneaPermitsRow()
                           ],
-                        ), 
+                        ),
                       ],
                     ),
-                    
-                    const SizedBox(height: 16.0,),
+                    const SizedBox(height: 16.0),
                   ],
                 ),
               ),

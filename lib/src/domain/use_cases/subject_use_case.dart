@@ -57,3 +57,13 @@ class GetAllSubjects {
     return await repository.getAllSubjects();
   }
 }
+
+class GetSubjectsByAcademyID {
+  final SubjectRepository repository;
+
+  GetSubjectsByAcademyID(this.repository);
+
+  Future<List<SubjectEntity>> call(String academyId) async {
+    return await repository.getSubjectsByAcademyID(academyId);
+  }
+}

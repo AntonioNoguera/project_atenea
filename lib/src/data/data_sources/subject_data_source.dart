@@ -46,4 +46,20 @@ class SubjectDataSource {
       print('Error eliminando el subject: $e');
     }
   }
+
+  Future<List<SubjectEntity>> getSubjectsByAcademyID(String academyId) async {
+    try {
+      QuerySnapshot snapshot = await firestore
+          .collection(collectionName)
+          .where('parentAcademy', isEqualTo: firestore.doc('academies/$academyId').path)  // Usa .path para obtener el String
+          .get();
+      return snapshot.docs.map((doc) {
+        var data = doc.data() as Map<String, dynamic>;
+        return SubjectEntity.fromMap(doc.id, data, firestore);
+      }).toList();
+    } catch (e) {
+      print('Error obteniendo materias por ID de academia: $e');
+      return [];
+    }
+  }
 }

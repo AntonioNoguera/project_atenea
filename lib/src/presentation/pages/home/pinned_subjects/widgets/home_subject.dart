@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/subject_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -6,7 +7,7 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart'
 
 
 class HomeSubject extends StatelessWidget {
-  const HomeSubject({super.key});
+  const HomeSubject({super.key, required SubjectEntity subject});
 
   @override
   Widget build(BuildContext context) {

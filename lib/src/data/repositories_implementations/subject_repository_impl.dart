@@ -65,4 +65,9 @@ class SubjectRepositoryImpl implements SubjectRepository {
       return [];
     }
   }
+
+  @override
+  Future<List<SubjectEntity>> getSubjectsByAcademyID(String academyId) async {
+    return await dataSource.getSubjectsByAcademyID(academyId);
+  }
 }

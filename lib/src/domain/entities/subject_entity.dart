@@ -5,27 +5,31 @@ import 'package:proyect_atenea/src/domain/entities/plan_content_entity.dart';
 class SubjectEntity {
   final String id;
   final String name;
+  final String planName;
   final List<PlanContentEntity> subjectPlanData;
-  final DocumentReference parentAcademy;
+  final String parentAcademy;  // Almacenar como cadena de texto
   final String lastModificationDateTime;
   final String lastModificationContributor;
 
   SubjectEntity({
     String? id,
     required this.name,
+    required this.planName,
     required this.subjectPlanData,
-    required this.parentAcademy,
+    required DocumentReference parentAcademy,  // Recibe como DocumentReference
     required this.lastModificationContributor,
     required this.lastModificationDateTime,
-  }) : id = id ?? const Uuid().v4();
+  })  : id = id ?? const Uuid().v4(),
+        parentAcademy = parentAcademy.path; // Almacena como String de path
 
   // Método para convertir a Map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
+      'planName': planName,
       'subjectPlanData': subjectPlanData.map((plan) => plan.toMap()).toList(),
-      'parentAcademy': parentAcademy.path,
+      'parentAcademy': parentAcademy, // Almacena el path
       'lastModificationDateTime': lastModificationDateTime,
       'lastModificationContributor': lastModificationContributor,
     };
@@ -36,11 +40,12 @@ class SubjectEntity {
     return SubjectEntity(
       id: id,
       name: data['name'] ?? '',
+      planName: data['planName'] ?? '',
       subjectPlanData: (data['subjectPlanData'] as List<dynamic>?)
               ?.map((plan) => PlanContentEntity.fromMap(plan as Map<String, dynamic>))
               .toList() ??
           [],
-      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''),
+      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''),  // Convierte el path de nuevo a DocumentReference
       lastModificationDateTime: data['lastModificationDateTime'] ?? '',
       lastModificationContributor: data['lastModificationContributor'] ?? '',
     );

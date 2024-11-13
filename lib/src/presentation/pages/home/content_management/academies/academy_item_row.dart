@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/detail/academy_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -6,7 +7,12 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart'
 
 
 class AcademyItemRow extends StatelessWidget {
-  const AcademyItemRow({super.key});
+  final AcademyEntity academy;
+
+  const AcademyItemRow({
+      super.key, 
+      required this.academy
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,7 @@ class AcademyItemRow extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: const AcademyDetailPage())
+              AteneaPageAnimator(page: AcademyDetailPage(academyId : academy.id))
             );
           },
           child: Column(
