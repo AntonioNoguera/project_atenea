@@ -6,7 +6,7 @@ class SubjectEntity {
   final String id;
   final String name;
   final String planName;
-  final List<PlanContentEntity> subjectPlanData;
+  final PlanContentEntity subjectPlanData;
   final String parentAcademy;  // Almacenar como cadena de texto
   final String lastModificationDateTime;
   final String lastModificationContributor;
@@ -28,8 +28,8 @@ class SubjectEntity {
       'id': id,
       'name': name,
       'planName': planName,
-      'subjectPlanData': subjectPlanData.map((plan) => plan.toMap()).toList(),
-      'parentAcademy': parentAcademy, // Almacena el path
+      'subjectPlanData': subjectPlanData.toMap(),  // Convertir objeto a Map directamente
+      'parentAcademy': parentAcademy,  // Almacena el path
       'lastModificationDateTime': lastModificationDateTime,
       'lastModificationContributor': lastModificationContributor,
     };
@@ -41,11 +41,8 @@ class SubjectEntity {
       id: id,
       name: data['name'] ?? '',
       planName: data['planName'] ?? '',
-      subjectPlanData: (data['subjectPlanData'] as List<dynamic>?)
-              ?.map((plan) => PlanContentEntity.fromMap(plan as Map<String, dynamic>))
-              .toList() ??
-          [],
-      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''),  // Convierte el path de nuevo a DocumentReference
+      subjectPlanData: PlanContentEntity.fromMap(data['subjectPlanData'] ?? {}),  // Convertir Map a PlanContentEntity
+      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''),  // Convertir el path a DocumentReference
       lastModificationDateTime: data['lastModificationDateTime'] ?? '',
       lastModificationContributor: data['lastModificationContributor'] ?? '',
     );

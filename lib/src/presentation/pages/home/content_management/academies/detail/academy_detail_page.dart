@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/manage_content/academy_manage_content.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/create/subject_create_new_page.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/home_subject.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/home_item_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -17,37 +17,20 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 
 class AcademyDetailPage extends StatefulWidget {
-  final String academyId;
+  final AcademyEntity academy;
 
-  const AcademyDetailPage({super.key, required this.academyId});
+  const AcademyDetailPage({super.key, required this.academy});
 
   @override
   _AcademyDetailPageState createState() => _AcademyDetailPageState();
 }
 
 class _AcademyDetailPageState extends State<AcademyDetailPage> {
-  List<SubjectEntity>? _subjects;
-  bool _isLoading = true;
   int _activeIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchSubjects();
-  }
-
-  void _fetchSubjects() async {
-    final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
-    final subjects = await subjectProvider.getSubjectsByAcademyID(widget.academyId);
-    setState(() {
-      _subjects = subjects;
-      _isLoading = false;
-    });
-  }
 
   void _handleToggle(int index) {
     setState(() {
-      _activeIndex = index;  // Actualiza el índice sin volver a hacer la búsqueda
+      _activeIndex = index;
     });
   }
 
@@ -57,15 +40,20 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
       providers: [
         ChangeNotifierProvider(create: (context) => ActiveIndexNotifier()),
         ChangeNotifierProvider(create: (context) => ScrollControllerNotifier()),
+        FutureProvider<List<SubjectEntity>>(
+          create: (context) => Provider.of<SubjectProvider>(context, listen: false)
+              .getSubjectsByAcademyID(widget.academy.id),
+          initialData: [],
+        ),
       ],
-      child: Consumer2<ActiveIndexNotifier, ScrollControllerNotifier>(
-        builder: (context, activeIndexNotifier, scrollNotifier, child) {
+      child: Consumer3<ActiveIndexNotifier, ScrollControllerNotifier, List<SubjectEntity>>(
+        builder: (context, activeIndexNotifier, scrollNotifier, subjects, child) {
           return AteneaScaffold(
             body: Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
               child: Stack(
                 children: [
-                  _isLoading
+                  subjects.isEmpty
                       ? const Center(child: CircularProgressIndicator())
                       : Column(
                           children: [
@@ -74,7 +62,7 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    'Detalle de Academia',
+                                    widget.academy.name,
                                     textAlign: TextAlign.center,
                                     style: AppTextStyles.builder(
                                       color: AppColors.primaryColor,
@@ -108,59 +96,13 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                                   ),
                                   child: Column(
                                     children: [
-                                      AteneaCard(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Redactado por:',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.ateneaBlack,
-                                                size: FontSizes.body1,
-                                                weight: FontWeights.semibold,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Michael Antonio Noguera Guzmán',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.grayColor,
-                                                size: FontSizes.body2,
-                                                weight: FontWeights.regular,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              'Última Actualización:',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.ateneaBlack,
-                                                size: FontSizes.body1,
-                                                weight: FontWeights.semibold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '23 Sep 2024 | 15:20',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.grayColor,
-                                                size: FontSizes.body2,
-                                                weight: FontWeights.regular,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10.0),
-                                      _renderedContent(),
+                                      _renderedContent(subjects),
                                       const SizedBox(height: 50.0),
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10.0),
                           ],
                         ),
                   Positioned(
@@ -225,19 +167,13 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
     );
   }
 
-  Widget _renderedContent() {
-    if (_subjects == null || _subjects!.isEmpty) {
-      return const Center(child: Text("No subjects available."));
-    }
-
-    final subjects = _subjects!
+  Widget _renderedContent(List<SubjectEntity> subjects) {
+    final filteredSubjects = subjects
         .where((subject) => subject.planName == (_activeIndex == 0 ? '401' : '440'))
         .toList();
 
     return Column(
-      children: subjects
-          .map((subject) => HomeSubject(subject: subject))
-          .toList(),
+      children: filteredSubjects.map((subject) => HomeItemRow(subject: subject)).toList(),
     );
   }
 }

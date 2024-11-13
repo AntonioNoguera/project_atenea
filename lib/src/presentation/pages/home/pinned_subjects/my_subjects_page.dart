@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/home_subject.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/home_item_row.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';

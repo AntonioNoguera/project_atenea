@@ -6,8 +6,9 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dar
 import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
 
 
-class HomeSubject extends StatelessWidget {
-  const HomeSubject({super.key, required SubjectEntity subject});
+class HomeItemRow extends StatelessWidget {
+  final SubjectEntity subject;  
+  const HomeItemRow({super.key, required this.subject});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class HomeSubject extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: const SubjectDetailPage())
+              AteneaPageAnimator(page: SubjectDetailPage(subject : subject))
             );
           },
           child: Column(
@@ -51,7 +52,7 @@ class HomeSubject extends StatelessWidget {
                   children: [
                     const SizedBox(height: 8.0,),
                     Text(
-                      'Temas Selectos de Materia Genérica',
+                      subject.name,
                       style: AppTextStyles.builder(
                         color: AppColors.ateneaBlack,
                         size: FontSizes.body1,
@@ -80,7 +81,7 @@ class HomeSubject extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Noguera Guzman',
+                                subject.lastModificationContributor,
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,
                                   size: FontSizes.body2,

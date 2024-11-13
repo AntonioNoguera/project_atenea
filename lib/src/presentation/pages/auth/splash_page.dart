@@ -232,7 +232,7 @@ Future<void> initializeAllData(
       planName: '401',
       lastModificationContributor: 'admin',
       lastModificationDateTime: DateTime.now().toString(),
-      subjectPlanData: [mockPlanContentEntity],
+      subjectPlanData: mockPlanContentEntity,
     );
     
     await subjectProvider.addSubject(newSubject);

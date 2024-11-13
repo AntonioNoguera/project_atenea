@@ -8,7 +8,6 @@ import 'package:proyect_atenea/src/presentation/providers/remote_providers/acade
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -21,14 +20,16 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final academyProvider = Provider.of<AcademyProvider>(context, listen: false);
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ScrollControllerNotifier()),
+        FutureProvider<List<AcademyEntity>>(
+          create: (context) => Provider.of<AcademyProvider>(context, listen: false).getAllAcademies(),
+          initialData: [],
+        ),
       ],
-      child: Consumer<ScrollControllerNotifier>(
-        builder: (context, scrollNotifier, child) {
+      child: Consumer2<ScrollControllerNotifier, List<AcademyEntity>>(
+        builder: (context, scrollNotifier, academies, child) {
           return AteneaScaffold(
             body: Padding(
               padding: const EdgeInsets.symmetric(vertical: 30.0),
@@ -58,8 +59,8 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        textAlign: TextAlign.center,
                         'Academías Disponibles',
+                        textAlign: TextAlign.center,
                         style: AppTextStyles.builder(
                           color: AppColors.primaryColor.withOpacity(.8),
                           size: FontSizes.h5,
@@ -68,100 +69,22 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Expanded(
-                        child: FutureBuilder<List<AcademyEntity>>(
-                          future: academyProvider.getAllAcademies(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Center(
-                                child: Text(
-                                  'Error al cargar academias',
-                                  style: AppTextStyles.builder(
-                                    color: AppColors.ateneaRed,
-                                    size: FontSizes.body1,
-                                  ),
-                                ),
-                              );
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return Center(
-                                child: Text(
-                                  'No hay academias disponibles',
-                                  style: AppTextStyles.builder(
-                                    color: AppColors.grayColor,
-                                    size: FontSizes.body1,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              final academies = snapshot.data!;
-                              return SingleChildScrollView(
+                        child: academies.isEmpty
+                            ? const Center(child: CircularProgressIndicator())
+                            : ListView.builder(
                                 controller: scrollNotifier.scrollController,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: MediaQuery.of(context).size.width * 0.05,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      AteneaCard(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              'Redactado por:',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.ateneaBlack,
-                                                size: FontSizes.body1,
-                                                weight: FontWeights.semibold,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Michael Antonio Noguera Guzmán',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.grayColor,
-                                                size: FontSizes.body2,
-                                                weight: FontWeights.regular,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              'Última Actualización:',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.ateneaBlack,
-                                                size: FontSizes.body1,
-                                                weight: FontWeights.semibold,
-                                              ),
-                                            ),
-                                            Text(
-                                              '23 Sep 2024 | 15:20',
-                                              textAlign: TextAlign.center,
-                                              style: AppTextStyles.builder(
-                                                color: AppColors.grayColor,
-                                                size: FontSizes.body2,
-                                                weight: FontWeights.regular,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20.0),
-                                      Column(
-                                        children: academies.map((academy) {
-                                          return AcademyItemRow(academy: academy);
-                                        }).toList(),
-                                      ),
-                                    ],
-                                  ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: MediaQuery.of(context).size.width * 0.05,
                                 ),
-                              );
-                            }
-                          },
-                        ),
+                                itemCount: academies.length,
+                                itemBuilder: (context, index) {
+                                  final academy = academies[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 16.0),
+                                    child: AcademyItemRow(academy: academy),
+                                  );
+                                },
+                              ),
                       ),
                       const SizedBox(height: 45.0),
                     ],

@@ -32,7 +32,7 @@ class AcademyItemRow extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: AcademyDetailPage(academyId : academy.id))
+              AteneaPageAnimator(page: AcademyDetailPage(academy : academy))
             );
           },
           child: Column(
@@ -56,7 +56,7 @@ class AcademyItemRow extends StatelessWidget {
                   children: [
                     const SizedBox(height: 8.0,),
                     Text(
-                      'Academias',
+                      academy.name,
                       style: AppTextStyles.builder(
                         color: AppColors.ateneaBlack,
                         size: FontSizes.body1,
@@ -85,7 +85,7 @@ class AcademyItemRow extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Noguera Guzman',
+                                academy.lastModificationContributor,
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,
                                   size: FontSizes.body2,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/detail/widgets/academic_department_item_row.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_item_row.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
