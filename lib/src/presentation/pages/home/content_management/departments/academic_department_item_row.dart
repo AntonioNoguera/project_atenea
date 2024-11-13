@@ -1,5 +1,6 @@
  import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/detail/academic_department_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -104,7 +105,7 @@ class AcademicDepartmentItemRow extends StatelessWidget {
                                 weight: FontWeights.regular,
                               ),
                             ),
-                            const AteneaPermitsRow()
+                            AteneaPermitsRow(uuid : department.id, type: SystemEntitiesTypes.department)
                           ],
                         ),
                       ],

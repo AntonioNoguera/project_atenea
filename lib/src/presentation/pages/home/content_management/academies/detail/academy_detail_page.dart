@@ -4,7 +4,7 @@ import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/manage_content/academy_manage_content.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/create/subject_create_new_page.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/home_item_row.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/subject_item_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
@@ -173,7 +173,7 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
         .toList();
 
     return Column(
-      children: filteredSubjects.map((subject) => HomeItemRow(subject: subject)).toList(),
+      children: filteredSubjects.map((subject) => SubjectItemRow(subject: subject)).toList(),
     );
   }
 }

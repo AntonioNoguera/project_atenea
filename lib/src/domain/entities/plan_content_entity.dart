@@ -1,7 +1,6 @@
 // domain/entities/plan_content_entity.dart
 
-import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/content_entity.dart'; 
 
 class PlanContentEntity {  
   final ContentEntity subjectThemes;

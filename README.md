@@ -6,5 +6,7 @@ Coded By Mike
 
  
 ## Dev Notes 
+##Session Goals!
+Get academies by department
 
-añadir UUID a todos los objetos
+Verify margins on card blur

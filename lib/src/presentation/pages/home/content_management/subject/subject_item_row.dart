@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/subject_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
@@ -6,9 +7,13 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dar
 import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
 
 
-class HomeItemRow extends StatelessWidget {
+class SubjectItemRow extends StatelessWidget {
   final SubjectEntity subject;  
-  const HomeItemRow({super.key, required this.subject});
+  
+  const SubjectItemRow({
+    super.key, 
+    required this.subject 
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +105,7 @@ class HomeItemRow extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 3,),
-                            const AteneaPermitsRow()
+                            AteneaPermitsRow(uuid : subject.id, type: SystemEntitiesTypes.subject)
                           ],
                           
                         ),

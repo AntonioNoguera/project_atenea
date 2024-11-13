@@ -6,6 +6,18 @@ enum AcademyDepartments {
   manufactura,
 }
 
+
+enum SystemEntitiesTypes {
+  department('departments'),
+  academy('academies'),
+  subject('subjects');
+
+  const SystemEntitiesTypes(this.value);
+
+  final String value;
+}
+
+
 enum PlanOption {
   none,
   plan401,

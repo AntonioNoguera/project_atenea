@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/detail/academy_detail_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -105,7 +106,7 @@ class AcademyItemRow extends StatelessWidget {
                                   weight: FontWeights.regular
                                 ),
                               ),
-                              const AteneaPermitsRow()
+                              AteneaPermitsRow(uuid: academy.id, type: SystemEntitiesTypes.academy),
                           ],
                         )
                       ],
