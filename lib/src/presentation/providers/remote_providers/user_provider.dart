@@ -35,6 +35,9 @@ class UserProvider with ChangeNotifier {
         _errorMessage = null;
       }
       notifyListeners();
+
+      
+
       return user; // Retorna el usuario autenticado o null
     } catch (e) {
       _errorMessage = 'Error durante el login';

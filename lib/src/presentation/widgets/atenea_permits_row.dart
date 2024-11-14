@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
@@ -32,7 +31,7 @@ class AteneaPermitsRow extends StatelessWidget {
 
             mainAxisAlignment: MainAxisAlignment.center, 
             children: [
-              const SizedBox(height: 6.0), 
+              const SizedBox(height: 6.0),
               if (snapshot.data != null) ...[
                 if (snapshot.data!.contains(PermitTypes.edit))
                   _buildPermitIcon('assets/svg/edit.svg'),

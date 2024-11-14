@@ -1,29 +1,24 @@
-import 'package:proyect_atenea/src/data/data_sources/local_session_data_source.dart';
+import 'package:proyect_atenea/src/data/data_sources/session_local_data_source.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
-import 'package:proyect_atenea/src/domain/repositories/session_repository.dart';
+import 'package:proyect_atenea/src/domain/repositories/session_repository.dart'; 
 
 class SessionRepositoryImpl implements SessionRepository {
-  final LocalSessionDataSource localDataSource;
+  final SessionLocalDataSource localDataSource;
 
   SessionRepositoryImpl(this.localDataSource);
 
   @override
-  Future<SessionEntity?> getSession() async {
-    final session = await localDataSource.getSession();
-
-    if (session != null) {
-      return session; 
-    }
-    return null;
+  Future<void> saveSession(SessionEntity session) async {
+    await localDataSource.saveSession(session);
   }
-  
+
+  @override
+  Future<SessionEntity?> loadSession() async {
+    return await localDataSource.loadSession();
+  }
+
   @override
   Future<void> clearSession() async {
-    await localDataSource.removeSession();
+    await localDataSource.clearSession();
   }
-  
-  @override
-  Future<void> saveSession(SessionEntity session) async {  
-    await localDataSource.addSession(session);
-  }
-} 
+}

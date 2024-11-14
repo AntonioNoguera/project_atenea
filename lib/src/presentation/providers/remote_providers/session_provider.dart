@@ -1,114 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/use_cases/session_use_cases.dart';
 
 class SessionProvider with ChangeNotifier {
-  final GetSessionUseCase _getSessionUseCase;
+  final LoadSessionUseCase _loadSessionUseCase;
   final SaveSessionUseCase _saveSessionUseCase;
   final ClearSessionUseCase _clearSessionUseCase;
+  final HasSessionUseCase _hasSessionUseCase;
+  final UpdateSessionTokenUseCase _updateSessionTokenUseCase;
+  final HasPermissionForUUIDUseCase _hasPermissionForUUIDUseCase;
 
   SessionEntity? _session;
 
   SessionProvider({
-    required GetSessionUseCase getSessionUseCase,
+    required LoadSessionUseCase loadSessionUseCase,
     required SaveSessionUseCase saveSessionUseCase,
     required ClearSessionUseCase clearSessionUseCase,
-  })  : _getSessionUseCase = getSessionUseCase,
+    required HasSessionUseCase hasSessionUseCase,
+    required UpdateSessionTokenUseCase updateSessionTokenUseCase,
+    required HasPermissionForUUIDUseCase hasPermissionForUUIDUseCase,
+  })  : _loadSessionUseCase = loadSessionUseCase,
         _saveSessionUseCase = saveSessionUseCase,
-        _clearSessionUseCase = clearSessionUseCase;
+        _clearSessionUseCase = clearSessionUseCase,
+        _hasSessionUseCase = hasSessionUseCase,
+        _updateSessionTokenUseCase = updateSessionTokenUseCase,
+        _hasPermissionForUUIDUseCase = hasPermissionForUUIDUseCase;
 
+  // Verificar si hay sesión activa
   bool hasSession() {
-    return _session != null;
+    return _session != null && _session!.tokenValidUntil.isAfter(DateTime.now());
   }
 
+  // Cargar la sesión desde el almacenamiento
   Future<void> loadSession() async {
-    _session = await _getSessionUseCase();
+    _session = await _loadSessionUseCase.execute();
     notifyListeners();
   }
 
+  // Obtener la sesión actual
   Future<SessionEntity?> getSession() async {
-    return await _getSessionUseCase();
+    return await _loadSessionUseCase.execute();
   }
 
-  Future<void> saveSession(String token) async {
-    
-    /*
-    final session = SessionEntity(token: token);
-
-
-    await _saveSessionUseCase(session);
+  // Guardar la sesión
+  Future<void> saveSession(SessionEntity session) async {
+    await _saveSessionUseCase.execute(session);
     _session = session;
-    notifyListeners();*/
+    notifyListeners();
   }
 
+  // Actualizar el token de sesión
+  Future<void> updateSessionToken(String newToken) async {
+    if (_session != null) {
+      await _updateSessionTokenUseCase.execute(newToken);
+      _session = await _loadSessionUseCase.execute(); // Recarga la sesión actualizada
+      notifyListeners();
+    }
+  }
+
+  // Limpiar la sesión
   Future<void> clearSession() async {
-    await _clearSessionUseCase();
+    await _clearSessionUseCase.execute();
     _session = null;
     notifyListeners();
   }
 
-  Future<List<PermitTypes>> hasPermissionForUUID(
-    String uuid, 
-    String entityLevel
-    ) async {
-
-    // Asegúrate de que la sesión esté cargada
+  // Verificar permisos para una entidad específica por UUID y nivel de entidad
+  Future<List<PermitTypes>> hasPermissionForUUID(String uuid, String entityLevel) async {
     if (_session == null) {
-      print('Cargando la sesión porque aún no está cargada.');
       await loadSession();
-    } else {
-      print('Sesión ya cargada.');
     }
 
-    // Verifica si es superusuario
-    if (_session?.userPermissions.isSuper == true) {
-      print('El usuario es superusuario, tiene permiso para todas las entidades.');
-      return PermitTypes.values.toList(); // Devuelve todos los permisos si es superusuario
-    }
+    final permissions = await _hasPermissionForUUIDUseCase.execute(uuid, entityLevel);
+    notifyListeners(); // Notifica cambios si los permisos afectan la UI
 
-    // Selecciona la lista de permisos adecuada según el nivel de entidad
-    List<AtomicPermissionEntity> permissions;
-    print('Nivel de entidad solicitado: $entityLevel');
-
-    switch (entityLevel.toLowerCase()) {
-      case 'departments':
-        permissions = _session!.userPermissions.department;
-        print('Seleccionado nivel de permisos: Departments');
-        break;
-        
-      case 'academies':
-        permissions = _session!.userPermissions.academy;
-        print('Seleccionado nivel de permisos: Academies');
-        break;
-        
-      case 'subjects':
-        permissions = _session!.userPermissions.subject;
-        print('Seleccionado nivel de permisos: Subjects');
-        break;
-        
-      default:
-        print('Nivel de entidad no válido: $entityLevel');
-        return []; // Devuelve una lista vacía si el nivel de entidad es inválido
-    }
-
-    // Verifica si algún permiso en la lista coincide con el UUID y retorna los tipos de permiso
-    final pathToCheck = '$entityLevel/$uuid';
-    print('Verificando permisos para path: $pathToCheck');
-    
-    // Filtra para encontrar permisos coincidentes y extrae los tipos de permisos si los encuentra
-    final matchingPermissions = permissions.where((perm) => perm.permissionId.path == pathToCheck).toList();
-
-    if (matchingPermissions.isNotEmpty) {
-      print('Permiso encontrado para $pathToCheck con los permisos: ${matchingPermissions.first.permissionTypes}.');
-      return matchingPermissions.first.permissionTypes;
-    } else {
-      print('Permiso no encontrado para $pathToCheck.');
-      // Retorna una lista vacía si no se encontró el permiso
-      return [];
-    }
+    return permissions;
   }
-
 }

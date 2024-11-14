@@ -6,7 +6,8 @@ Coded By Mike
 
  
 ## Dev Notes 
-##Session Goals!
-Get academies by department
+Dev Goals
 
-Verify margins on card blur
+Implement Login
+
+Verify if linked list flow is actually required on all the implementations of the 

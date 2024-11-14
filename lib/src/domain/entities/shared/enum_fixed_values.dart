@@ -31,8 +31,10 @@ enum UserType {
 }
  
 enum PermitTypes {
+  view,
   edit,
-  delete
+  delete,
+  addContributors, 
 }
 
 

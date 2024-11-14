@@ -1,9 +1,7 @@
-//Same model as Session Entity, used only for local session managment
+import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 
-import '../entities/session_entity.dart';
-
-abstract class SessionRepository { 
-  Future<SessionEntity?> getSession();
+abstract class SessionRepository {
   Future<void> saveSession(SessionEntity session);
+  Future<SessionEntity?> loadSession();
   Future<void> clearSession();
 }
