@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/academy_create_new_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/manage_content/academic_department_manage_content.dart';
@@ -14,9 +15,9 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dar
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
 class AcademicDepartmentDetailPage extends StatelessWidget {
-  final String departmentId;
+  final DepartmentEntity department;
 
-  const AcademicDepartmentDetailPage({super.key, required this.departmentId});
+  const AcademicDepartmentDetailPage({super.key, required this.department});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ScrollControllerNotifier()),
         FutureProvider<List<AcademyEntity>>(
-          create: (context) => Provider.of<AcademyProvider>(context, listen: false).getAllAcademies(),
+          create: (context) => Provider.of<AcademyProvider>(context, listen: false).getAcademiesByDepartmentId(department.id),
           initialData: [],
         ),
       ],
@@ -39,7 +40,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10.0),
                       Text(
-                        'Informática',
+                        department.name,
                         textAlign: TextAlign.center,
                         style: AppTextStyles.builder(
                           color: AppColors.primaryColor,

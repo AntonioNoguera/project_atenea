@@ -34,46 +34,64 @@ class SessionProvider with ChangeNotifier {
 
   // Cargar la sesión desde el almacenamiento
   Future<void> loadSession() async {
-    _session = await _loadSessionUseCase.execute();
-    notifyListeners();
-  }
-
-  // Obtener la sesión actual
-  Future<SessionEntity?> getSession() async {
-    return await _loadSessionUseCase.execute();
-  }
-
-  // Guardar la sesión
-  Future<void> saveSession(SessionEntity session) async {
-    await _saveSessionUseCase.execute(session);
-    _session = session;
-    notifyListeners();
-  }
-
-  // Actualizar el token de sesión
-  Future<void> updateSessionToken(String newToken) async {
-    if (_session != null) {
-      await _updateSessionTokenUseCase.execute(newToken);
-      _session = await _loadSessionUseCase.execute(); // Recarga la sesión actualizada
+      _session = await _loadSessionUseCase.execute();
       notifyListeners();
     }
-  }
 
-  // Limpiar la sesión
-  Future<void> clearSession() async {
-    await _clearSessionUseCase.execute();
-    _session = null;
-    notifyListeners();
-  }
-
-  // Verificar permisos para una entidad específica por UUID y nivel de entidad
-  Future<List<PermitTypes>> hasPermissionForUUID(String uuid, String entityLevel) async {
-    if (_session == null) {
-      await loadSession();
+    // Obtener la sesión actual
+    Future<SessionEntity?> getSession() async {
+      return await _loadSessionUseCase.execute();
     }
 
+    // Guardar la sesión
+    Future<void> saveSession(SessionEntity session) async {
+      await _saveSessionUseCase.execute(session);
+      _session = session;
+      notifyListeners();
+    }
+
+    // Actualizar el token de sesión
+    Future<void> updateSessionToken(String newToken) async {
+      if (_session != null) {
+        await _updateSessionTokenUseCase.execute(newToken);
+        _session = await _loadSessionUseCase.execute(); // Recarga la sesión actualizada
+        notifyListeners();
+      }
+    }
+
+    // Limpiar la sesión
+    Future<void> clearSession() async {
+      await _clearSessionUseCase.execute();
+      _session = null;
+      notifyListeners();
+    }
+
+    // Verificar permisos para una entidad específica por UUID y nivel de entidad
+  Future<List<PermitTypes>> hasPermissionForUUID(String uuid, String entityLevel) async {
+    print('Iniciando verificación de permisos para UUID: $uuid y nivel de entidad: $entityLevel');
+
+    // Asegúrate de que la sesión esté cargada
+    if (_session == null) {
+      print('Sesión no encontrada, cargando sesión...');
+      await loadSession();
+    } else {
+      print('Sesión ya cargada.');
+    }
+
+    // Imprime la sesión actual para verificar su estado
+    print('Estado de la sesión actual:');
+    print('Usuario ID: ${_session?.userId}');
+    print('Usuario Nombre: ${_session?.userName}');
+    print('Permisos del usuario: ${_session?.userPermissions}');
+    print('Token válido hasta: ${_session?.tokenValidUntil}');
+
+    // Ejecuta el caso de uso para verificar los permisos
+    print('Ejecutando caso de uso hasPermissionForUUIDUseCase...');
     final permissions = await _hasPermissionForUUIDUseCase.execute(uuid, entityLevel);
-    notifyListeners(); // Notifica cambios si los permisos afectan la UI
+
+    // Notifica a los listeners de cualquier cambio relevante en la UI
+    notifyListeners();
+    print('Permisos obtenidos para UUID: $uuid, Nivel de entidad: $entityLevel -> $permissions');
 
     return permissions;
   }

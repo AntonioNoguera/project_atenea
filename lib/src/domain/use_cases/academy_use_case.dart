@@ -57,3 +57,13 @@ class GetAllAcademies {
     return await repository.getAllAcademies();
   }
 }
+
+class GetAcademiesByDepartment {
+  final AcademyRepository _repository;
+
+  GetAcademiesByDepartment(this._repository);
+
+  Future<List<AcademyEntity>> call(String departmentId) async{
+    return _repository.getAcademiesByDepartmentId(departmentId);
+  }
+}

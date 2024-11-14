@@ -34,7 +34,7 @@ class AcademicDepartmentItemRow extends StatelessWidget {
               context,
               AteneaPageAnimator(
                 page: AcademicDepartmentDetailPage(
-                  departmentId: department.id, // Pasar `department.id` aquí
+                  department: department, // Pasar `department.id` aquí
                 ),
               ),
             );

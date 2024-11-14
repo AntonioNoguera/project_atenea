@@ -6,4 +6,5 @@ abstract class AcademyRepository {
   Future<void> updateAcademy(AcademyEntity academy);
   Future<void> deleteAcademy(String id);
   Future<List<AcademyEntity>> getAllAcademies();
+  Future<List<AcademyEntity>> getAcademiesByDepartmentId(String departmentId);
 }

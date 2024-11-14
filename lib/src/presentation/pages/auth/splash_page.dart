@@ -235,18 +235,18 @@ Future<UserEntity> initializeUserData(
     department: [
       AtomicPermissionEntity(
         permissionId: FirebaseFirestore.instance.doc('departments/${department.id}'),
-        permissionTypes: [PermitTypes.edit, PermitTypes.view],
+        permissionTypes: [PermitTypes.delete, PermitTypes.edit, PermitTypes.manageContributors],
       ),
     ],
     academy: [
       AtomicPermissionEntity(
         permissionId: FirebaseFirestore.instance.doc('academies/${academy.id}'),
-        permissionTypes: [PermitTypes.addContributors, PermitTypes.edit],
+        permissionTypes: [PermitTypes.delete, PermitTypes.edit, PermitTypes.manageContributors],
       ),
     ],
     subject: subjects.map((subject) => AtomicPermissionEntity(
       permissionId: FirebaseFirestore.instance.doc('subjects/${subject.id}'),
-      permissionTypes: [PermitTypes.view],
+      permissionTypes: [PermitTypes.delete, PermitTypes.edit, PermitTypes.manageContributors],
     )).toList(),
   );
 

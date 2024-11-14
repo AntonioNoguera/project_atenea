@@ -10,8 +10,24 @@ class LoadSessionUseCase {
   LoadSessionUseCase(this._repository);
 
   Future<SessionEntity?> execute() async {
+    
     try {
-      return await _repository.loadSession();
+      var session = await _repository.loadSession();
+
+      if (session != null) {
+        // Imprime la sesión actual para verificar su estado
+          print('---- leyendo session almacenada ----');
+          print('Usuario ID: ${session.userId}');
+          print('Usuario Nombre: ${session.userName}');
+          print('Permisos del usuario: ${session.userPermissions}');
+          print('Token válido hasta: ${session.tokenValidUntil}');
+      } else {
+        print('No se encontró una sesión almacenada.');
+      }
+
+      
+          return session;
+
     } catch (e) {
       print("Error loading session: $e");
       return null;
@@ -28,6 +44,14 @@ class SaveSessionUseCase {
   Future<void> execute(SessionEntity session) async {
     try {
       await _repository.saveSession(session);
+
+            // Imprime la sesión actual para verificar su estado
+          print('---- session almacenada ----');
+          print('Usuario ID: ${session.userId}');
+          print('Usuario Nombre: ${session.userName}');
+          print('Permisos del usuario: ${session.userPermissions}');
+          print('Token válido hasta: ${session.tokenValidUntil}');
+
     } catch (e) {
       print("Error saving session: $e");
     }

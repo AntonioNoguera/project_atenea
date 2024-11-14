@@ -48,4 +48,21 @@ class AcademyDataSource {
       print('Error eliminando la academia: $e');
     }
   }
+
+  Future<List<AcademyEntity>> getAcademiesByDepartmentId(String departmentId) async {
+    try {
+      final querySnapshot = await firestore
+          .collection('academies')
+          .where('parentDepartment', isEqualTo: firestore.doc('departments/$departmentId').path)
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        var data = doc.data() as Map<String, dynamic>;
+        return AcademyEntity.fromMap(data, doc.id, firestore); // Agrega firestore y doc.id
+      }).toList();
+    } catch (e) {
+      print('Error obteniendo academias por departmentId: $e');
+      return [];
+    }
+  }
 }

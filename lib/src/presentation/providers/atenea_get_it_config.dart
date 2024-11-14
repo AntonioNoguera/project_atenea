@@ -78,6 +78,7 @@ locator.registerFactory<SessionRepository>(() => SessionRepositoryImpl(locator<S
   locator.registerFactory(() => GetAcademyById(locator<AcademyRepository>()));
   locator.registerFactory(() => GetAllAcademies(locator<AcademyRepository>()));
   locator.registerFactory(() => AddAcademy(locator<AcademyRepository>()));
+  locator.registerFactory(() => GetAcademiesByDepartment(locator<AcademyRepository>()));
   locator.registerFactory(() => UpdateAcademy(locator<AcademyRepository>()));
   locator.registerFactory(() => DeleteAcademy(locator<AcademyRepository>()));
 
@@ -122,6 +123,7 @@ locator.registerFactory(() => HasPermissionForUUIDUseCase(locator<LoadSessionUse
     updateAcademyUseCase : locator<UpdateAcademy>(),
     deleteAcademyUseCase : locator<DeleteAcademy>(),
     getAllAcademiesUseCase : locator<GetAllAcademies>(),
+    getAcademiesByDepartmentIdUseCase : locator<GetAcademiesByDepartment>(),
   ));
 
   locator.registerFactory(() => SubjectProvider(

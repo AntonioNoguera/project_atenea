@@ -10,6 +10,7 @@ class AcademyProvider with ChangeNotifier {
   final UpdateAcademy updateAcademyUseCase;
   final DeleteAcademy deleteAcademyUseCase;
   final GetAllAcademies getAllAcademiesUseCase;
+  final GetAcademiesByDepartment getAcademiesByDepartmentIdUseCase; // Nuevo caso de uso
 
   AcademyProvider({
     required this.getAcademyByIdUseCase,
@@ -17,6 +18,7 @@ class AcademyProvider with ChangeNotifier {
     required this.updateAcademyUseCase,
     required this.deleteAcademyUseCase,
     required this.getAllAcademiesUseCase,
+    required this.getAcademiesByDepartmentIdUseCase, // Agrega el nuevo caso de uso aquí
   });
 
   Future<AcademyEntity?> getAcademy(String id) async {
@@ -51,6 +53,14 @@ class AcademyProvider with ChangeNotifier {
     print('Obteniendo todas las academias');
     final academies = await getAllAcademiesUseCase();
     print('Academias obtenidas: $academies');
+    return academies;
+  }
+
+  // Nuevo método: Obtener academias por ID de departamento
+  Future<List<AcademyEntity>> getAcademiesByDepartmentId(String departmentId) async {
+    print('Obteniendo academias para el departamento con ID: $departmentId');
+    final academies = await getAcademiesByDepartmentIdUseCase(departmentId);
+    print('Academias obtenidas para el departamento: $academies');
     return academies;
   }
 }

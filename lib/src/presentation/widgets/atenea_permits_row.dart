@@ -32,15 +32,18 @@ class AteneaPermitsRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center, 
             children: [
               const SizedBox(height: 6.0),
+               
+              _buildPermitIcon('assets/svg/view.svg'),
+
               if (snapshot.data != null) ...[
                 if (snapshot.data!.contains(PermitTypes.edit))
                   _buildPermitIcon('assets/svg/edit.svg'),
 
-                if (snapshot.data!.contains(PermitTypes.delete))
-                  _buildPermitIcon('assets/svg/trashcan.svg'),
+                if (snapshot.data!.contains(PermitTypes.manageContributors))
+                _buildPermitIcon('assets/svg/add_user.svg'),
 
-                if (snapshot.data!.contains(PermitTypes.addContributors))
-                  _buildPermitIcon('assets/svg/add_user.svg'),
+                if (snapshot.data!.contains(PermitTypes.delete))
+                  _buildPermitIcon('assets/svg/trashcan.svg'),                 
               ],
             ],
           );

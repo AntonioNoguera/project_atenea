@@ -30,11 +30,10 @@ enum UserType {
   regularUser,
 }
  
-enum PermitTypes {
-  view,
+enum PermitTypes { 
   edit,
   delete,
-  addContributors, 
+  manageContributors, 
 }
 
 

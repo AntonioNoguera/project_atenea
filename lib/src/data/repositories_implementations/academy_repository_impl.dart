@@ -63,4 +63,9 @@ class AcademyRepositoryImpl implements AcademyRepository {
       print('Error actualizando la academia: $e');
     }
   }
+
+  @override
+  Future<List<AcademyEntity>> getAcademiesByDepartmentId(String departmentId) async {
+    return await dataSource.getAcademiesByDepartmentId(departmentId);
+  }
 }
