@@ -6,10 +6,13 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/ac
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/create/subject_create_new_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/subject_item_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
+import 'package:proyect_atenea/src/presentation/providers/app_state_providers/app_ui_helpers.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -54,13 +57,27 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
               child: Stack(
                 children: [
                   subjects.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(
+                          child: AteneaCircularProgress(),
+                        )
                       : Column(
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
                               child: Column(
                                 children: [
+                                  const SizedBox(height: 10.0),
+                                  
+                                  Text(
+                                    'Academia Seleccionada',
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyles.builder(
+                                      color: AppColors.primaryColor,
+                                      size: FontSizes.body2,
+                                      weight: FontWeights.regular,
+                                    ),
+                                  ),
+
                                   Text(
                                     widget.academy.name,
                                     textAlign: TextAlign.center,
@@ -70,6 +87,51 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                                       weight: FontWeights.semibold,
                                     ),
                                   ),
+
+                                  AteneaCard(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Redactado por:',
+                                          textAlign: TextAlign.center,
+                                          style: AppTextStyles.builder(
+                                            color: AppColors.ateneaBlack,
+                                            size: FontSizes.body1,
+                                            weight: FontWeights.semibold,
+                                          ),
+                                        ),
+                                        Text(
+                                          widget.academy.lastModificationContributor,
+                                          textAlign: TextAlign.center,
+                                          style: AppTextStyles.builder(
+                                            color: AppColors.grayColor,
+                                            size: FontSizes.body2,
+                                            weight: FontWeights.regular,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          'Última Actualización:',
+                                          textAlign: TextAlign.center,
+                                          style: AppTextStyles.builder(
+                                            color: AppColors.ateneaBlack,
+                                            size: FontSizes.body1,
+                                            weight: FontWeights.semibold,
+                                          ),
+                                        ),
+                                        Text(
+                                          AppUiHelpers.formatDateStringToWords(widget.academy.lastModificationDateTime),
+                                          textAlign: TextAlign.center,
+                                          style: AppTextStyles.builder(
+                                            color: AppColors.grayColor,
+                                            size: FontSizes.body2,
+                                            weight: FontWeights.regular,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ), 
                                   const SizedBox(height: 10),
                                   Text(
                                     'Planes de estudio',
@@ -95,7 +157,8 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                                     horizontal: MediaQuery.of(context).size.width * 0.05,
                                   ),
                                   child: Column(
-                                    children: [
+                                    children: [ 
+
                                       _renderedContent(subjects),
                                       const SizedBox(height: 50.0),
                                     ],

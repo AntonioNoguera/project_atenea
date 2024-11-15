@@ -5,10 +5,13 @@ import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/academy_create_new_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/academy_item_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/manage_content/academic_department_manage_content.dart';
+import 'package:proyect_atenea/src/presentation/providers/app_state_providers/app_ui_helpers.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/academy_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
@@ -40,6 +43,15 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10.0),
                       Text(
+                        'Departamento Seleccionado',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.builder(
+                          color: AppColors.primaryColor,
+                          size: FontSizes.body2,
+                          weight: FontWeights.regular,
+                        ),
+                      ),
+                      Text(
                         department.name,
                         textAlign: TextAlign.center,
                         style: AppTextStyles.builder(
@@ -49,18 +61,60 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico.',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.builder(
-                          color: AppColors.primaryColor,
-                          size: FontSizes.body2,
-                          weight: FontWeights.regular,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        child: AteneaCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Redactado por:',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.ateneaBlack,
+                                  size: FontSizes.body1,
+                                  weight: FontWeights.semibold,
+                                ),
+                              ),
+                              Text(
+                                department.lastModificationContributor,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.grayColor,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.regular,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Última Actualización:',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.ateneaBlack,
+                                  size: FontSizes.body1,
+                                  weight: FontWeights.semibold,
+                                ),
+                              ),
+                              Text(
+                                AppUiHelpers.formatDateStringToWords(department.lastModificationDateTime),
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.grayColor,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.regular,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+
+                      
                       const SizedBox(height: 20),
                       Text(
-                        'Academías Disponibles',
+                        'Academias Disponibles',
                         textAlign: TextAlign.center,
                         style: AppTextStyles.builder(
                           color: AppColors.primaryColor.withOpacity(.8),
@@ -71,7 +125,9 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       Expanded(
                         child: academies.isEmpty
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const Center(
+                                child: AteneaCircularProgress(),
+                              )
                             : ListView.builder(
                                 controller: scrollNotifier.scrollController,
                                 padding: EdgeInsets.symmetric(
@@ -80,14 +136,11 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                 itemCount: academies.length,
                                 itemBuilder: (context, index) {
                                   final academy = academies[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 16.0),
-                                    child: AcademyItemRow(academy: academy),
-                                  );
+                                  return  AcademyItemRow(academy: academy);
                                 },
                               ),
                       ),
-                      const SizedBox(height: 45.0),
+                      const SizedBox(height: 40.0),
                     ],
                   ),
                   Positioned(

@@ -30,6 +30,7 @@ class _AteneaFieldState extends State<AteneaField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor: AppColors.primaryColor,
       controller: widget.controller,
       enabled: widget.enabled, // Set the enabled property
       obscureText: widget.isPasswordField ? _obscureText : false, // Handle password field

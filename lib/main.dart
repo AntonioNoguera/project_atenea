@@ -15,6 +15,8 @@ import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/firebase_options.dart'; 
 import 'package:get_it/get_it.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +25,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+
+  await initializeDateFormatting('es', null);
 
   // Configura el service locator para registrar todas las dependencias
   await setupLocator();
@@ -63,7 +68,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         routes: {
           '/splash': (context) => const SplashPage(),
-          '/auth/login': (context) => const LoginPage(),
+          '/auth/login': (context) => LoginPage(),
           '/auth/register': (context) => const RegisterPage(),
           '/home': (context) => const HomePage(),
         },

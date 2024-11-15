@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/subject_modify_content_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
+import 'package:proyect_atenea/src/presentation/providers/app_state_providers/app_ui_helpers.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/widget/theme_or_file_subject.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
@@ -32,10 +34,10 @@ class SubjectDetailPage extends StatelessWidget {
         future: subjectProvider.getSubject(subject.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) { 
-            return const AteneaScaffold( 
+            return const AteneaScaffold(
               body: Center(
-                 child  : CircularProgressIndicator(color: AppColors.primaryColor),
-              ),
+                child: AteneaCircularProgress(),
+              )
             );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error al cargar la materia'));
@@ -54,6 +56,18 @@ class SubjectDetailPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
+                      const SizedBox(height: 10.0),
+                                  
+                      Text(
+                        'Materia Seleccionada',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.builder(
+                          color: AppColors.primaryColor,
+                          size: FontSizes.body2,
+                          weight: FontWeights.regular,
+                        ),
+                      ),
+
                       Text(
                         subject.name,
                         textAlign: TextAlign.center,
@@ -101,7 +115,7 @@ class SubjectDetailPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      subject.lastModificationDateTime,
+                                      AppUiHelpers.formatDateStringToWords(subject.lastModificationDateTime),
                                       textAlign: TextAlign.center,
                                       style: AppTextStyles.builder(
                                         color: AppColors.grayColor,

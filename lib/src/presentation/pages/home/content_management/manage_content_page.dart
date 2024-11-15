@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/academic_department_item_row.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
@@ -41,15 +43,38 @@ class ManageContentPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico.',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.builder(
-                          color: AppColors.primaryColor,
-                          size: FontSizes.body2,
-                          weight: FontWeights.regular,
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        child: AteneaCard (
+                          child: Column (
+                            children: [
+                              Text(
+                                '¡Atención!',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.ateneaBlack,
+                                  size: FontSizes.body1,
+                                  weight: FontWeights.semibold,
+                                ),
+                              ),
+                              Text(
+                                'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico.',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.ateneaBlack,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.regular,
+                                ),
+                              ),
+
+                            ],
+                          ) 
                         ),
                       ),
+
                       const SizedBox(height: 15),
                       Text(
                         'Departamentos Académicos Disponibles',
@@ -63,22 +88,21 @@ class ManageContentPage extends StatelessWidget {
                       const SizedBox(height: 10),
                       Expanded(
                         child: departments.isEmpty
-                            ? const Center(child: CircularProgressIndicator())
+                            ? const Center(
+                                child: AteneaCircularProgress(),
+                              )
                             : Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 0,
                                 ),
                                 child: ListView.builder(
                                   padding: EdgeInsets.symmetric(
-                                  horizontal: MediaQuery.of(context).size.width * 0.05,
-                                ),
+                                    horizontal: MediaQuery.of(context).size.width * 0.05,
+                                  ),
                                   itemCount: departments.length,
                                   itemBuilder: (context, index) {
                                     final department = departments[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.only(bottom: 16.0),
-                                      child: AcademicDepartmentItemRow(department: department),
-                                    );
+                                    return AcademicDepartmentItemRow(department: department);
                                   },
                                 ),
                               ),

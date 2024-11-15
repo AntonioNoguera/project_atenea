@@ -21,30 +21,33 @@ class AteneaPermitsRow extends StatelessWidget {
       future: Provider.of<SessionProvider>(context, listen: false).hasPermissionForUUID(uuid, type.value),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const SizedBox(height: 24,);
         } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
           // Si no tiene permisos, no mostramos los íconos
           return const Text('No tienes permisos');
         } else {
           // Mostrar íconos de permisos en función de los permisos obtenidos
-          return Row( 
-
-            mainAxisAlignment: MainAxisAlignment.center, 
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Centra verticalmente dentro del contenedor padre
             children: [
-              const SizedBox(height: 6.0),
-               
-              _buildPermitIcon('assets/svg/view.svg'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center, // Centra verticalmente el contenido dentro de la Row
+                children: [
+                  _buildPermitIcon('assets/svg/eye.svg'),
 
-              if (snapshot.data != null) ...[
-                if (snapshot.data!.contains(PermitTypes.edit))
-                  _buildPermitIcon('assets/svg/edit.svg'),
+                  if (snapshot.data != null) ...[
+                    if (snapshot.data!.contains(PermitTypes.edit))
+                      _buildPermitIcon('assets/svg/edit.svg'),
 
-                if (snapshot.data!.contains(PermitTypes.manageContributors))
-                _buildPermitIcon('assets/svg/add_user.svg'),
+                    if (snapshot.data!.contains(PermitTypes.manageContributors))
+                      _buildPermitIcon('assets/svg/add_user.svg'),
 
-                if (snapshot.data!.contains(PermitTypes.delete))
-                  _buildPermitIcon('assets/svg/trashcan.svg'),                 
-              ],
+                    if (snapshot.data!.contains(PermitTypes.delete))
+                      _buildPermitIcon('assets/svg/trashcan.svg'),
+                  ],
+                ],
+              ),
             ],
           );
         }
