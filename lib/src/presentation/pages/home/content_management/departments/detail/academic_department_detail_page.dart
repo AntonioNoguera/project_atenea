@@ -190,7 +190,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      AteneaPageAnimator(page: AcademicDepartmentManageContent()),
+                                      AteneaPageAnimator(page: AcademicDepartmentManageContent(department: department)),
                                     );
                                   },
                                 ),
