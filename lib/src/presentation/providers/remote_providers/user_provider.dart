@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/domain/use_cases/user_use_case.dart';
 
@@ -110,5 +112,45 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
       return [];
     }
-  } 
+  }
+
+  Future<List<UserEntity>> getUsersByPermission(SystemEntitiesTypes type, String entityId) async{
+    print('Iniciando búsqueda de usuarios con permisos...');
+    print('Tipo de entidad: ${type.value}, ID de la entidad: $entityId');
+
+    _users = await getAllUsers(); // Actualiza la lista de usuarios
+    
+    return _users.where((user) {
+      print('Verificando permisos para el usuario: ${user.fullName} (ID: ${user.id})');
+      
+      // Obtener los permisos de la entidad correspondiente
+      List<AtomicPermissionEntity> permissions = [];
+      switch (type) {
+        case SystemEntitiesTypes.department:
+          permissions = user.userPermissions.department;
+          print('Permisos en departamentos: ${permissions.map((p) => p.permissionId.path).toList()}');
+          break;
+        case SystemEntitiesTypes.academy:
+          permissions = user.userPermissions.academy;
+          print('Permisos en academias: ${permissions.map((p) => p.permissionId.path).toList()}');
+          break;
+        case SystemEntitiesTypes.subject:
+          permissions = user.userPermissions.subject;
+          print('Permisos en materias: ${permissions.map((p) => p.permissionId.path).toList()}');
+          break;
+      }
+
+      // Verificar si el ID está en los permisos
+      final hasPermission = permissions.any((perm) {
+        final matches = perm.permissionId.path == '${type.value}/$entityId';
+        if (matches) {
+          print('Coincidencia encontrada: ${perm.permissionId.path}');
+        }
+        return matches;
+      });
+      print('Resultado para el usuario ${user.fullName}: ${hasPermission ? "tiene permiso" : "no tiene permiso"}');
+      return hasPermission;
+    }).toList();
+  }
+      
 }

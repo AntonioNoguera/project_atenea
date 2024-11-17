@@ -49,15 +49,17 @@ class AcademyManageContent extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: List.generate(8, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: AcademyContributorRow(
+                          return const Padding(
+                            padding:   EdgeInsets.symmetric(vertical: 5.0),
+                             
+                            child: Text('TODO'),/*AcademyContributorRow(
                               index: index,
                               content: 'Item $index',
                               onClose: () => {
                                 print(index)
                               },
                             ),
+                            */
                           );
                         }),
                       ),

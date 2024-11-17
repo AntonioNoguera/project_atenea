@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_atomic_permits_row.dart';
 
 class AcademyContributorRow extends StatelessWidget {
   final int index;
-  final String content;
-  final VoidCallback onClose; // Callback para manejar el evento onClose
+  final String contributorName;
+  final AtomicPermissionEntity permissionEntity;
+  final VoidCallback showDetail; // Callback para manejar el evento onClose
 
   const AcademyContributorRow({
     super.key,
-    required this.content,
+    required this.contributorName,
+    required this.permissionEntity,
     required this.index,
-    required this.onClose,
+    required this.showDetail,
   });
 
   @override
@@ -22,11 +25,16 @@ class AcademyContributorRow extends StatelessWidget {
     var backgroundColor = backgroundStyleVariations[index % 2];
     var textColor = fontStyleVariations[index % 2];
 
+    // Ajustar el peso basado en el color
+    FontWeight textWeight = textColor == AppColors.primaryColor
+        ? FontWeights.bold
+        : FontWeights.regular;
+
     return ElevatedButton(
-      onPressed: onClose,
+      onPressed: showDetail,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        padding: EdgeInsets.zero, // Elimina el padding interno del botón
+        padding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -43,20 +51,18 @@ class AcademyContributorRow extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                content,
+                contributorName,
                 style: AppTextStyles.builder(
                   color: textColor,
-                  weight: FontWeights.regular,
+                  weight: textWeight,
                   size: FontSizes.body2,
                 ),
               ),
             ),
             const SizedBox(width: 10.0),
-            SvgPicture.asset(
-              'assets/svg/close.svg',
+            AteneaAtomicPermitsRow(
+              permissionEntity: permissionEntity,
               color: textColor,
-              height: 22.0,
-              width: 22.0,
             ),
           ],
         ),

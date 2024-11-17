@@ -19,9 +19,10 @@ class AtenaDropDown extends StatefulWidget {
   State<AtenaDropDown> createState() => _AtenaDropDownState();
 }
 
-class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProviderStateMixin {
+class _AtenaDropDownState extends State<AtenaDropDown> {
   bool isOpen = false;
   String? selectedItem;
+  OverlayEntry? _overlayEntry;
 
   @override
   void initState() {
@@ -29,7 +30,18 @@ class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProvider
     selectedItem = widget.initialValue;
   }
 
+  @override
+  void dispose() {
+    _removeOverlay();
+    super.dispose();
+  }
+
   void toggleDropdown() {
+    if (isOpen) {
+      _removeOverlay();
+    } else {
+      _showOverlay();
+    }
     setState(() {
       isOpen = !isOpen;
     });
@@ -41,70 +53,31 @@ class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProvider
       selectedItem = item;
       isOpen = false;
     });
+    _removeOverlay();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            clipBehavior: Clip.none, // Evita que el contenido se recorte
-            children: [
-              GestureDetector(
-                onTap: toggleDropdown,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: (isOpen) ? 11.8 : 12),
-                  decoration: BoxDecoration(
-                    color: AppColors.ateneaWhite,
-                    border: Border.all(color: (isOpen) ? AppColors.secondaryColor : AppColors.primaryColor, width: (isOpen) ? 1.8 : 1.3),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        selectedItem ?? widget.hint,
-                        style: AppTextStyles.builder(
-                          color: AppColors.primaryColor,
-                          size: FontSizes.body1,
-                        ),
-                      ),
-                      Icon(
-                        isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                        color: AppColors.primaryColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 100),
-                top: (isOpen || selectedItem != null) ? -10 : 10, // Ajuste en la posición top
-                left: (isOpen || selectedItem != null) ? 9 : 15,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 100),
-                  opacity: (isOpen || selectedItem != null) ? 1 : 0,
-                  child: Container(
-                    color: AppColors.ateneaWhite,
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0), // Asegura el padding para evitar corte
-                    child: Text(
-                      widget.hint,
-                      style: AppTextStyles.builder(color: AppColors.primaryColor.withOpacity(1), size: FontSizes.body2, weight: FontWeight.w100),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            height: isOpen ? (widget.items.length * 25.0) : 0,
+  void _showOverlay() {
+    final overlay = Overlay.of(context);
+    final renderBox = context.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: position.dy + renderBox.size.height + 8, // Desplazamiento debajo del campo
+        left: position.dx,
+        width: renderBox.size.width,
+        child: Material(
+          elevation: 4,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.placeholderInputColor),
+            ),
             child: ListView(
-              padding: EdgeInsets.zero,
               shrinkWrap: true,
+              padding: EdgeInsets.zero,
               children: widget.items.map((item) {
                 return GestureDetector(
                   onTap: () => selectItem(item),
@@ -128,7 +101,48 @@ class _AtenaDropDownState extends State<AtenaDropDown> with SingleTickerProvider
               }).toList(),
             ),
           ),
-        ],
+        ),
+      ),
+    );
+
+    overlay.insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: toggleDropdown,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: AppColors.ateneaWhite,
+          border: Border.all(
+            color: isOpen ? AppColors.secondaryColor : AppColors.primaryColor,
+            width: 1.3,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              selectedItem ?? widget.hint,
+              style: AppTextStyles.builder(
+                color: AppColors.primaryColor,
+                size: FontSizes.body1,
+              ),
+            ),
+            Icon(
+              isOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+              color: AppColors.primaryColor,
+            ),
+          ],
+        ),
       ),
     );
   }

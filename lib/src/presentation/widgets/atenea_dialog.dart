@@ -11,7 +11,7 @@ class AteneaButtonStyles {
   const AteneaButtonStyles({
     required this.backgroundColor,
     required this.textColor,
-    this.hasBorder = false
+    this.hasBorder = false,
   });
 }
 
@@ -47,40 +47,54 @@ class AteneaDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        title,
-        style: AppTextStyles.builder(
-          color: AppColors.primaryColor,
-          size: FontSizes.h4,
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    return Dialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: screenWidth * 0.9, // 90% de la pantalla
         ),
-        textAlign: TextAlign.center,
-      ),
-      content: content,
-      actions: <Widget>[
-        SizedBox(
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: buttonCallbacks.map((callback) {
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: AteneaButtonV2(
-                    text: callback.textButton,
-                    btnStyles: callback.buttonStyles,
-                    onPressed: callback.onPressedCallback,
-                    textStyle: AppTextStyles.builder(
-                      color: callback.buttonStyles.textColor,
-                      size: FontSizes.body2,
-                    ),
-                  ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: AppTextStyles.builder(
+                  color: AppColors.primaryColor,
+                  size: FontSizes.h4,
                 ),
-              );
-            }).toList(),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16.0),
+              content,
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: buttonCallbacks.map((callback) {
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: AteneaButtonV2(
+                        text: callback.textButton,
+                        btnStyles: callback.buttonStyles,
+                        onPressed: callback.onPressedCallback,
+                        textStyle: AppTextStyles.builder(
+                          color: callback.buttonStyles.textColor,
+                          size: FontSizes.body2,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

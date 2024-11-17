@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atena_drop_down.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_checkbox_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
@@ -65,14 +66,13 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
     return AteneaDialog(
       title: 'Añade Contribuidor',
       content: SizedBox(
-        
         width: double.infinity,
-        child: Column( 
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Busca contribuidores',
+              'Busca contribuidores:',
               style: AppTextStyles.builder(
                 color: AppColors.secondaryColor,
                 size: FontSizes.body1,
@@ -102,27 +102,15 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
                     height: 50,
                     child: Center(child: CircularProgressIndicator()),
                   )
-                : DropdownButton<UserEntity>(
-                    isExpanded: true,
-                    value: _filteredUsers.contains(_selectedUser)
-                        ? _selectedUser
-                        : null,
-                    hint: const Text("Selecciona un usuario"),
-                    items: _filteredUsers.map((user) {
-                      return DropdownMenuItem<UserEntity>(
-                        value: user,
-                        child: Text(
-                          user.fullName,
-                          style: AppTextStyles.builder(
-                            size: FontSizes.body2,
-                            color: AppColors.textColor,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (UserEntity? newUser) {
+                : AtenaDropDown(
+                    items: _filteredUsers.map((user) => user.fullName).toList(),
+                    initialValue: _selectedUser?.fullName,
+                    hint: 'Selecciona un usuario',
+                    onChanged: (selectedName) {
                       setState(() {
-                        _selectedUser = newUser;
+                        _selectedUser = _filteredUsers.firstWhere(
+                          (user) => user.fullName == selectedName,
+                        );
                       });
                     },
                   ),
@@ -139,6 +127,14 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
               ),
             ),
             const SizedBox(height: 20),
+            Text(
+              'Permisos Otorgados:', 
+              style: AppTextStyles.builder(
+                color: AppColors.secondaryColor, 
+                size: FontSizes.body1
+              )
+            ),
+            const SizedBox(height: 10),
             AteneaCheckboxButton(
               checkboxText: 'Modificar Contenidos',
               initialState: true,
