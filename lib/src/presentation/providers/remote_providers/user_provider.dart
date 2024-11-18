@@ -114,43 +114,79 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<List<UserEntity>> getUsersByPermission(SystemEntitiesTypes type, String entityId) async{
-    print('Iniciando búsqueda de usuarios con permisos...');
-    print('Tipo de entidad: ${type.value}, ID de la entidad: $entityId');
-
+  Future<List<UserEntity>> getUsersByPermission(SystemEntitiesTypes type, String entityId) async {
     _users = await getAllUsers(); // Actualiza la lista de usuarios
-    
+
     return _users.where((user) {
-      print('Verificando permisos para el usuario: ${user.fullName} (ID: ${user.id})');
-      
       // Obtener los permisos de la entidad correspondiente
       List<AtomicPermissionEntity> permissions = [];
       switch (type) {
         case SystemEntitiesTypes.department:
           permissions = user.userPermissions.department;
-          print('Permisos en departamentos: ${permissions.map((p) => p.permissionId.path).toList()}');
           break;
         case SystemEntitiesTypes.academy:
           permissions = user.userPermissions.academy;
-          print('Permisos en academias: ${permissions.map((p) => p.permissionId.path).toList()}');
           break;
         case SystemEntitiesTypes.subject:
           permissions = user.userPermissions.subject;
-          print('Permisos en materias: ${permissions.map((p) => p.permissionId.path).toList()}');
           break;
       }
 
-      // Verificar si el ID está en los permisos
-      final hasPermission = permissions.any((perm) {
-        final matches = perm.permissionId.path == '${type.value}/$entityId';
-        if (matches) {
-          print('Coincidencia encontrada: ${perm.permissionId.path}');
+      // Filtrar los permisos que coinciden con el ID
+      final filteredPermissions = permissions.where((perm) {
+        return perm.permissionId.path == '${type.value}/$entityId';
+      }).toList();
+
+      // Actualizar los permisos del usuario con los permisos filtrados
+      if (filteredPermissions.isNotEmpty) {
+        if (type == SystemEntitiesTypes.department) {
+          user.userPermissions.department = filteredPermissions;
+        } else if (type == SystemEntitiesTypes.academy) {
+          user.userPermissions.academy = filteredPermissions;
+        } else if (type == SystemEntitiesTypes.subject) {
+          user.userPermissions.subject = filteredPermissions;
         }
-        return matches;
-      });
-      print('Resultado para el usuario ${user.fullName}: ${hasPermission ? "tiene permiso" : "no tiene permiso"}');
-      return hasPermission;
+        return true; // El usuario tiene al menos un permiso válido
+      }
+
+      return false; // El usuario no tiene permisos válidos para esta entidad
     }).toList();
   }
-      
+
+  //
+  Future<void> addPermissionToUser({
+  required String userId,
+  required SystemEntitiesTypes type,
+  required AtomicPermissionEntity newPermission,
+  }) async {
+    try {
+      // Paso 1: Obtener el usuario
+      final user = await getUserById(userId);
+      if (user == null) {
+        throw Exception('Usuario no encontrado con ID: $userId');
+      }
+
+      // Paso 2: Actualizar la lista correspondiente
+      switch (type) {
+        case SystemEntitiesTypes.department:
+          user.userPermissions.department.add(newPermission);
+          break;
+        case SystemEntitiesTypes.academy:
+          user.userPermissions.academy.add(newPermission);
+          break;
+        case SystemEntitiesTypes.subject:
+          user.userPermissions.subject.add(newPermission);
+          break;
+      }
+
+      // Paso 3: Guardar los cambios en el repositorio
+      await updateUser(user);
+
+      print('Permiso añadido exitosamente al usuario ${user.fullName}');
+    } catch (e) {
+      print('Error al añadir permiso al usuario: $e');
+      rethrow;
+    }
+  }
+
 }

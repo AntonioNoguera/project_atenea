@@ -2,9 +2,9 @@ import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_enti
 
 class PermissionEntity {
   final bool isSuper;
-  final List<AtomicPermissionEntity> department;
-  final List<AtomicPermissionEntity> academy;
-  final List<AtomicPermissionEntity> subject;
+  List<AtomicPermissionEntity> department;
+  List<AtomicPermissionEntity> academy;
+  List<AtomicPermissionEntity> subject;
 
   PermissionEntity({
     required this.isSuper,

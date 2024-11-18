@@ -70,7 +70,11 @@ class AcademyManageContent extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
+                          print("s");
+                          return Container(); // Placeholder widget
+                          /*
                           return const AddContributorDialog();
+                          */
                         },
                       );
                     },

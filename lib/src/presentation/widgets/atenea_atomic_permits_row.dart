@@ -21,7 +21,14 @@ class AteneaAtomicPermitsRow extends StatelessWidget {
 
     if (permissions.isEmpty) {
       // Si no hay permisos, muestra un mensaje indicando que no hay permisos
-      return const Text('No tienes permisos asignados.');
+      return Text(
+        'N / A',
+        style: AppTextStyles.builder(
+          color: color,
+          size: FontSizes.body2,
+          weight: FontWeights.semibold,
+        ),
+        );
     }
 
     // Renderiza los íconos en función de los permisos

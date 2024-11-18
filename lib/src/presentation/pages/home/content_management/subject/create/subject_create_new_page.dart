@@ -115,12 +115,14 @@ class SubjectCreateNewPage extends StatelessWidget {
 
                         AteneaButtonV2(
                           onPressed: () {
+                            /*
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return const AddContributorDialog();
                               },
                             );
+                            */
                           },
                           
                           btnStyles: const AteneaButtonStyles(

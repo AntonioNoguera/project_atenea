@@ -4,6 +4,8 @@ import 'package:uuid/uuid.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 
+//PENDING TO FULL DEPRECATE USER LEVEL!!!
+
 class UserEntity {
   final String id;
   final UserType userLevel;
@@ -46,5 +48,19 @@ class UserEntity {
       'createdAt': createdAt,
       'userPermissions': userPermissions.toMap(),
     };
+  }
+
+  // Método copyWith para copiar un UserEntity con nuevos valores
+  UserEntity copyWith({
+    String? fullName,
+    PermissionEntity? userPermissions,
+  }) {
+    return UserEntity(
+      id: id,
+      userLevel: UserType.regularUser,
+      fullName: fullName ?? this.fullName,
+      userPermissions: userPermissions ?? this.userPermissions, 
+      passwordHash: '', createdAt: '',
+    );
   }
 }

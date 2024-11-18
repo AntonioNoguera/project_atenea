@@ -5,6 +5,7 @@ import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/academy_contributor_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/add_contributor_dialog.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
@@ -49,12 +50,25 @@ class _AcademicDepartmentManageContentState
     });
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
+
+      // Obtener la sesión actual
+      final currentSession = await sessionProvider.getSession();
+
+      // Obtener usuarios con permisos
       final users = await userProvider.getUsersByPermission(
         SystemEntitiesTypes.department, // Tipo de entidad
         widget.department.id, // ID del departamento
       );
+
       setState(() {
-        _contributors = users;
+        _contributors = users.map((user) {
+          if (user.id == currentSession?.userId) {
+            // Modificar el nombre si coincide con el usuario actual
+            return user.copyWith(fullName: 'TU');
+          }
+          return user;
+        }).toList();
         _isLoading = false;
       });
     } catch (error) {
@@ -123,6 +137,8 @@ class _AcademicDepartmentManageContentState
                               children: List.generate(_contributors.length,
                                   (index) {
                                 final user = _contributors[index];
+ 
+
                                 return Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5.0),
@@ -142,7 +158,10 @@ class _AcademicDepartmentManageContentState
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AddContributorDialog();
+                          return AddContributorDialog(
+                            entityType: SystemEntitiesTypes.department,
+                            entityUUID:  widget.department.id
+                          );
                         },
                       );
                     },

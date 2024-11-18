@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/academy_contributor_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/add_contributor_dialog.dart';
  
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
@@ -90,12 +89,14 @@ class AcademyCreateNewPage extends StatelessWidget {
 
                   AteneaButtonV2(
                     onPressed: () { 
+                      /*
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return const AddContributorDialog();
                         }
                       );
+                      */
                     }, 
                     
                     btnStyles: const AteneaButtonStyles(
@@ -133,6 +134,10 @@ class AcademyCreateNewPage extends StatelessWidget {
                   child: Row(
                     children: [
                       AteneaButtonV2(
+                        btnStyles: const AteneaButtonStyles(
+                            backgroundColor: AppColors.secondaryColor,
+                            textColor: AppColors.ateneaWhite
+                          ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -140,12 +145,7 @@ class AcademyCreateNewPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 10.0),
                       Expanded(
-                        child: AteneaButtonV2(
-                          btnStyles: const AteneaButtonStyles(
-                            backgroundColor: AppColors.secondaryColor,
-                            textColor: AppColors.ateneaWhite
-                          ),
-                          
+                        child: AteneaButtonV2( 
                           onPressed: () {
                             showDialog(
                               context: context,
