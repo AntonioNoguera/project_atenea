@@ -104,11 +104,18 @@ class LoginPage extends StatelessWidget {
               isPasswordField: true,
             ),
             const SizedBox(height: 20),
-            AteneaButtonV2(
-              text: 'Iniciar',
-              onPressed: () => _login(context),
+
+            Row(children: [
+Expanded(
+              child : AteneaButtonV2(
+                shouldLoad: true,
+                text: 'Iniciar',
+                onPressed: () => _login(context),
+              )
             ),
-            const Spacer(),
+            
+            ],),
+             const Spacer(),
             Text(
               '¿Eres nuevo por acá?, ¡Regístrate!',
               textAlign: TextAlign.center,

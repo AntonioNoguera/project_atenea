@@ -16,11 +16,13 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 class AddContributorDialog extends StatefulWidget {
   final String entityUUID;
   final SystemEntitiesTypes entityType;
+  final VoidCallback onPermissionUpdated;
 
   const AddContributorDialog({
     super.key,
     required this.entityUUID,
-    required this.entityType,
+    required this.entityType, 
+    required this.onPermissionUpdated,
   });
 
   @override
@@ -227,6 +229,8 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
                 type: widget.entityType,
                 newPermission: newPermission,
               );
+
+              widget.onPermissionUpdated();
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Permisos actualizados para ${_selectedUser!.fullName}.')),

@@ -159,6 +159,7 @@ class _AcademicDepartmentManageContentState
                         context: context,
                         builder: (BuildContext context) {
                           return AddContributorDialog(
+                            onPermissionUpdated: _fetchContributors,
                             entityType: SystemEntitiesTypes.department,
                             entityUUID:  widget.department.id
                           );
