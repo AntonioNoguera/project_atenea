@@ -50,6 +50,7 @@ flutter:
     - assets/svg/check.svg
       
     - assets/svg/drag_indicator.svg
+    - assets/svg/crossed_folder.svg
     - assets/svg/view_file.svg
     - assets/svg/add_user.svg
     
