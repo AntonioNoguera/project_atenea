@@ -30,41 +30,43 @@ class AcademyContributorRow extends StatelessWidget {
         ? FontWeights.bold
         : FontWeights.regular;
 
-    return ElevatedButton(
-      onPressed: showDetail,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        padding: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0), // Margen vertical agregado
+      child: ElevatedButton(
+        onPressed: showDetail,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
         ),
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-        margin: const EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                contributorName,
-                style: AppTextStyles.builder(
-                  color: textColor,
-                  weight: textWeight,
-                  size: FontSizes.body2,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  contributorName,
+                  style: AppTextStyles.builder(
+                    color: textColor,
+                    weight: textWeight,
+                    size: FontSizes.body2,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 10.0),
-            AteneaAtomicPermitsRow(
-              permissionEntity: permissionEntity,
-              color: textColor,
-            ),
-          ],
+              const SizedBox(width: 10.0),
+              AteneaAtomicPermitsRow(
+                permissionEntity: permissionEntity,
+                color: textColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

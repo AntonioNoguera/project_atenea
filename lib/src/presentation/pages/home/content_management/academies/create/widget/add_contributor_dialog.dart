@@ -99,15 +99,35 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
           _isLoading
               ? const Center(child: AteneaCircularProgress())
               : AtenaDropDown(
-                  items: _filteredUsers.map((user) => user.fullName).toList(),
-                  initialValue: _selectedUser?.fullName,
-                  hint: 'Selecciona un usuario',
-                  onChanged: (selectedName) {
-                    setState(() {
-                      _selectedUser = _filteredUsers.firstWhere((user) => user.fullName == selectedName);
-                    });
-                  },
-                ),
+                items: _filteredUsers.map((user) => user.fullName).toList(),
+                initialValue: _selectedUser?.fullName,
+                hint: 'Selecciona un usuario',
+                onChanged: (selectedName) {
+                  setState(() {
+                    if (_filteredUsers.isEmpty) {
+                      print('Filtered users list is empty.');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('No hay usuarios disponibles para seleccionar.')),
+                      );
+                      return;
+                    }
+                    try {
+                      final selectedUser = _filteredUsers.firstWhere(
+                        (user) => user.fullName == selectedName,
+                      );
+                      _selectedUser = selectedUser;
+                    } catch (e) {
+                      print('User not found for name: $selectedName');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Usuario no encontrado.')),
+                      );
+                      _selectedUser = null;
+                    }
+                  });
+                },
+              ),
+
+
           const SizedBox(height: 20),
           AteneaCheckboxButton(
             checkboxText: 'Modificar Contenidos',

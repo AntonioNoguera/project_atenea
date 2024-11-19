@@ -28,20 +28,13 @@ class UserProvider with ChangeNotifier {
   List<UserEntity> get users => _users;
   String? get errorMessage => _errorMessage;
 
-  // Método de login que retorna UserEntity? en lugar de void
+  // Login
   Future<UserEntity?> loginUser(String fullName, String passwordHash) async {
     try {
       final user = await loginUserUseCase.call(fullName, passwordHash);
-      if (user == null) {
-        _errorMessage = 'Usuario o contraseña incorrectos';
-      } else {
-        _errorMessage = null;
-      }
+      _errorMessage = user == null ? 'Usuario o contraseña incorrectos' : null;
       notifyListeners();
-
-      
-
-      return user; // Retorna el usuario autenticado o null
+      return user;
     } catch (e) {
       _errorMessage = 'Error durante el login';
       notifyListeners();
@@ -49,7 +42,7 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  // Obtener un usuario por ID
+  // Obtener usuario por ID
   Future<UserEntity?> getUserById(String id) async {
     try {
       final user = await getUserByIdUseCase.call(id);
@@ -66,7 +59,7 @@ class UserProvider with ChangeNotifier {
   Future<void> addUser(UserEntity user) async {
     try {
       await addUserUseCase.call(user);
-      await getAllUsers(); // Actualiza la lista de usuarios
+      await getAllUsers();
       _errorMessage = null;
       notifyListeners();
     } catch (e) {
@@ -75,11 +68,11 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  // Actualizar un usuario existente
+  // Actualizar usuario existente
   Future<void> updateUser(UserEntity user) async {
     try {
       await updateUserUseCase.call(user);
-      await getAllUsers(); // Actualiza la lista de usuarios
+      await getAllUsers();
       _errorMessage = null;
       notifyListeners();
     } catch (e) {
@@ -92,7 +85,7 @@ class UserProvider with ChangeNotifier {
   Future<void> deleteUser(String id) async {
     try {
       await deleteUserUseCase.call(id);
-      await getAllUsers(); // Actualiza la lista de usuarios
+      await getAllUsers();
       _errorMessage = null;
       notifyListeners();
     } catch (e) {
@@ -101,13 +94,13 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  // Modificación en UserProvider
+  // Obtener todos los usuarios
   Future<List<UserEntity>> getAllUsers() async {
     try {
       _users = await getAllUsersUseCase.call();
       _errorMessage = null;
       notifyListeners();
-      return _users; // Retorna la lista de usuarios
+      return _users;
     } catch (e) {
       _errorMessage = 'Error al obtener la lista de usuarios';
       notifyListeners();
@@ -115,57 +108,17 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  // Obtener usuarios por permisos
   Future<List<UserEntity>> getUsersByPermission(SystemEntitiesTypes type, String entityId) async {
-    _users = await getAllUsers(); // Actualiza la lista de usuarios
-
-    return _users.where((user) {
-      // Obtener los permisos de la entidad correspondiente
-      List<AtomicPermissionEntity> permissions = [];
-      switch (type) {
-        case SystemEntitiesTypes.department:
-          permissions = user.userPermissions.department;
-          break;
-        case SystemEntitiesTypes.academy:
-          permissions = user.userPermissions.academy;
-          break;
-        case SystemEntitiesTypes.subject:
-          permissions = user.userPermissions.subject;
-          break;
-      }
-
-      // Filtrar los permisos que coinciden con el ID
-      final filteredPermissions = permissions.where((perm) {
-        return perm.permissionId.path == '${type.value}/$entityId';
-      }).toList();
-
-      // Actualizar los permisos del usuario con los permisos filtrados
-      if (filteredPermissions.isNotEmpty) {
-        if (type == SystemEntitiesTypes.department) {
-          user.userPermissions.department = filteredPermissions;
-        } else if (type == SystemEntitiesTypes.academy) {
-          user.userPermissions.academy = filteredPermissions;
-        } else if (type == SystemEntitiesTypes.subject) {
-          user.userPermissions.subject = filteredPermissions;
-        }
-        return true; // El usuario tiene al menos un permiso válido
-      }
-
-      return false; // El usuario no tiene permisos válidos para esta entidad
+    final users = await getAllUsers();
+    return users.where((user) {
+      final permissions = _getPermissionList(user, type);
+      final hasValidPermission = permissions.any((perm) => perm.permissionId.path == '${type.value}/$entityId');
+      return hasValidPermission;
     }).toList();
   }
 
-  List<AtomicPermissionEntity> _getPermissionList(UserEntity user, SystemEntitiesTypes type) {
-    switch (type) {
-      case SystemEntitiesTypes.department:
-        return user.userPermissions.department;
-      case SystemEntitiesTypes.academy:
-        return user.userPermissions.academy;
-      case SystemEntitiesTypes.subject:
-        return user.userPermissions.subject;
-    }
-  }
-
-  //
+  // Añadir permiso a un usuario
   Future<void> addPermissionToUser({
     required String userId,
     required SystemEntitiesTypes type,
@@ -176,22 +129,19 @@ class UserProvider with ChangeNotifier {
       if (user == null) throw Exception('Usuario no encontrado con ID: $userId');
 
       final permissions = _getPermissionList(user, type);
-
-      // Verificar duplicados antes de añadir
       if (!permissions.any((perm) => perm.permissionId == newPermission.permissionId)) {
         permissions.add(newPermission);
+        await updateUser(user);
+        notifyListeners();
+        print('Permiso añadido exitosamente al usuario ${user.fullName}');
       }
-
-      await updateUser(user);
-      notifyListeners();
-      print('Permiso añadido exitosamente al usuario ${user.fullName}');
     } catch (e) {
       print('Error al añadir permiso al usuario: $e');
       rethrow;
     }
   }
 
-
+  // Eliminar permiso de un usuario
   Future<void> removePermissionFromUser({
     required String userId,
     required SystemEntitiesTypes type,
@@ -202,8 +152,6 @@ class UserProvider with ChangeNotifier {
       if (user == null) throw Exception('Usuario no encontrado con ID: $userId');
 
       final permissions = _getPermissionList(user, type);
-
-      // Eliminar el permiso si existe
       permissions.removeWhere((perm) => perm.permissionId == permissionId);
 
       await updateUser(user);
@@ -215,5 +163,45 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  // Actualizar permiso de un usuario
+  Future<void> updatePermissionForUser({
+    required String userId,
+    required SystemEntitiesTypes type,
+    required AtomicPermissionEntity updatedPermission,
+  }) async {
+    try {
+      print('Iniciando actualización de permisos para usuario: $userId');
 
+      // Eliminar permiso existente
+      await removePermissionFromUser(
+        userId: userId,
+        type: type,
+        permissionId: updatedPermission.permissionId,
+      );
+
+      // Añadir el nuevo permiso
+      await addPermissionToUser(
+        userId: userId,
+        type: type,
+        newPermission: updatedPermission,
+      );
+
+      print('Permiso actualizado correctamente para el usuario $userId');
+    } catch (e) {
+      print('Error al actualizar permisos para el usuario $userId: $e');
+      throw Exception('Failed to update permission');
+    }
+  }
+
+  // Obtener la lista de permisos del tipo correspondiente
+  List<AtomicPermissionEntity> _getPermissionList(UserEntity user, SystemEntitiesTypes type) {
+    switch (type) {
+      case SystemEntitiesTypes.department:
+        return user.userPermissions.department;
+      case SystemEntitiesTypes.academy:
+        return user.userPermissions.academy;
+      case SystemEntitiesTypes.subject:
+        return user.userPermissions.subject;
+    }
+  }
 }
