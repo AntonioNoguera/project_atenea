@@ -7,6 +7,7 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/ac
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/departments/manage_content/academic_department_manage_content.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/app_ui_helpers.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/academy_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
@@ -17,10 +18,50 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.da
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
-class AcademicDepartmentDetailPage extends StatelessWidget {
+class AcademicDepartmentDetailPage extends StatefulWidget {
   final DepartmentEntity department;
 
   const AcademicDepartmentDetailPage({super.key, required this.department});
+
+  @override
+  _AcademicDepartmentDetailPageState createState() =>
+      _AcademicDepartmentDetailPageState();
+}
+
+class _AcademicDepartmentDetailPageState
+    extends State<AcademicDepartmentDetailPage> {
+  late DepartmentEntity department;
+
+  @override
+  void initState() {
+    super.initState();
+    department = widget.department;
+  }
+
+  Future<void> _navigateToDetalle(DepartmentEntity departamento) async {
+    // Navegar a la pantalla de detalle
+    final result = await Navigator.push(
+      context,
+      AteneaPageAnimator(page: AcademicDepartmentManageContent(department: departamento)),
+    );
+
+    // Si `result` es true, significa que hubo cambios
+    if (result == true) {
+      print('Hubo cambios en el departamento. Actualizando detalles...');
+      final updatedDepartment =
+          await Provider.of<DepartmentProvider>(context, listen: false)
+              .getDepartment(department.id);
+
+      // Actualizar la información en la pantalla
+      if (updatedDepartment != null) {
+        setState(() {
+          department.name = updatedDepartment.name;
+          department.lastModificationContributor = updatedDepartment.lastModificationContributor;
+          department.lastModificationDateTime = updatedDepartment.lastModificationDateTime;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +69,9 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ScrollControllerNotifier()),
         FutureProvider<List<AcademyEntity>>(
-          create: (context) => Provider.of<AcademyProvider>(context, listen: false).getAcademiesByDepartmentId(department.id),
+          create: (context) =>
+              Provider.of<AcademyProvider>(context, listen: false)
+                  .getAcademiesByDepartmentId(department.id),
           initialData: [],
         ),
       ],
@@ -98,7 +141,8 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                AppUiHelpers.formatDateStringToWords(department.lastModificationDateTime),
+                                AppUiHelpers.formatDateStringToWords(
+                                    department.lastModificationDateTime),
                                 textAlign: TextAlign.center,
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,
@@ -110,8 +154,6 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                      
                       const SizedBox(height: 20),
                       Text(
                         'Academias Disponibles',
@@ -131,12 +173,13 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                             : ListView.builder(
                                 controller: scrollNotifier.scrollController,
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: MediaQuery.of(context).size.width * 0.05,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.05,
                                 ),
                                 itemCount: academies.length,
                                 itemBuilder: (context, index) {
                                   final academy = academies[index];
-                                  return  AcademyItemRow(academy: academy);
+                                  return AcademyItemRow(academy: academy);
                                 },
                               ),
                       ),
@@ -160,7 +203,8 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                 onPressedCallback: () {
                                   Navigator.push(
                                     context,
-                                    AteneaPageAnimator(page: const AcademyCreateNewPage()),
+                                    AteneaPageAnimator(
+                                        page: const AcademyCreateNewPage()),
                                   );
                                 },
                               ),
@@ -188,10 +232,7 @@ class AcademicDepartmentDetailPage extends StatelessWidget {
                                     textColor: AppColors.ateneaWhite,
                                   ),
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      AteneaPageAnimator(page: AcademicDepartmentManageContent(department: department)),
-                                    );
+                                    _navigateToDetalle(department);
                                   },
                                 ),
                               ),

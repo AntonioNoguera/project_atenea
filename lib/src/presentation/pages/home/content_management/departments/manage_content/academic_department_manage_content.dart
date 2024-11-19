@@ -8,6 +8,7 @@ import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/academy_contributor_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/add_contributor_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/modify_contributor_dialog.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
@@ -108,8 +109,7 @@ class _AcademicDepartmentManageContentState
   }
 
   void _removeContributor(UserEntity contributor) {
-    setState(() {
-      print('Removing contributor: ${contributor.fullName}');
+    setState(() { 
       _contributors.remove(contributor);
       final permission = contributor.userPermissions.department.isNotEmpty
           ? contributor.userPermissions.department.first
@@ -123,16 +123,11 @@ class _AcademicDepartmentManageContentState
 
   Future<void> _saveChanges() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-
-    print('Saving changes...');
-    print('Permissions to add: ${_permissionsToAdd.length}');
-    print('Permissions to modify: ${_permissionsToModify.length}');
-    print('Permissions to remove: ${_permissionsToRemove.length}');
+    final departmentProvider = Provider.of<DepartmentProvider>(context, listen: false);
 
     try {
       // Manejo de permisos para añadir
-      for (var entry in _permissionsToAdd.entries) {
-        print('Adding permission for user: ${entry.key.fullName}');
+      for (var entry in _permissionsToAdd.entries) { 
         await userProvider.addPermissionToUser(
           userId: entry.key.id,
           type: SystemEntitiesTypes.department,
@@ -141,16 +136,12 @@ class _AcademicDepartmentManageContentState
       }
 
       // Manejo de permisos para modificar
-      for (var entry in _permissionsToModify.entries) {
-        print('Updating permission for user: ${entry.key.fullName}');
+      for (var entry in _permissionsToModify.entries) { 
         
-        // Validar que los permisos no estén vacíos
-        if (entry.value.permissionTypes.isEmpty) {
-          print('Permission types cannot be empty for ${entry.key.fullName}');
-          continue; // Saltar esta actualización
+        if (entry.value.permissionTypes.isEmpty) { 
+          continue;
         }
 
-        // Actualizar permisos
         await userProvider.updatePermissionForUser(
           userId: entry.key.id,
           type: SystemEntitiesTypes.department,
@@ -168,6 +159,16 @@ class _AcademicDepartmentManageContentState
         );
       }
 
+      // Actualizar la información del departamento
+      final updatedDepartment = widget.department.copyWith(
+        name: _departmentInputController.text,
+        lastModificationDateTime: DateTime.now().toString(),
+        lastModificationContributor: Provider.of<SessionProvider>(context, listen: false).currentSession?.userName ?? '',
+      );
+
+      print('Updating department: $updatedDepartment');
+      await departmentProvider.updateDepartment(updatedDepartment);
+
       // Limpiar las listas después de realizar las operaciones
       setState(() {
         _permissionsToAdd.clear();
@@ -175,13 +176,11 @@ class _AcademicDepartmentManageContentState
         _permissionsToRemove.clear();
       });
 
-      // Mostrar éxito al usuario
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Cambios guardados con éxito')),
       );
 
-      // Refrescar la lista de contribuidores
-      _fetchContributors();
+      _fetchContributors(); // Refrescar la lista de contribuidores
     } catch (e) {
       print('Error saving changes: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -189,6 +188,7 @@ class _AcademicDepartmentManageContentState
       );
     }
   }
+
 
 
 
@@ -347,7 +347,7 @@ class _AcademicDepartmentManageContentState
                         backgroundColor: AppColors.secondaryColor,
                         textColor: AppColors.ateneaWhite,
                       ),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.pop(context, true),
                     ),
                     const SizedBox(width: 10.0),
                     Expanded(

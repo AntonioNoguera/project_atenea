@@ -2,10 +2,10 @@ import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DepartmentEntity {
-  final String id;
-  final String name;
-  final String lastModificationDateTime;
-  final String lastModificationContributor; 
+  String id;
+  String name;
+  String lastModificationDateTime;
+  String lastModificationContributor; 
 
   DepartmentEntity({
     String? id,
@@ -37,5 +37,19 @@ class DepartmentEntity {
       'lastModificationDateTime': lastModificationDateTime,
       'lastModificationContributor': lastModificationContributor, 
     };
+  }
+
+  DepartmentEntity copyWith({
+    String? id,
+    String? name,
+    String? lastModificationDateTime,
+    String? lastModificationContributor,
+  }) {
+    return DepartmentEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      lastModificationDateTime: lastModificationDateTime ?? this.lastModificationDateTime,
+      lastModificationContributor: lastModificationContributor ?? this.lastModificationContributor,
+    );
   }
 }

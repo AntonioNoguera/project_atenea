@@ -66,6 +66,9 @@ class SessionProvider with ChangeNotifier {
       notifyListeners();
     }
 
+
+     SessionEntity? get currentSession => _session;
+
     // Verificar permisos para una entidad específica por UUID y nivel de entidad
   Future<List<PermitTypes>> hasPermissionForUUID(String uuid, String entityLevel) async {
     print('Iniciando verificación de permisos para UUID: $uuid y nivel de entidad: $entityLevel');
