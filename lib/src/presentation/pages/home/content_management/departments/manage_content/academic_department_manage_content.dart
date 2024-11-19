@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/department_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/academy_contributor_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/add_contributor_dialog.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/modify_contributor_dialog.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
@@ -29,6 +33,10 @@ class _AcademicDepartmentManageContentState
   late List<UserEntity> _contributors;
   bool _isLoading = true;
 
+  final Map<UserEntity, AtomicPermissionEntity> _permissionsToAdd = {};
+  final Map<UserEntity, AtomicPermissionEntity> _permissionsToModify = {};
+  final Map<UserEntity, AtomicPermissionEntity> _permissionsToRemove = {};
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +51,6 @@ class _AcademicDepartmentManageContentState
     super.dispose();
   }
 
-  /// Llama al provider para obtener usuarios con permisos en este departamento
   Future<void> _fetchContributors() async {
     setState(() {
       _isLoading = true;
@@ -52,20 +59,16 @@ class _AcademicDepartmentManageContentState
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
 
-      // Obtener la sesión actual
       final currentSession = await sessionProvider.getSession();
-
-      // Obtener usuarios con permisos
       final users = await userProvider.getUsersByPermission(
-        SystemEntitiesTypes.department, // Tipo de entidad
-        widget.department.id, // ID del departamento
+        SystemEntitiesTypes.department,
+        widget.department.id,
       );
 
       setState(() {
         _contributors = users.map((user) {
           if (user.id == currentSession?.userId) {
-            // Modificar el nombre si coincide con el usuario actual
-            return user.copyWith(fullName: 'TU');
+            return user.copyWith(fullName: '${user.fullName} (Tú)');
           }
           return user;
         }).toList();
@@ -80,21 +83,58 @@ class _AcademicDepartmentManageContentState
     }
   }
 
-  void _addContributor(UserEntity contributor) {
+  void _addContributor(UserEntity contributor, AtomicPermissionEntity permission) {
     setState(() {
       _contributors.add(contributor);
+      _permissionsToAdd[contributor] = permission;
     });
   }
 
-  void _removeContributor(int index) {
+  void _modifyContributor(UserEntity contributor, AtomicPermissionEntity permission) {
     setState(() {
-      _contributors.removeAt(index);
+      _permissionsToModify[contributor] = permission;
     });
   }
 
-  void _saveChanges() {
-    print('Guardando cambios: ${_departmentInputController.text}');
-    print('Contribuidores: ${_contributors.map((c) => c.fullName).toList()}');
+  void _removeContributor(UserEntity contributor) {
+    setState(() {
+      _contributors.remove(contributor);
+      _permissionsToRemove[contributor] = contributor.userPermissions.department.first;
+    });
+  }
+
+  Future<void> _saveChanges() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    for (var entry in _permissionsToAdd.entries) {
+      await userProvider.addPermissionToUser(
+        userId: entry.key.id,
+        type: SystemEntitiesTypes.department,
+        newPermission: entry.value,
+      );
+    }
+
+    for (var entry in _permissionsToModify.entries) {
+      await userProvider.addPermissionToUser(
+        userId: entry.key.id,
+        type: SystemEntitiesTypes.department,
+        newPermission: entry.value,
+      );
+    }
+
+    for (var entry in _permissionsToRemove.entries) {
+      await userProvider.removePermissionFromUser(
+        userId: entry.key.id,
+        type: SystemEntitiesTypes.department,
+        permissionId: entry.value.permissionId,
+      );
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Cambios guardados con éxito')),
+    );
+
+    _fetchContributors();
   }
 
   @override
@@ -115,6 +155,44 @@ class _AcademicDepartmentManageContentState
                         size: FontSizes.h3, weight: FontWeights.semibold),
                     textAlign: TextAlign.center,
                   ),
+                  AteneaCard(
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          '¡Atención!',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.builder(
+                            color: AppColors.ateneaBlack,
+                            size: FontSizes.body1,
+                            weight: FontWeights.semibold,
+                          ),
+                        ),
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text:
+                                'Todos los cambios que realices en este departamento se verán solo reflejados hasta que se presione el botón de ',
+                            style: AppTextStyles.builder(
+                              color: AppColors.ateneaBlack,
+                              size: FontSizes.body2,
+                              weight: FontWeights.regular,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'guardar.',
+                                style: AppTextStyles.builder(
+                                  color: AppColors.ateneaBlack,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.semibold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 20.0),
                   AteneaField(
                     placeHolder: 'Ingresa el nombre del departamento',
@@ -130,57 +208,49 @@ class _AcademicDepartmentManageContentState
                     ),
                   ),
                   _isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : Expanded(
+                      ? const Center(child: AteneaCircularProgress())
+                      : Flexible(
                           child: SingleChildScrollView(
                             child: Column(
-                              children: List.generate(_contributors.length,
-                                  (index) {
-                                final user = _contributors[index];
- 
-
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
-                                  child: AcademyContributorRow(
-                                    index: index,
-                                    contributorName: user.fullName,
-                                    permissionEntity: user.userPermissions.department.first,
-                                    showDetail: () => _removeContributor(index),
+                              children: _contributors.map((user) {
+                                final permission = user.userPermissions.department.first;
+                                return AcademyContributorRow(
+                                  index: _contributors.indexOf(user),
+                                  contributorName: user.fullName,
+                                  permissionEntity: permission,
+                                  showDetail: () => showDialog(
+                                    context: context,
+                                    builder: (_) => ModifyContributorDialog(
+                                      entityUUID: widget.department.id,
+                                      permissionEntity: permission,
+                                      entityType: SystemEntitiesTypes.department,
+                                      userDisplayed: user,
+                                      onPermissionUpdated: (userEntity, updatedPermission) => _modifyContributor(userEntity, updatedPermission),
+                                      onPermissionRemoved: (userEntity) => _removeContributor(userEntity),
+                                    ),
                                   ),
                                 );
-                              }),
+                              }).toList(),
                             ),
                           ),
                         ),
+                  const SizedBox(height: 20.0),
                   AteneaButtonV2(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AddContributorDialog(
-                            onPermissionUpdated: _fetchContributors,
-                            entityType: SystemEntitiesTypes.department,
-                            entityUUID:  widget.department.id
-                          );
-                        },
-                      );
-                    },
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => AddContributorDialog(
+                        onPermissionAdded: (user, permission) =>
+                            _addContributor(user, permission),
+                        entityType: SystemEntitiesTypes.department,
+                        entityUUID: widget.department.id,
+                      ),
+                    ),
                     btnStyles: const AteneaButtonStyles(
                       backgroundColor: AppColors.ateneaWhite,
                       textColor: AppColors.primaryColor,
                       hasBorder: true,
                     ),
-                    textStyle: AppTextStyles.builder(
-                      color: AppColors.primaryColor,
-                      size: FontSizes.h5,
-                      weight: FontWeights.light,
-                    ),
                     text: 'Añadir Contribuidor',
-                    svgIcon: SvgButtonStyle(
-                      svgPath: 'assets/svg/add_user.svg',
-                      svgDimentions: 25,
-                    ),
                   ),
                   const SizedBox(height: 60.0),
                 ],
@@ -201,9 +271,7 @@ class _AcademicDepartmentManageContentState
                         backgroundColor: AppColors.secondaryColor,
                         textColor: AppColors.ateneaWhite,
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                      onPressed: () => Navigator.pop(context),
                     ),
                     const SizedBox(width: 10.0),
                     Expanded(
@@ -213,7 +281,7 @@ class _AcademicDepartmentManageContentState
                           backgroundColor: AppColors.primaryColor,
                           textColor: AppColors.ateneaWhite,
                         ),
-                        onPressed: () => _showSaveDialog(),
+                        onPressed: _saveChanges,
                       ),
                     ),
                   ],
@@ -223,53 +291,6 @@ class _AcademicDepartmentManageContentState
           ],
         ),
       ),
-    );
-  }
-
-  void _showSaveDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AteneaDialog(
-          title: 'Modificando Departamento',
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '¿Deseas guardar los cambios en el departamento "${_departmentInputController.text}"?',
-                style: AppTextStyles.builder(color: AppColors.textColor),
-              ),
-              const SizedBox(height: 15.0),
-              Text(
-                'Contribuidores: ${_contributors.map((c) => c.fullName).join(", ")}',
-                style: AppTextStyles.builder(
-                  color: AppColors.primaryColor,
-                  size: FontSizes.body2,
-                ),
-              ),
-            ],
-          ),
-          buttonCallbacks: [
-            AteneaButtonCallback(
-              textButton: 'Cancelar',
-              onPressedCallback: () {
-                Navigator.of(context).pop();
-              },
-              buttonStyles: const AteneaButtonStyles(
-                backgroundColor: AppColors.secondaryColor,
-                textColor: AppColors.ateneaWhite,
-              ),
-            ),
-            AteneaButtonCallback(
-              textButton: 'Aceptar',
-              onPressedCallback: () {
-                _saveChanges();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

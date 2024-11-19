@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
@@ -153,40 +154,66 @@ class UserProvider with ChangeNotifier {
     }).toList();
   }
 
+  List<AtomicPermissionEntity> _getPermissionList(UserEntity user, SystemEntitiesTypes type) {
+    switch (type) {
+      case SystemEntitiesTypes.department:
+        return user.userPermissions.department;
+      case SystemEntitiesTypes.academy:
+        return user.userPermissions.academy;
+      case SystemEntitiesTypes.subject:
+        return user.userPermissions.subject;
+    }
+  }
+
   //
   Future<void> addPermissionToUser({
-  required String userId,
-  required SystemEntitiesTypes type,
-  required AtomicPermissionEntity newPermission,
+    required String userId,
+    required SystemEntitiesTypes type,
+    required AtomicPermissionEntity newPermission,
   }) async {
     try {
-      // Paso 1: Obtener el usuario
       final user = await getUserById(userId);
-      if (user == null) {
-        throw Exception('Usuario no encontrado con ID: $userId');
+      if (user == null) throw Exception('Usuario no encontrado con ID: $userId');
+
+      final permissions = _getPermissionList(user, type);
+
+      // Verificar duplicados antes de añadir
+      if (!permissions.any((perm) => perm.permissionId == newPermission.permissionId)) {
+        permissions.add(newPermission);
       }
 
-      // Paso 2: Actualizar la lista correspondiente
-      switch (type) {
-        case SystemEntitiesTypes.department:
-          user.userPermissions.department.add(newPermission);
-          break;
-        case SystemEntitiesTypes.academy:
-          user.userPermissions.academy.add(newPermission);
-          break;
-        case SystemEntitiesTypes.subject:
-          user.userPermissions.subject.add(newPermission);
-          break;
-      }
-
-      // Paso 3: Guardar los cambios en el repositorio
       await updateUser(user);
-
+      notifyListeners();
       print('Permiso añadido exitosamente al usuario ${user.fullName}');
     } catch (e) {
       print('Error al añadir permiso al usuario: $e');
       rethrow;
     }
   }
+
+
+  Future<void> removePermissionFromUser({
+    required String userId,
+    required SystemEntitiesTypes type,
+    required DocumentReference permissionId,
+  }) async {
+    try {
+      final user = await getUserById(userId);
+      if (user == null) throw Exception('Usuario no encontrado con ID: $userId');
+
+      final permissions = _getPermissionList(user, type);
+
+      // Eliminar el permiso si existe
+      permissions.removeWhere((perm) => perm.permissionId == permissionId);
+
+      await updateUser(user);
+      notifyListeners();
+      print('Permiso eliminado exitosamente del usuario ${user.fullName}');
+    } catch (e) {
+      print('Error al eliminar permiso del usuario: $e');
+      throw Exception('Failed to remove permission');
+    }
+  }
+
 
 }

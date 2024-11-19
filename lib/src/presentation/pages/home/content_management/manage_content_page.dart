@@ -44,36 +44,34 @@ class ManageContentPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.05,
+                      AteneaCard (
+                        margin: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.05, 
                         ),
-                        child: AteneaCard (
-                          child: Column (
-                            children: [
-                              Text(
-                                '¡Atención!',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.builder(
-                                  color: AppColors.ateneaBlack,
-                                  size: FontSizes.body1,
-                                  weight: FontWeights.semibold,
-                                ),
+                        child: Column (
+                          children: [
+                            Text(
+                              '¡Atención!',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.builder(
+                                color: AppColors.ateneaBlack,
+                                size: FontSizes.body1,
+                                weight: FontWeights.semibold,
                               ),
-                              Text(
-                                'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico.',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.builder(
-                                  color: AppColors.ateneaBlack,
-                                  size: FontSizes.body2,
-                                  weight: FontWeights.regular,
-                                ),
+                            ),
+                            Text(
+                              'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico.',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.builder(
+                                color: AppColors.ateneaBlack,
+                                size: FontSizes.body2,
+                                weight: FontWeights.regular,
                               ),
+                            ),
 
-                            ],
-                          ) 
-                        ),
-                      ),
+                          ],
+                        ) 
+                      ), 
 
                       const SizedBox(height: 15),
                       Text(

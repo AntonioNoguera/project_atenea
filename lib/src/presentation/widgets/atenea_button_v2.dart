@@ -88,19 +88,17 @@ class _AteneaButtonV2State extends State<AteneaButtonV2> {
             : BorderSide.none,
       ),
       onPressed: isLoading
-          ? () {} // Deshabilita el botón mientras está cargando
+          ? () {}
           : () {
               if (widget.onPressed != null) {
-                _startLoading(); // Cambia el estado a "cargando"
-                widget.onPressed!();
-                // Simula finalización de la tarea después de 2 segundos
-                Future.delayed(const Duration(seconds: 2), _stopLoading);
+                _startLoading();
+                widget.onPressed!(); 
+                Future.delayed(const Duration(seconds: 10), _stopLoading);
               }
             },
       child: Stack(
         alignment: Alignment.center,
-        children: [
-          // Contenido normal del botón
+        children: [ 
           if (!isLoading)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

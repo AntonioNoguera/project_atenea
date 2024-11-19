@@ -16,13 +16,13 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 class AddContributorDialog extends StatefulWidget {
   final String entityUUID;
   final SystemEntitiesTypes entityType;
-  final VoidCallback onPermissionUpdated;
+  final Function(UserEntity, AtomicPermissionEntity) onPermissionAdded;
 
   const AddContributorDialog({
     super.key,
     required this.entityUUID,
-    required this.entityType, 
-    required this.onPermissionUpdated,
+    required this.entityType,
+    required this.onPermissionAdded,
   });
 
   @override
@@ -36,7 +36,6 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
   UserEntity? _selectedUser;
   bool _isLoading = true;
 
-  // Permisos seleccionados
   bool canEditContent = true;
   bool canAddContributors = true;
 
@@ -52,16 +51,12 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
 
-      // Obtener la lista de todos los usuarios
       final users = await userProvider.getAllUsers();
-
-      // Eliminar al usuario de la sesión actual de la lista
       final currentSession = await sessionProvider.getSession();
-      final filteredUsers = users.where((user) => user.id != currentSession?.userId).toList();
 
       setState(() {
-        _allUsers = filteredUsers;
-        _filteredUsers = filteredUsers;
+        _allUsers = users.where((user) => user.id != currentSession?.userId).toList();
+        _filteredUsers = _allUsers;
         _isLoading = false;
       });
     } catch (e) {
@@ -90,158 +85,75 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
   @override
   Widget build(BuildContext context) {
     return AteneaDialog(
-      title: 'Añade Contribuidor',
-      content: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Busca contribuidores:',
-              style: AppTextStyles.builder(
-                color: AppColors.secondaryColor,
-                size: FontSizes.body1,
-              ),
-            ),
-            const SizedBox(height: 10),
-            AteneaField(
-              placeHolder: 'Buscar Nombre',
-              inputNameText: 'Nombre',
-              controller: _searchController,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              _isLoading
-                  ? 'Cargando usuarios...'
-                  : _filteredUsers.isEmpty
-                      ? 'No se encontraron resultados.'
-                      : 'Resultados: ${_filteredUsers.length} usuarios',
-              style: AppTextStyles.builder(
-                color: AppColors.grayColor,
-                size: FontSizes.body2,
-              ),
-            ),
-            const SizedBox(height: 10),
-            _isLoading
-                ? const SizedBox(
-                    height: 75,
-                    child: Center(child: AteneaCircularProgress()),
-                  )
-                : AtenaDropDown(
-                    items: _filteredUsers.map((user) => user.fullName).toList(),
-                    initialValue: _selectedUser?.fullName,
-                    hint: 'Selecciona un usuario',
-                    onChanged: (selectedName) {
-                      setState(() {
-                        _selectedUser = _filteredUsers.firstWhere(
-                          (user) => user.fullName == selectedName,
-                        );
-                      });
-                    },
-                  ),
-            const SizedBox(height: 10),
-            Text(
-              _selectedUser != null
-                  ? 'Seleccionado: ${_selectedUser?.fullName}'
-                  : 'No se ha seleccionado ningún usuario.',
-              style: AppTextStyles.builder(
-                color: _selectedUser != null
-                    ? AppColors.primaryColor
-                    : AppColors.grayColor,
-                size: FontSizes.body2,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Permisos Otorgados:',
-              style: AppTextStyles.builder(
-                color: AppColors.secondaryColor,
-                size: FontSizes.body1,
-              ),
-            ),
-            const SizedBox(height: 10),
-            AteneaCheckboxButton(
-              checkboxText: 'Modificar Contenidos',
-              initialState: canEditContent,
-              onChanged: (value) {
-                setState(() {
-                  canEditContent = value;
-                });
-              },
-            ),
-            const SizedBox(height: 5),
-            AteneaCheckboxButton(
-              checkboxText: 'Añadir nuevos contribuidores',
-              initialState: canAddContributors,
-              onChanged: (value) {
-                setState(() {
-                  canAddContributors = value;
-                });
-              },
-            ),
-          ],
-        ),
+      title: 'Añadir Contribuidor',
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          AteneaField(
+            placeHolder: 'Buscar Nombre',
+            inputNameText: 'Filtra usuarios por nombre',
+            controller: _searchController,
+          ),
+          const SizedBox(height: 10),
+          _isLoading
+              ? const Center(child: AteneaCircularProgress())
+              : AtenaDropDown(
+                  items: _filteredUsers.map((user) => user.fullName).toList(),
+                  initialValue: _selectedUser?.fullName,
+                  hint: 'Selecciona un usuario',
+                  onChanged: (selectedName) {
+                    setState(() {
+                      _selectedUser = _filteredUsers.firstWhere((user) => user.fullName == selectedName);
+                    });
+                  },
+                ),
+          const SizedBox(height: 20),
+          AteneaCheckboxButton(
+            checkboxText: 'Modificar Contenidos',
+            initialState: canEditContent,
+            onChanged: (value) {
+              setState(() {
+                canEditContent = value;
+              });
+            },
+          ),
+          AteneaCheckboxButton(
+            checkboxText: 'Añadir nuevos contribuidores',
+            initialState: canAddContributors,
+            onChanged: (value) {
+              setState(() {
+                canAddContributors = value;
+              });
+            },
+          ),
+        ],
       ),
       buttonCallbacks: [
         AteneaButtonCallback(
           textButton: 'Cancelar',
-          onPressedCallback: () {
-            Navigator.of(context).pop();
-          },
-          buttonStyles: const AteneaButtonStyles(
-            backgroundColor: AppColors.secondaryColor,
-            textColor: AppColors.ateneaWhite,
-          ),
+          onPressedCallback: () => Navigator.pop(context),
         ),
         AteneaButtonCallback(
-          textButton: 'Aceptar',
-          onPressedCallback: () async {
-            if (_selectedUser == null) {
+          textButton: 'Añadir',
+          onPressedCallback: () {
+            if (_selectedUser == null || (!canEditContent && !canAddContributors)) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Por favor, selecciona un usuario.')),
+                const SnackBar(content: Text('Selecciona un usuario y asigna al menos un permiso.')),
               );
               return;
             }
 
-            if (!canEditContent && !canAddContributors) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Debes otorgar al menos un permiso.')),
-              );
-              return;
-            }
+            final newPermission = AtomicPermissionEntity(
+              permissionId: FirebaseFirestore.instance.doc('/${widget.entityType.value}/${widget.entityUUID}'),
+              permissionTypes: [
+                if (canEditContent) PermitTypes.edit,
+                if (canAddContributors) PermitTypes.manageContributors,
+              ],
+            );
 
-            try {
-              final userProvider = Provider.of<UserProvider>(context, listen: false);
-
-              // Crear la entidad de permiso
-              final newPermission = AtomicPermissionEntity(
-                permissionId: FirebaseFirestore.instance.doc('/${widget.entityType.value}/${widget.entityUUID}'),
-                permissionTypes: [
-                  if (canEditContent) PermitTypes.edit,
-                  if (canAddContributors) PermitTypes.manageContributors,
-                ],
-              );
-
-              // Actualizar el usuario
-              await userProvider.addPermissionToUser(
-                userId: _selectedUser!.id,
-                type: widget.entityType,
-                newPermission: newPermission,
-              );
-
-              widget.onPermissionUpdated();
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Permisos actualizados para ${_selectedUser!.fullName}.')),
-              );
-
-              Navigator.of(context).pop();
-            } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error al actualizar permisos: $e')),
-              );
-            }
+            widget.onPermissionAdded(_selectedUser!, newPermission);
+            Navigator.pop(context);
           },
         ),
       ],
