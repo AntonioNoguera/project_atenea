@@ -17,8 +17,8 @@ class AteneaField extends StatefulWidget {
     this.placeHolder,
     required this.inputNameText,
     this.controller,
-    this.enabled = true, // Default value is true
-    this.isPasswordField = false, // Default value is false
+    this.enabled = true,
+    this.isPasswordField = false,
     this.suffixIcon,
   });
 
@@ -34,12 +34,12 @@ class _AteneaFieldState extends State<AteneaField> {
     return TextField(
       cursorColor: AppColors.primaryColor,
       controller: widget.controller,
-      enabled: widget.enabled, // Set the enabled property
-      obscureText: widget.isPasswordField ? _obscureText : false, // Handle password field
-      // Estilos del input en estado generico
+      enabled: widget.enabled,
+      obscureText: widget.isPasswordField ? _obscureText : false,
+      
       style: TextStyle(
         fontFamily: 'RadioCanada',
-        color: widget.enabled ? AppColors.heavyPrimaryColor : AppColors.grayColor, // Change color if disabled
+        color: widget.enabled ? AppColors.heavyPrimaryColor : AppColors.grayColor,
         fontSize: widget.inputFontSize,
       ),
       decoration: InputDecoration(
@@ -74,18 +74,17 @@ class _AteneaFieldState extends State<AteneaField> {
               )
             : null,
 
-        // Estilo de bordes habilitado y sin foco
+
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue), // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
           borderSide: BorderSide(
             color: AppColors.primaryColor,
             width: widget.inputBorderWidth,
           ),
         ),
 
-        // Borde cuando está enfocado
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue), // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
           borderSide: BorderSide(
             color: AppColors.secondaryColor,
             width: widget.inputBorderWidth + 0.5,
@@ -94,7 +93,7 @@ class _AteneaFieldState extends State<AteneaField> {
 
         // Borde deshabilitado
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue), // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
           borderSide: BorderSide(
             color: AppColors.grayColor,
             width: widget.inputBorderWidth,
@@ -103,7 +102,7 @@ class _AteneaFieldState extends State<AteneaField> {
 
         // Borde de error
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue), // Agrega el radio aquí
+          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
           borderSide: BorderSide(
             color: Colors.red,
             width: widget.inputBorderWidth,

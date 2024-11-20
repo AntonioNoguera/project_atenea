@@ -36,8 +36,10 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
   UserEntity? _selectedUser;
   bool _isLoading = true;
 
-  bool canEditContent = true;
-  bool canAddContributors = true;
+  bool canEditContent = false;
+
+  bool canViewContent = true;
+  bool canAddContributors = false;
 
   @override
   void initState() {
@@ -191,15 +193,15 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
           const SizedBox(height: 5),
           AteneaCheckboxButton(
             checkboxText: 'Visualizar Contenidos',
-            initialState: canEditContent,
+            initialState: canViewContent,
             onChanged: (value) {
               setState(() {
-                canEditContent = value;
+                canViewContent = value;
               });
             },
           ),
 
-          const SizedBox(height: 5),
+          const SizedBox(height: 3),
           AteneaCheckboxButton(
             checkboxText: 'Modificar Contenidos',
             initialState: canEditContent,
@@ -209,7 +211,7 @@ class _AddContributorDialogState extends State<AddContributorDialog> {
               });
             },
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 3),
           AteneaCheckboxButton(
             checkboxText: 'Añadir nuevos contribuidores',
             initialState: canAddContributors,

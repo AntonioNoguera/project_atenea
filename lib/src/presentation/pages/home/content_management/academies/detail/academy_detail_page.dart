@@ -231,12 +231,44 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
   }
 
   Widget _renderedContent(List<SubjectEntity> subjects) {
-    final filteredSubjects = subjects
-        .where((subject) => subject.planName == (_activeIndex == 0 ? '401' : '440'))
-        .toList();
+  final filteredSubjects = subjects
+      .where((subject) => subject.planName == (_activeIndex == 0 ? '401' : '440'))
+      .toList();
 
-    return Column(
-      children: filteredSubjects.map((subject) => SubjectItemRow(subject: subject)).toList(),
+  if (filteredSubjects.isEmpty) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      child: AteneaCard(
+        child: Column(
+          children: [
+            Text(
+              'Plan sin materias',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.ateneaBlack,
+                size: FontSizes.body1,
+                weight: FontWeights.semibold,
+              ),
+            ),
+            Text(
+              'No hay materias registradas para este plan de estudio, prueba crear una materia.',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.grayColor,
+                size: FontSizes.body2,
+                weight: FontWeights.regular,
+              ),
+            ),
+            const SizedBox(height: 3),
+          ],
+        )
+      )
     );
   }
+
+  return Column(
+    children: filteredSubjects.map((subject) => SubjectItemRow(subject: subject)).toList(),
+  );
+}
+
 }

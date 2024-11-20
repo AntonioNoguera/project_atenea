@@ -141,8 +141,7 @@ class _AcademicDepartmentDetailPageState
                                 ),
                               ),
                               Text(
-                                AppUiHelpers.formatDateStringToWords(
-                                    department.lastModificationDateTime),
+                                AppUiHelpers.formatDateStringToWords(department.lastModificationDateTime),
                                 textAlign: TextAlign.center,
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,
@@ -204,7 +203,7 @@ class _AcademicDepartmentDetailPageState
                                   Navigator.push(
                                     context,
                                     AteneaPageAnimator(
-                                        page: const AcademyCreateNewPage()),
+                                        page: AcademyCreateNewPage(parentDepartment: department)),
                                   );
                                 },
                               ),
