@@ -10,7 +10,7 @@ class AteneaCheckboxButton extends StatefulWidget {
 
   static Map<bool, AteneaButtonStyles> checkStates = {
       true : const AteneaButtonStyles(
-        backgroundColor: AppColors.primaryColor, 
+        backgroundColor: AppColors.heavyPrimaryColor, 
         textColor: AppColors.ateneaWhite,
         hasBorder: false
       ),

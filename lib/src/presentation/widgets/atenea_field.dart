@@ -10,6 +10,7 @@ class AteneaField extends StatefulWidget {
   final TextEditingController? controller;
   final bool enabled;
   final bool isPasswordField;
+  final Widget? suffixIcon;
 
   const AteneaField({
     super.key,
@@ -18,6 +19,7 @@ class AteneaField extends StatefulWidget {
     this.controller,
     this.enabled = true, // Default value is true
     this.isPasswordField = false, // Default value is false
+    this.suffixIcon,
   });
 
   @override

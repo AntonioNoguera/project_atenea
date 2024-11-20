@@ -61,19 +61,16 @@ class _AcademicDepartmentManageContentState
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
 
-      final currentSession = await sessionProvider.getSession();
-      print('Current session user ID: ${currentSession?.userId}');
+      final currentSession = await sessionProvider.getSession(); 
 
       final users = await userProvider.getUsersByPermission(
         SystemEntitiesTypes.department,
         widget.department.id,
       );
-      print('Fetched contributors: ${users.length}');
 
       setState(() {
         _contributors = users.map((user) {
           if (user.id == currentSession?.userId) {
-            print('Marking current user in list: ${user.fullName}');
             return user.copyWith(fullName: '${user.fullName} (Tú)');
           }
           return user;
@@ -81,7 +78,6 @@ class _AcademicDepartmentManageContentState
         _isLoading = false;
       });
     } catch (error) {
-      print('Error fetching contributors: $error');
       setState(() {
         _contributors = [];
         _isLoading = false;
@@ -91,17 +87,14 @@ class _AcademicDepartmentManageContentState
 
   void _addContributor(UserEntity contributor, AtomicPermissionEntity permission) {
     setState(() {
-      print('Adding contributor: ${contributor.fullName}');
       contributor.userPermissions.department.add(permission);
       _contributors.add(contributor);
       _permissionsToAdd[contributor] = permission;
-      print('Updated contributors: ${_contributors.map((u) => u.fullName).toList()}');
     });
   }
 
   void _modifyContributor(UserEntity contributor, AtomicPermissionEntity permission) {
     setState(() {
-      print('Modifying permissions for contributor: ${contributor.fullName}');
       contributor.userPermissions.department.clear();
       contributor.userPermissions.department.add(permission);
       _permissionsToModify[contributor] = permission;
@@ -109,7 +102,7 @@ class _AcademicDepartmentManageContentState
   }
 
   void _removeContributor(UserEntity contributor) {
-    setState(() { 
+    setState(() {
       _contributors.remove(contributor);
       final permission = contributor.userPermissions.department.isNotEmpty
           ? contributor.userPermissions.department.first
@@ -126,8 +119,7 @@ class _AcademicDepartmentManageContentState
     final departmentProvider = Provider.of<DepartmentProvider>(context, listen: false);
 
     try {
-      // Manejo de permisos para añadir
-      for (var entry in _permissionsToAdd.entries) { 
+      for (var entry in _permissionsToAdd.entries) {
         await userProvider.addPermissionToUser(
           userId: entry.key.id,
           type: SystemEntitiesTypes.department,
@@ -135,10 +127,8 @@ class _AcademicDepartmentManageContentState
         );
       }
 
-      // Manejo de permisos para modificar
-      for (var entry in _permissionsToModify.entries) { 
-        
-        if (entry.value.permissionTypes.isEmpty) { 
+      for (var entry in _permissionsToModify.entries) {
+        if (entry.value.permissionTypes.isEmpty) {
           continue;
         }
 
@@ -149,9 +139,7 @@ class _AcademicDepartmentManageContentState
         );
       }
 
-      // Manejo de permisos para eliminar
       for (var entry in _permissionsToRemove.entries) {
-        print('Removing permission for user: ${entry.key.fullName}');
         await userProvider.removePermissionFromUser(
           userId: entry.key.id,
           type: SystemEntitiesTypes.department,
@@ -159,17 +147,17 @@ class _AcademicDepartmentManageContentState
         );
       }
 
-      // Actualizar la información del departamento
       final updatedDepartment = widget.department.copyWith(
         name: _departmentInputController.text,
         lastModificationDateTime: DateTime.now().toString(),
-        lastModificationContributor: Provider.of<SessionProvider>(context, listen: false).currentSession?.userName ?? '',
+        lastModificationContributor: Provider.of<SessionProvider>(context, listen: false)
+                .currentSession
+                ?.userName ??
+            '',
       );
 
-      print('Updating department: $updatedDepartment');
       await departmentProvider.updateDepartment(updatedDepartment);
 
-      // Limpiar las listas después de realizar las operaciones
       setState(() {
         _permissionsToAdd.clear();
         _permissionsToModify.clear();
@@ -180,18 +168,13 @@ class _AcademicDepartmentManageContentState
         const SnackBar(content: Text('Cambios guardados con éxito')),
       );
 
-      _fetchContributors(); // Refrescar la lista de contribuidores
+      _fetchContributors();
     } catch (e) {
-      print('Error saving changes: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al guardar cambios: $e')),
       );
     }
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +221,7 @@ class _AcademicDepartmentManageContentState
                               TextSpan(
                                 text: 'guardar.',
                                 style: AppTextStyles.builder(
-                                  color: AppColors.ateneaBlack,
+                                  color: AppColors.primaryColor.withOpacity(0.8),
                                   size: FontSizes.body2,
                                   weight: FontWeights.semibold,
                                 ),
@@ -265,42 +248,60 @@ class _AcademicDepartmentManageContentState
                   ),
                   _isLoading
                       ? const Center(child: AteneaCircularProgress())
-                      : Flexible(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: _contributors.map((user) {
-                                final permission = user.userPermissions.department.isNotEmpty
-                                    ? user.userPermissions.department.first
-                                    : null;
-
-                                if (permission == null) {
-                                  print(
-                                      'Warning: User ${user.fullName} does not have a valid department permission.');
-                                  return SizedBox.shrink();
-                                }
-                                return AcademyContributorRow(
-                                  key: ValueKey(user.id), // Unique key for better performance
-                                  index: _contributors.indexOf(user),
-                                  contributorName: user.fullName,
-                                  permissionEntity: permission,
-                                  showDetail: () => showDialog(
-                                    context: context,
-                                    builder: (_) => ModifyContributorDialog(
-                                      entityUUID: widget.department.id,
-                                      permissionEntity: permission,
-                                      entityType: SystemEntitiesTypes.department,
-                                      userDisplayed: user,
-                                      onPermissionUpdated: (userEntity, updatedPermission) =>
-                                          _modifyContributor(userEntity, updatedPermission),
-                                      onPermissionRemoved: (userEntity) =>
-                                          _removeContributor(userEntity),
+                      : _contributors.isEmpty
+                          ? Center(
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 10.0,),
+                                  Text(
+                                    'No hay contribuidores en este departamento.',
+                                    style: AppTextStyles.builder(
+                                      size: FontSizes.body2,
+                                      weight: FontWeights.regular,
+                                      color: AppColors.grayColor,
                                     ),
                                   ),
-                                );
-                              }).toList(),
+                                  const SizedBox(height: 10.0,),
+                                ]
+                              )
+                            )
+                          : Flexible(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: _contributors.map((user) {
+                                    final permission =
+                                        user.userPermissions.department.isNotEmpty
+                                            ? user.userPermissions.department.first
+                                            : null;
+
+                                    if (permission == null) {
+                                      return SizedBox.shrink();
+                                    }
+                                    return AcademyContributorRow(
+                                      key: ValueKey(user.id),
+                                      index: _contributors.indexOf(user),
+                                      contributorName: user.fullName,
+                                      permissionEntity: permission,
+                                      showDetail: () => showDialog(
+                                        context: context,
+                                        builder: (_) => ModifyContributorDialog(
+                                          entityUUID: widget.department.id,
+                                          permissionEntity: permission,
+                                          entityType: SystemEntitiesTypes.department,
+                                          userDisplayed: user,
+                                          onPermissionUpdated: (userEntity,
+                                                  updatedPermission) =>
+                                              _modifyContributor(
+                                                  userEntity, updatedPermission),
+                                          onPermissionRemoved: (userEntity) =>
+                                              _removeContributor(userEntity),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                   const SizedBox(height: 20.0),
                   AteneaButtonV2(
                     onPressed: () => showDialog(
