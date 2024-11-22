@@ -1,51 +1,54 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
+    id "com.google.gms.google-services" // FlutterFire Configuration
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+    id "dev.flutter.flutter-gradle-plugin" // Flutter Gradle Plugin
 }
 
 android {
     namespace = "com.mike.proyect_atenea"
-    compileSdk = 34  // Cambia esto a la versión más reciente disponible, asegúrate de que sea la misma que en el build.gradle a nivel raíz
-    ndkVersion = "23.1.7779620" // O elimina si no es necesario
+    compileSdk = 34 // Cambia a la versión más reciente disponible
+
+    defaultConfig {
+        applicationId = "com.mike.proyect_atenea"
+        minSdkVersion 23
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+    }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
         jvmTarget = "1.8"
     }
 
-    defaultConfig {
-        applicationId = "com.mike.proyect_atenea"
-        minSdkVersion 23  // Mantén 23 o una superior si lo requiere alguna dependencia
-        targetSdkVersion 34  // Asegúrate de que sea compatible con compileSdkVersion
-        versionCode 1
-        versionName "1.0"
+    signingConfigs {
+        release {
+            storeFile file('C:/Users/Michael Noguera/Documents/project_atenea/temp-key.jks')
+            storePassword 'quesueno2121' // Contraseña del keystore
+            keyAlias 'temp-key' // Alias
+            keyPassword 'quesueno2121' // Contraseña del alias
+        }
     }
 
     buildTypes {
-    release {
-        // Habilita la reducción de recursos no utilizados, lo cual requiere también la reducción de código.
-        minifyEnabled true
-        shrinkResources true
-        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-    }
-    debug {
-        // Si estás trabajando en una versión de prueba, no necesitas reducción de recursos.
-        minifyEnabled false
-        shrinkResources false
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true // Activa ProGuard para optimizar el APK
+            shrinkResources true // Elimina recursos no utilizados
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release // Usa el keystore también para debug si lo necesitas
+            minifyEnabled false
+            shrinkResources false
+        }
     }
 }
-
-}
-
 
 flutter {
     source = "../.."

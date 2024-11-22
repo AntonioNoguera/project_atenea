@@ -133,7 +133,7 @@ Expanded(
               ),
               text: 'Regístrate',
               onPressed: () {
-                Navigator.pushNamed(context, '/register');
+                Navigator.pushNamed(context, '/auth/register');
               },
             ),
           ],
