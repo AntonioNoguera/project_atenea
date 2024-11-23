@@ -8,6 +8,7 @@ import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/academy_contributor_row.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/add_contributor_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/academies/create/widget/modify_contributor_dialog.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/widgets/atenea_contributor_local_wokspace.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
@@ -246,90 +247,12 @@ class _AcademicDepartmentManageContentState
                       color: AppColors.primaryColor,
                     ),
                   ),
-                  _isLoading
-                      ? const Center(child: AteneaCircularProgress())
-                      : _contributors.isEmpty
-                          ? Center(
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 10.0,),
-                                  Text(
-                                    'No hay contribuidores en este departamento.',
-                                    style: AppTextStyles.builder(
-                                      size: FontSizes.body2,
-                                      weight: FontWeights.regular,
-                                      color: AppColors.grayColor,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10.0,),
-                                ]
-                              )
-                            )
-                          : Flexible(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: _contributors.map((user) {
-                                    final permission =
-                                        user.userPermissions.department.isNotEmpty
-                                            ? user.userPermissions.department.first
-                                            : null;
 
-                                    if (permission == null) {
-                                      return SizedBox.shrink();
-                                    }
-                                    return AcademyContributorRow(
-                                      key: ValueKey(user.id),
-                                      index: _contributors.indexOf(user),
-                                      contributorName: user.fullName,
-                                      permissionEntity: permission,
-                                      showDetail: () => showDialog(
-                                        context: context,
-                                        builder: (_) => ModifyContributorDialog(
-                                          entityUUID: widget.department.id,
-                                          permissionEntity: permission,
-                                          entityType: SystemEntitiesTypes.department,
-                                          userDisplayed: user,
-                                          onPermissionUpdated: (userEntity,
-                                                  updatedPermission) =>
-                                              _modifyContributor(
-                                                  userEntity, updatedPermission),
-                                          onPermissionRemoved: (userEntity) =>
-                                              _removeContributor(userEntity),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ),
-                  const SizedBox(height: 20.0),
-                  AteneaButtonV2(
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (_) => AddContributorDialog(
-                        onPermissionAdded: (user, permission) =>
-                            _addContributor(user, permission),
-                        entityType: SystemEntitiesTypes.department,
-                        entityUUID: widget.department.id,
-                      ),
-                    ),
-                    btnStyles: const AteneaButtonStyles(
-                      backgroundColor: AppColors.ateneaWhite,
-                      textColor: AppColors.primaryColor,
-                      hasBorder: true,
-                    ),
-                    text: 'Añadir Contribuidor',
-                    textStyle: AppTextStyles.builder(
-                      color: AppColors.primaryColor,
-                      size: FontSizes.h5,
-                      weight: FontWeights.light,
-                    ),
-                    svgIcon: SvgButtonStyle(
-                      svgPath: 'assets/svg/add_user.svg',
-                      svgDimentions: 25,
-                    ),
-                  ),
-                  const SizedBox(height: 60.0),
+                  AteneaContributorLocalWorkspace(
+                    entityUUID: widget.department.id,
+                    entityType: SystemEntitiesTypes.department,
+                  ), 
+
                 ],
               ),
             ),
