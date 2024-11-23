@@ -12,15 +12,18 @@ import 'package:proyect_atenea/src/presentation/providers/remote_providers/sessi
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
 class AteneaContributorLocalWorkspace extends StatefulWidget {
   final String entityUUID;
   final SystemEntitiesTypes entityType;
+  final bool shouldFetchContributors;
 
   const AteneaContributorLocalWorkspace({
     super.key,
     required this.entityUUID,
     required this.entityType,
+    this.shouldFetchContributors = true,
   });
 
   @override
@@ -40,10 +43,14 @@ class _AteneaContributorLocalWorkspaceState
   @override
   void initState() {
     super.initState();
-    _fetchContributors();
+    if (widget.shouldFetchContributors) {
+      _fetchContributors();
+    } else {
+      _isLoading = false;
+      _contributors = [];
+    }
   }
 
-/*
   Future<void> _fetchContributors() async {
     setState(() => _isLoading = true);
 
@@ -57,13 +64,18 @@ class _AteneaContributorLocalWorkspaceState
         widget.entityUUID,
       );
 
+      const int multiplier = 1;
+
       setState(() {
-        _contributors = users.map((user) {
-          if (user.id == currentSession?.userId) {
-            return user.copyWith(fullName: '${user.fullName} (Tú)');
-          }
-          return user;
+        _contributors = users.expand((user) {
+          return List.generate(multiplier, (_) {
+            if (user.id == currentSession?.userId) {
+              return user.copyWith(fullName: '${user.fullName} (Tú)');
+            }
+            return user;
+          });
         }).toList();
+
         _isLoading = false;
       });
     } catch (e) {
@@ -73,49 +85,20 @@ class _AteneaContributorLocalWorkspaceState
       });
     }
   }
-  */
-
-  Future<void> _fetchContributors() async {
-  setState(() => _isLoading = true);
-
-  try {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
-    final currentSession = await sessionProvider.getSession();
-
-    final users = await userProvider.getUsersByPermission(
-      widget.entityType,
-      widget.entityUUID,
-    );
-
-    // Multiplica cada usuario por el número deseado de copias
-    const int multiplier = 1; // Cambiar a cuántas veces se desea repetir cada usuario
-
-    setState(() {
-      _contributors = users.expand((user) {
-        return List.generate(multiplier, (_) {
-          // Agregar "(Tú)" al nombre si es el usuario actual
-          if (user.id == currentSession?.userId) {
-            return user.copyWith(fullName: '${user.fullName} (Tú)');
-          }
-          return user;
-        });
-      }).toList();
-
-      _isLoading = false;
-    });
-  } catch (e) {
-    setState(() {
-      _contributors = [];
-      _isLoading = false;
-    });
-  }
-}
-
 
   void _addContributor(UserEntity contributor, AtomicPermissionEntity permission) {
     setState(() {
-      contributor.userPermissions.department.add(permission);
+      switch (widget.entityType) {
+        case SystemEntitiesTypes.department:
+          contributor.userPermissions.department.add(permission);
+          break;
+        case SystemEntitiesTypes.academy:
+          contributor.userPermissions.academy.add(permission);
+          break;
+        case SystemEntitiesTypes.subject:
+          contributor.userPermissions.subject.add(permission);
+          break;
+      }
       _contributors.add(contributor);
       _permissionsToAdd[contributor] = permission;
     });
@@ -123,8 +106,23 @@ class _AteneaContributorLocalWorkspaceState
 
   void _modifyContributor(UserEntity contributor, AtomicPermissionEntity permission) {
     setState(() {
-      contributor.userPermissions.department.clear();
-      contributor.userPermissions.department.add(permission);
+      switch (widget.entityType) {
+        case SystemEntitiesTypes.department:
+          contributor.userPermissions.department
+            ..clear()
+            ..add(permission);
+          break;
+        case SystemEntitiesTypes.academy:
+          contributor.userPermissions.academy
+            ..clear()
+            ..add(permission);
+          break;
+        case SystemEntitiesTypes.subject:
+          contributor.userPermissions.subject
+            ..clear()
+            ..add(permission);
+          break;
+      }
       _permissionsToModify[contributor] = permission;
     });
   }
@@ -132,12 +130,35 @@ class _AteneaContributorLocalWorkspaceState
   void _removeContributor(UserEntity contributor) {
     setState(() {
       _contributors.remove(contributor);
-      final permission = contributor.userPermissions.department.isNotEmpty
-          ? contributor.userPermissions.department.first
-          : AtomicPermissionEntity(
-              permissionId: FirebaseFirestore.instance.doc('dummy'),
-              permissionTypes: [],
-            );
+      AtomicPermissionEntity permission;
+
+      switch (widget.entityType) {
+        case SystemEntitiesTypes.department:
+          permission = contributor.userPermissions.department.isNotEmpty
+              ? contributor.userPermissions.department.first
+              : AtomicPermissionEntity(
+                  permissionId: FirebaseFirestore.instance.doc('dummy'),
+                  permissionTypes: [],
+                );
+          break;
+        case SystemEntitiesTypes.academy:
+          permission = contributor.userPermissions.academy.isNotEmpty
+              ? contributor.userPermissions.academy.first
+              : AtomicPermissionEntity(
+                  permissionId: FirebaseFirestore.instance.doc('dummy'),
+                  permissionTypes: [],
+                );
+          break;
+        case SystemEntitiesTypes.subject:
+          permission = contributor.userPermissions.subject.isNotEmpty
+              ? contributor.userPermissions.subject.first
+              : AtomicPermissionEntity(
+                  permissionId: FirebaseFirestore.instance.doc('dummy'),
+                  permissionTypes: [],
+                );
+          break;
+      }
+
       _permissionsToRemove[contributor] = permission;
     });
   }
@@ -189,7 +210,7 @@ class _AteneaContributorLocalWorkspaceState
       );
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -200,48 +221,56 @@ class _AteneaContributorLocalWorkspaceState
       children: [
         if (_contributors.isEmpty) ...[
           Center(
-            child: Text(
-              'No hay contribuidores en este departamento.',
-              style: AppTextStyles.builder(
-                size: FontSizes.body2,
-                weight: FontWeights.regular,
-                color: AppColors.grayColor,
-              ),
+            child: Column(
+              children: [
+                const SizedBox(height: 10.0),
+                Text(
+                  'No hay contribuidores en este departamento.',
+                  style: AppTextStyles.builder(
+                    size: FontSizes.body2,
+                    weight: FontWeights.regular,
+                    color: AppColors.grayColor,
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+              ],
             ),
           ),
         ] else ...[
-          Expanded(
-            child: ListView.builder(
-              itemCount: _contributors.length,
-              itemBuilder: (context, index) {
-                final user = _contributors[index];
-                final permission = user.userPermissions.department.isNotEmpty
-                    ? user.userPermissions.department.first
-                    : null;
+          Flexible(
+            child: SingleChildScrollView(
+              child: Column(
+                children: _contributors.map((user) {
+                  final permission = _getUserPermission(user);
 
-                if (permission == null) return const SizedBox.shrink();
-
-                return AcademyContributorRow(
-                  key: ValueKey(user.id),
-                  index: index,
-                  contributorName: user.fullName,
-                  permissionEntity: permission,
-                  showDetail: () => showDialog(
-                    context: context,
-                    builder: (_) => ModifyContributorDialog(
-                      entityUUID: widget.entityUUID,
-                      permissionEntity: permission,
-                      entityType: widget.entityType,
-                      userDisplayed: user,
-                      onPermissionUpdated: _modifyContributor,
-                      onPermissionRemoved: _removeContributor,
+                  if (permission == null) {
+                    return const SizedBox.shrink();
+                  }
+                  return AcademyContributorRow(
+                    key: ValueKey(user.id),
+                    index: _contributors.indexOf(user),
+                    contributorName: user.fullName,
+                    permissionEntity: permission,
+                    showDetail: () => showDialog(
+                      context: context,
+                      builder: (_) => ModifyContributorDialog(
+                        entityUUID: widget.entityUUID,
+                        permissionEntity: permission,
+                        entityType: widget.entityType,
+                        userDisplayed: user,
+                        onPermissionUpdated: (userEntity, updatedPermission) =>
+                            _modifyContributor(userEntity, updatedPermission),
+                        onPermissionRemoved: (userEntity) =>
+                            _removeContributor(userEntity),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ],
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: AteneaButtonV2(
@@ -254,10 +283,41 @@ class _AteneaContributorLocalWorkspaceState
               ),
             ),
             text: 'Añadir Contribuidor',
+            btnStyles: const AteneaButtonStyles(
+              backgroundColor: AppColors.ateneaWhite,
+              textColor: AppColors.primaryColor,
+              hasBorder: true,
+            ),
+            svgIcon: SvgButtonStyle(
+              svgPath: 'assets/svg/add_user.svg',
+              svgDimentions: 25,
+            ),
+            textStyle: const TextStyle(
+              fontFamily: 'RadioCanada',
+              color: AppColors.primaryColor,
+              fontSize: FontSizes.h5,
+              fontWeight: FontWeights.regular,
+            ),
           ),
         ),
       ],
     );
   }
 
+  AtomicPermissionEntity? _getUserPermission(UserEntity user) {
+    switch (widget.entityType) {
+      case SystemEntitiesTypes.department:
+        return user.userPermissions.department.isNotEmpty
+            ? user.userPermissions.department.first
+            : null;
+      case SystemEntitiesTypes.academy:
+        return user.userPermissions.academy.isNotEmpty
+            ? user.userPermissions.academy.first
+            : null;
+      case SystemEntitiesTypes.subject:
+        return user.userPermissions.subject.isNotEmpty
+            ? user.userPermissions.subject.first
+            : null;
+    }
+  }
 }

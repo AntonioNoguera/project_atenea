@@ -247,12 +247,15 @@ class _AcademicDepartmentManageContentState
                       color: AppColors.primaryColor,
                     ),
                   ),
+                  
+                  Flexible( 
+                      child: AteneaContributorLocalWorkspace(
+                        entityUUID: widget.department.id,
+                        entityType: SystemEntitiesTypes.department,
+                      ), 
+                  ),
 
-                  AteneaContributorLocalWorkspace(
-                    entityUUID: widget.department.id,
-                    entityType: SystemEntitiesTypes.department,
-                  ), 
-
+                  
                 ],
               ),
             ),
