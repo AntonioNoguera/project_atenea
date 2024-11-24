@@ -27,11 +27,11 @@ class AteneaContributorLocalWorkspace extends StatefulWidget {
   });
 
   @override
-  _AteneaContributorLocalWorkspaceState createState() =>
-      _AteneaContributorLocalWorkspaceState();
+  AteneaContributorLocalWorkspaceState createState() =>
+      AteneaContributorLocalWorkspaceState();
 }
 
-class _AteneaContributorLocalWorkspaceState
+class AteneaContributorLocalWorkspaceState
     extends State<AteneaContributorLocalWorkspace> {
   late List<UserEntity> _contributors;
   bool _isLoading = true;
@@ -201,9 +201,11 @@ class _AteneaContributorLocalWorkspaceState
         _permissionsToRemove.clear();
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar( 
         const SnackBar(content: Text('Cambios guardados con éxito')),
       );
+
+      _fetchContributors();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al guardar cambios: $e')),
