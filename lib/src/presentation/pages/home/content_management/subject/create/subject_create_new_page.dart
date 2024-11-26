@@ -12,10 +12,12 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 
 class SubjectCreateNewPage extends StatefulWidget {
+  
   const SubjectCreateNewPage({super.key});
 
   @override
   _SubjectCreateNewPageState createState() => _SubjectCreateNewPageState();
+
 }
 
 class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
@@ -104,7 +106,7 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                         Flexible(
                           child: AteneaContributorLocalWorkspace(
                             key: _childKey,
-                            entityUUID: 'unique-subject-id', // ID de la asignatura
+                            entityUUID: 'unique-subject-id',
                             entityType: SystemEntitiesTypes.subject,
                           ),
                         ),
