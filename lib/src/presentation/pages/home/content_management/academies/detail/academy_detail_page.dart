@@ -210,7 +210,7 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      AteneaPageAnimator(page: AcademyManageContent()),
+                                      AteneaPageAnimator(page: AcademyManageContent(managingAcademy: widget.academy,)),
                                     );
                                   },
                                 ),
