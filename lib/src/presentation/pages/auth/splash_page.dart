@@ -93,7 +93,7 @@ class SplashPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: AppTextStyles.builder(
                     color: AppColors.ateneaWhite,
-                    size: FontSizes.body3,
+                    size: FontSizes.body4,
                     weight: FontWeights.regular,
                   ),
                 ),

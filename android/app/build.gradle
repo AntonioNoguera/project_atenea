@@ -1,4 +1,4 @@
-plugins {
+    plugins {
     id "com.android.application"
     id "com.google.gms.google-services" // FlutterFire Configuration
     id "kotlin-android"
@@ -27,23 +27,26 @@ android {
     }
 
     signingConfigs {
+        /*
+        
         release {
             storeFile file('C:/Users/Michael Noguera/Documents/project_atenea/temp-key.jks')
             storePassword 'quesueno2121' // Contraseña del keystore
             keyAlias 'temp-key' // Alias
             keyPassword 'quesueno2121' // Contraseña del alias
         }
+        */
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
             minifyEnabled true // Activa ProGuard para optimizar el APK
             shrinkResources true // Elimina recursos no utilizados
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.release // Usa el keystore también para debug si lo necesitas
+            //signingConfig signingConfigs.release // Usa el keystore también para debug si lo necesitas
             minifyEnabled false
             shrinkResources false
         }

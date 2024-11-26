@@ -4,8 +4,8 @@ import 'package:proyect_atenea/src/presentation/providers/app_state_providers/ac
 import 'toggle_button_atom.dart';
 
 class ToggleButtonsWidget extends StatelessWidget {
-  final ValueChanged<int> onToggle; // Callback para informar el cambio
-  final List<String> toggleOptions; // Lista de opciones para los botones
+  final ValueChanged<int> onToggle;
+  final List<String> toggleOptions;
 
   const ToggleButtonsWidget({
     required this.onToggle,
@@ -16,7 +16,7 @@ class ToggleButtonsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Espacio entre los botones
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: toggleOptions.asMap().entries.map((entry) {
         int index = entry.key;
         String option = entry.value;

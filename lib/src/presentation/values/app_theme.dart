@@ -46,7 +46,8 @@ class FontSizes {
   //Body
   static const double body1 = 19.0;
   static const double body2 = 15.0;
-  static const double body3 = 12.0;
+  static const double body3 = 13.0;
+  static const double body4 = 12.0;
 
   //Captions (Pref avoid use to small for usabillity)
   static const double captions = 10.0;
