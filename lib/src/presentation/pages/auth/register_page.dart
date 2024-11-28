@@ -159,11 +159,11 @@ class RegisterPage extends StatelessWidget {
                 children: [
                   // El título es estático, no se desplazará
                   Text(
-                    'Soy',
+                    'Registrarme como:',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.builder(
                       color: AppColors.primaryColor,
-                      size: FontSizes.h2,
+                      size: FontSizes.h3,
                       weight: FontWeights.bold,
                     ),
                   ),

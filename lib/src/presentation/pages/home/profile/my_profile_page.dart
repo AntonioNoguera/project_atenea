@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart'; 
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart'; 
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/profile/edit_profile_bottom_dialog.dart'; 
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
-import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_bottom_dialog.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 
@@ -63,129 +61,14 @@ class MyProfilePage extends StatelessWidget {
               ),
               const SizedBox(height: 10.0),
             ],
-            AteneaButtonV2(
-              text: 'Editar Perfil',
-              xpndText: true,
-              svgIcon: SvgButtonStyle(svgPath: 'assets/svg/account_settings.svg'),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
-                    return Wrap(
-                      children: [
-                        AteneaBottomDialog(
-                          parentContext: context,
-                          childContent: Column(
-                            children: [
-                              Text(
-                                'Editar Perfil',
-                                style: AppTextStyles.builder(
-                                  size: FontSizes.h3,
-                                  weight: FontWeights.semibold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 10.0),
-                              AteneaField(
-                                inputNameText: 'Matrícula',
-                                controller: _matriculaController,
-                                enabled: false,
-                              ),
-                              const SizedBox(height: 15.0),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: AteneaField(
-                                      inputNameText: 'Nombre',
-                                      controller: _nombreController,
-                                      enabled: true,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10.0),
-                                  Expanded(
-                                    child: AteneaField(
-                                      inputNameText: 'Apellido',
-                                      controller: _apellidoController,
-                                      enabled: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 15.0),
-                              AteneaField(
-                                inputNameText: 'Correo de Contacto',
-                                controller: _emailController,
-                                enabled: true,
-                              ),
-                              const SizedBox(height: 15.0),
-                              AteneaField(
-                                inputNameText: 'Cambiar Contraseña',
-                                controller: _passwordController,
-                                enabled: true,
-                                isPasswordField: true,
-                              ),
-                              const SizedBox(height: 15.0),
-                              AteneaField(
-                                inputNameText: 'Repetir Contraseña',
-                                controller: _verifyPasswordController,
-                                enabled: true,
-                                isPasswordField: true,
-                              ),
-                              const Spacer(),
-                              AteneaButtonV2(
-                                text: 'Guardar Cambios',
-                                onPressed: () async {
-                                  if (_passwordController.text != _verifyPasswordController.text) {
-                                    Fluttertoast.showToast(
-                                      msg: 'Las contraseñas no coinciden',
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: AppColors.grayColor,
-                                      textColor: AppColors.ateneaWhite,
-                                      fontSize: 16.0,
-                                    );
-                                    return;
-                                  }
-
-                                  final updatedSession = SessionEntity(
-                                    token: userSession.token,
-                                    userId: userSession.userId,
-                                    userName: '${_nombreController.text} ${_apellidoController.text}',
-                                    userPermissions: userSession.userPermissions,
-                                    tokenValidUntil: userSession.tokenValidUntil,
-                                  );
-
-                                  await sessionProvider.saveSession(updatedSession);
-
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AteneaDialog(
-                                        title: 'Cambios Guardados',
-                                        content: const Text('Tus cambios han sido guardados exitosamente.'),
-                                        buttonCallbacks: [
-                                          AteneaButtonCallback(
-                                            textButton: 'Aceptar',
-                                            onPressedCallback: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
+            
+            EditProfileModal(
+              userSession: userSession,
+              onSave: (updatedSession) async {
+                await sessionProvider.saveSession(updatedSession);
               },
             ),
+                        
             const SizedBox(height: 10.0),
             if (userSession.userPermissions.department.isNotEmpty || userSession.userPermissions.subject.isNotEmpty) ...[
               AteneaButtonV2(

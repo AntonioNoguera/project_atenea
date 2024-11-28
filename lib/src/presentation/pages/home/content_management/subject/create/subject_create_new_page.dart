@@ -12,9 +12,9 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 
 class SubjectCreateNewPage extends StatefulWidget {
-  
-  const SubjectCreateNewPage({super.key});
 
+  const SubjectCreateNewPage({super.key});
+  
   @override
   _SubjectCreateNewPageState createState() => _SubjectCreateNewPageState();
 
@@ -123,6 +123,10 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                       child: Row(
                         children: [
                           AteneaButtonV2(
+                            btnStyles: const AteneaButtonStyles(
+                                backgroundColor: AppColors.secondaryColor,
+                                textColor: AppColors.ateneaWhite,
+                              ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -131,10 +135,7 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                           const SizedBox(width: 10.0),
                           Expanded(
                             child: AteneaButtonV2(
-                              btnStyles: const AteneaButtonStyles(
-                                backgroundColor: AppColors.secondaryColor,
-                                textColor: AppColors.ateneaWhite,
-                              ),
+                               
                               onPressed: _invokeChildSaveChanges, // Invoca la acción del hijo
                               text: 'Crear Asignatura',
                             ),
