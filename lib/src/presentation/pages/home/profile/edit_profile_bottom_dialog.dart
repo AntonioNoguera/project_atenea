@@ -4,14 +4,7 @@ import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
-import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart'; 
 
 class EditProfileModal extends StatelessWidget {
   final SessionEntity userSession;
