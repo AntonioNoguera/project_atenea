@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 
-class AteneaField extends StatefulWidget {
+class AteneaField extends StatelessWidget {
   final String? placeHolder;
   final String inputNameText;
-  final double inputFontSize = FontSizes.body1;
-  final double inputBorderWidth = 1.3;
-  final double borderRadiusValue = 12.0;
+  final double inputFontSize;
+  final double inputBorderWidth;
+  final double borderRadiusValue;
   final TextEditingController? controller;
   final bool enabled;
-  final bool isPasswordField;
   final Widget? suffixIcon;
 
   const AteneaField({
@@ -18,94 +17,70 @@ class AteneaField extends StatefulWidget {
     required this.inputNameText,
     this.controller,
     this.enabled = true,
-    this.isPasswordField = false,
     this.suffixIcon,
+    this.inputFontSize = FontSizes.body1,
+    this.inputBorderWidth = 1.3,
+    this.borderRadiusValue = 12.0,
   });
-
-  @override
-  _AteneaFieldState createState() => _AteneaFieldState();
-}
-
-class _AteneaFieldState extends State<AteneaField> {
-  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       cursorColor: AppColors.primaryColor,
-      controller: widget.controller,
-      enabled: widget.enabled,
-      obscureText: widget.isPasswordField ? _obscureText : false,
-      
+      controller: controller,
+      enabled: enabled,
       style: TextStyle(
         fontFamily: 'RadioCanada',
-        color: widget.enabled ? AppColors.heavyPrimaryColor : AppColors.grayColor,
-        fontSize: widget.inputFontSize,
+        color: enabled ? AppColors.heavyPrimaryColor : AppColors.grayColor,
+        fontSize: inputFontSize,
       ),
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColors.ateneaWhite,
-        labelText: widget.inputNameText,
+        labelText: inputNameText,
         labelStyle: TextStyle(
           fontFamily: 'RadioCanada',
-          color: widget.enabled ? AppColors.primaryColor : AppColors.grayColor, // Change color if disabled
-          fontSize: widget.inputFontSize,
+          color: enabled ? AppColors.primaryColor : AppColors.grayColor,
+          fontSize: inputFontSize,
         ),
-        hintText: widget.placeHolder,
+        hintText: placeHolder,
         hintStyle: TextStyle(
           fontFamily: 'RadioCanada',
           color: AppColors.grayColor,
-          fontSize: widget.inputFontSize,
+          fontSize: inputFontSize,
         ),
-        suffixIcon: widget.isPasswordField
+        suffixIcon: suffixIcon != null
             ? Padding(
-                padding: const EdgeInsets.only(right: 8.0), // Add right padding
-                child: IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: AppColors.primaryColor,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
+                padding: const EdgeInsets.only(right: 13.0),
+                child: suffixIcon,
               )
             : null,
-
-
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
+          borderRadius: BorderRadius.circular(borderRadiusValue),
           borderSide: BorderSide(
             color: AppColors.primaryColor,
-            width: widget.inputBorderWidth,
+            width: inputBorderWidth,
           ),
         ),
-
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
+          borderRadius: BorderRadius.circular(borderRadiusValue),
           borderSide: BorderSide(
             color: AppColors.secondaryColor,
-            width: widget.inputBorderWidth + 0.5,
+            width: inputBorderWidth + 0.5,
           ),
         ),
-
-        // Borde deshabilitado
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
+          borderRadius: BorderRadius.circular(borderRadiusValue),
           borderSide: BorderSide(
             color: AppColors.grayColor,
-            width: widget.inputBorderWidth,
+            width: inputBorderWidth,
           ),
         ),
-
-        // Borde de error
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.borderRadiusValue),
+          borderRadius: BorderRadius.circular(borderRadiusValue),
           borderSide: BorderSide(
             color: Colors.red,
-            width: widget.inputBorderWidth,
+            width: inputBorderWidth,
           ),
         ),
       ),

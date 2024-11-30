@@ -4,7 +4,8 @@ import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart'; 
+import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_password_field.dart'; 
 
 class EditProfileModal extends StatelessWidget {
   final SessionEntity userSession;
@@ -143,19 +144,15 @@ class _EditProfileDialogContentState extends State<_EditProfileDialogContent> {
               controller: _emailController,
               enabled: true,
             ),
-            const SizedBox(height: 15.0),
-            AteneaField(
+            const SizedBox(height: 15.0), 
+            AteneaPasswordField(
               inputNameText: 'Cambiar Contraseña',
               controller: _passwordController,
-              enabled: true,
-              isPasswordField: true,
             ),
             const SizedBox(height: 15.0),
-            AteneaField(
+            AteneaPasswordField(
               inputNameText: 'Repetir Contraseña',
-              controller: _verifyPasswordController,
-              enabled: true,
-              isPasswordField: true,
+              controller: _verifyPasswordController, 
             ),
             const Spacer(),
             Center(

@@ -8,6 +8,7 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_password_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 
@@ -61,7 +62,7 @@ class RegisterPage extends StatelessWidget {
           ),
 
           const SizedBox(height: 10),
-          Row(
+          const Row(
             children: [
               Flexible(
                 child: AteneaField(
@@ -84,18 +85,14 @@ class RegisterPage extends StatelessWidget {
             inputNameText: 'Correo Electrónico',
           ),
           const SizedBox(height: 10),
-          const AteneaField(
+          const AteneaPasswordField(
             placeHolder: 'Ejemplo: Fernando',
-            inputNameText: 'Contraseña',
-
-              isPasswordField: true,
+            inputNameText: 'Contraseña',  
           ),
           const SizedBox(height: 10),
-          const AteneaField(
+          const AteneaPasswordField(
             placeHolder: 'Ejemplo: Fernando',
-            inputNameText: 'Verificar Contraseña',
-
-              isPasswordField: true,
+            inputNameText: 'Verificar Contraseña', 
           ),
           const SizedBox(height: 30),
         ],
@@ -121,18 +118,14 @@ class RegisterPage extends StatelessWidget {
             inputNameText: 'Matrícula',
           ),
           const SizedBox(height: 10),
-          const AteneaField(
+          const AteneaPasswordField(
             placeHolder: 'Ejemplo: Fernando',
-            inputNameText: 'Contraseña',
-
-              isPasswordField: true,
+            inputNameText: 'Contraseña', 
           ),
           const SizedBox(height: 10),
-          const AteneaField(
+          const AteneaPasswordField(
             placeHolder: 'Ejemplo: Fernando',
-            inputNameText: 'Verificar Contraseña',
-
-              isPasswordField: true,
+            inputNameText: 'Verificar Contraseña', 
           ),
           const SizedBox(height: 30),
         ],

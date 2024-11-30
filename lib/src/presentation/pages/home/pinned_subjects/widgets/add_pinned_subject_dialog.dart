@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/subject_item_row.dart';
@@ -107,33 +108,33 @@ class _AddPinnedSubjectDialogContentState
       return SizedBox(
         height: modalHeight,
         child: AteneaCard (
-                        margin: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.05, 
-                        ),
-                        child: Column (
-                          children: [
-                            Text(
-                              '¡Atención!',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.builder(
-                                color: AppColors.ateneaBlack,
-                                size: FontSizes.body1,
-                                weight: FontWeights.semibold,
-                              ),
-                            ),
-                            Text(
-                              'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico.',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.builder(
-                                color: AppColors.ateneaBlack,
-                                size: FontSizes.body2,
-                                weight: FontWeights.regular,
-                              ),
-                            ),
+          margin: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05, 
+          ),
+          child: Column (
+            children: [
+              Text(
+                '¡Atención!',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.builder(
+                  color: AppColors.ateneaBlack,
+                  size: FontSizes.body1,
+                  weight: FontWeights.semibold,
+                ),
+              ),
+              Text(
+                'Posees un super usuario, te permitirá editar tanto academias, como departamentos académicos, prueba entrando a un departamento académico.',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.builder(
+                  color: AppColors.ateneaBlack,
+                  size: FontSizes.body2,
+                  weight: FontWeights.regular,
+                ),
+              ),
 
-                          ],
-                        ) 
-                      ), 
+            ],
+          ) 
+        ), 
       );
     }
 
@@ -163,6 +164,12 @@ class _AddPinnedSubjectDialogContentState
                 placeHolder: 'Buscar materia',
                 controller: _searchController,
                 inputNameText: 'Búsqueda',
+                suffixIcon: SvgPicture.asset( 
+                    'assets/svg/search.svg',
+                    height: 20,
+                    width: 20,
+                    color: AppColors.primaryColor,
+                  ),
               ),
             ),
             const SizedBox(height: 20.0),

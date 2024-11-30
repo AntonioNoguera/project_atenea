@@ -7,6 +7,7 @@ import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_password_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
@@ -97,11 +98,10 @@ class LoginPage extends StatelessWidget {
               controller: _usernameController, 
             ),
             const SizedBox(height: 10),
-            AteneaField(
+            AteneaPasswordField(
               placeHolder: 'Ejemplo: ******',
               inputNameText: 'Contraseña',
-              controller: _passwordController, 
-              isPasswordField: true,
+              controller: _passwordController,  
             ),
             const SizedBox(height: 20),
 
