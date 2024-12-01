@@ -13,9 +13,10 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
+import 'package:uuid/uuid.dart';
 
 class AcademyCreateNewPage extends StatefulWidget {
-  final DepartmentEntity parentDepartment;
+  final DepartmentEntity parentDepartment; 
 
   const AcademyCreateNewPage({super.key, required this.parentDepartment});
 
@@ -25,8 +26,15 @@ class AcademyCreateNewPage extends StatefulWidget {
 
 class _AcademyCreateNewPageState extends State<AcademyCreateNewPage> {
   final TextEditingController _academyNameController = TextEditingController();
-  final GlobalKey<AteneaContributorLocalWorkspaceState> _childKey =
-      GlobalKey<AteneaContributorLocalWorkspaceState>();
+  final GlobalKey<AteneaContributorLocalWorkspaceState> _childKey = GlobalKey<AteneaContributorLocalWorkspaceState>();
+  
+  late String _candidateUUID;
+
+  @override
+  void initState() {
+    super.initState(); 
+    _candidateUUID = const Uuid().v4();
+  }
 
   @override
   void dispose() {
@@ -34,7 +42,8 @@ class _AcademyCreateNewPageState extends State<AcademyCreateNewPage> {
     super.dispose();
   }
 
-  void _invokeChildSaveChanges() {
+  void _invokeChildSaveChanges() { 
+    
     _childKey.currentState?.saveChanges(context);
   }
 
@@ -46,10 +55,7 @@ class _AcademyCreateNewPageState extends State<AcademyCreateNewPage> {
         const SnackBar(content: Text('El nombre de la academia no puede estar vacío.')),
       );
       return;
-    }
-
-    // Invoca al método del widget hijo para guardar cambios locales
-    _invokeChildSaveChanges();
+    } 
 
     final parentDepartmentRef = FirebaseFirestore.instance
         .collection('departments')
@@ -67,18 +73,22 @@ class _AcademyCreateNewPageState extends State<AcademyCreateNewPage> {
     }
 
     final newAcademy = AcademyEntity(
+      id: _candidateUUID,
       name: academyName,
       parentDepartment: parentDepartmentRef,
       subjects: [], 
       lastModificationContributor: session.userId,
     );
 
+    // Invoca al método del widget hijo para guardar cambios locales
+    _invokeChildSaveChanges();
+
     try {
       await Provider.of<AcademyProvider>(context, listen: false).addAcademy(newAcademy);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Academia guardada con éxito')),
       );
-      Navigator.pop(context);
+      
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al guardar la academia: $e')),
@@ -153,8 +163,9 @@ class _AcademyCreateNewPageState extends State<AcademyCreateNewPage> {
                   Flexible(
                     child: AteneaContributorLocalWorkspace(
                       key: _childKey,
-                      entityUUID: 'temp_academy_id',
-                      entityType: SystemEntitiesTypes.academy,
+                      entityUUID: _candidateUUID,
+                      entityType: SystemEntitiesTypes.academy, 
+                      shouldFetchContributors : false
                     ),
                   ),
                   const SizedBox(height: 20.0),

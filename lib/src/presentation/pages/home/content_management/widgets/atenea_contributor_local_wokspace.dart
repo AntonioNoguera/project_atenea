@@ -31,9 +31,9 @@ class AteneaContributorLocalWorkspace extends StatefulWidget {
       AteneaContributorLocalWorkspaceState();
 }
 
-class AteneaContributorLocalWorkspaceState
-    extends State<AteneaContributorLocalWorkspace> {
-  late List<UserEntity> _contributors;
+class AteneaContributorLocalWorkspaceState extends State<AteneaContributorLocalWorkspace> {
+
+  late List<UserEntity> _contributors; 
   bool _isLoading = true;
 
   final Map<UserEntity, AtomicPermissionEntity> _permissionsToAdd = {};
@@ -43,13 +43,17 @@ class AteneaContributorLocalWorkspaceState
   @override
   void initState() {
     super.initState();
+ 
     if (widget.shouldFetchContributors) {
+
+    
       _fetchContributors();
     } else {
       _isLoading = false;
       _contributors = [];
     }
   }
+ 
 
   Future<void> _fetchContributors() async {
     setState(() => _isLoading = true);
