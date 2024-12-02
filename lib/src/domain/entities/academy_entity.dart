@@ -14,9 +14,11 @@ class AcademyEntity {
     required this.name,
     required this.parentDepartment,
     this.subjects = const [],
-    this.lastModificationDateTime = '',
+    String? lastModificationDateTime,
     this.lastModificationContributor = '',
-  }) : id = id ?? const Uuid().v4();
+  }) : id = id ?? const Uuid().v4(),
+      lastModificationDateTime = lastModificationDateTime ?? DateTime.now().toString()
+  ;
 
   // Método fromMap para convertir datos de Firestore a AcademyEntity
   factory AcademyEntity.fromMap(Map<String, dynamic> data, String documentId, FirebaseFirestore firestore) {

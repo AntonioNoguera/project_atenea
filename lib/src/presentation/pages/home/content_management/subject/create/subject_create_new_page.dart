@@ -78,8 +78,7 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
       planName: planName,
       subjectPlanData: null, // Opcional, inicializado en null
       parentAcademy: parentAcademyRef,
-      lastModificationContributor: session.userId,
-      lastModificationDateTime: DateTime.now().toIso8601String(),
+      lastModificationContributor: session.userId, 
     );
 
     // Invoca el método del hijo para guardar permisos locales

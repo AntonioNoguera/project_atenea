@@ -15,12 +15,14 @@ class SubjectEntity {
     String? id,
     required this.name,
     required this.planName,
-    this.subjectPlanData, // Campo opcional
+    this.subjectPlanData,
     required DocumentReference parentAcademy,
     required this.lastModificationContributor,
-    required this.lastModificationDateTime,
+    String? lastModificationDateTime,
   })  : id = id ?? const Uuid().v4(),
-        parentAcademy = parentAcademy.path; // Convertir a path como String
+        parentAcademy = parentAcademy.path,
+        lastModificationDateTime = DateTime.now().toString();
+        
 
   // Método para convertir a Map
   Map<String, dynamic> toMap() {
