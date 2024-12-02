@@ -177,38 +177,75 @@ class SubjectDetailPage extends StatelessWidget {
 
   Widget _renderedContent(int activeIndex, SubjectEntity subject) {
     final Map<int, Widget> renderedContent = {
-      0: Column(
-        children: [ 
-          ThemeOrFileSubject(
-            contentType: 'Temas Medio Termino',
-            hasSvg: false,
-            content : subject.subjectPlanData.subjectThemes.halfTerm,
-          ),
-
-          ThemeOrFileSubject(
-            contentType: 'Temas Medio Ordinario',
-            hasSvg: false,
-            content : subject.subjectPlanData.subjectThemes.ordinary,
-          ),  
-        ],
-      ),
-      1: Column(
-        children: [ 
-          ThemeOrFileSubject(
-            contentType: 'Archivos Medio Termino',
-            hasSvg: true,
-            content : subject.subjectPlanData.subjectFiles.halfTerm,
-          ),
-
-          ThemeOrFileSubject(
-            contentType: 'Archivos Medio Ordinario',
-            hasSvg: true,
-            content : subject.subjectPlanData.subjectFiles.ordinary,
-          ),  
-        ],
-      ),
+      0: subject.subjectPlanData?.subjectThemes != null
+          ? Column(
+              children: [
+                if (subject.subjectPlanData!.subjectThemes!.halfTerm != null)
+                  ThemeOrFileSubject(
+                    contentType: 'Temas Medio Termino',
+                    hasSvg: false,
+                    content: subject.subjectPlanData!.subjectThemes!.halfTerm!,
+                  )
+                else
+                  const Text(
+                    'No hay temas para Medio Termino',
+                    textAlign: TextAlign.center,
+                  ),
+                if (subject.subjectPlanData!.subjectThemes!.ordinary != null)
+                  ThemeOrFileSubject(
+                    contentType: 'Temas Ordinario',
+                    hasSvg: false,
+                    content: subject.subjectPlanData!.subjectThemes!.ordinary!,
+                  )
+                else
+                  const Text(
+                    'No hay temas para Ordinario',
+                    textAlign: TextAlign.center,
+                  ),
+              ],
+            )
+          : const Center(
+              child: Text(
+                'No hay temas disponibles',
+                textAlign: TextAlign.center,
+              ),
+            ),
+      1: subject.subjectPlanData?.subjectFiles != null
+          ? Column(
+              children: [
+                if (subject.subjectPlanData!.subjectFiles!.halfTerm != null)
+                  ThemeOrFileSubject(
+                    contentType: 'Archivos Medio Termino',
+                    hasSvg: true,
+                    content: subject.subjectPlanData!.subjectFiles!.halfTerm!,
+                  )
+                else
+                  const Text(
+                    'No hay archivos para Medio Termino',
+                    textAlign: TextAlign.center,
+                  ),
+                if (subject.subjectPlanData!.subjectFiles!.ordinary != null)
+                  ThemeOrFileSubject(
+                    contentType: 'Archivos Ordinario',
+                    hasSvg: true,
+                    content: subject.subjectPlanData!.subjectFiles!.ordinary!,
+                  )
+                else
+                  const Text(
+                    'No hay archivos para Ordinario',
+                    textAlign: TextAlign.center,
+                  ),
+              ],
+            )
+          : const Center(
+              child: Text(
+                'No hay archivos disponibles',
+                textAlign: TextAlign.center,
+              ),
+            ),
     };
 
     return renderedContent[activeIndex] ?? const Text('Unrenderable');
   }
+
 }

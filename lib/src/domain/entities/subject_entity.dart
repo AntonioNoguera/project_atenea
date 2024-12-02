@@ -6,8 +6,8 @@ class SubjectEntity {
   final String id;
   final String name;
   final String planName;
-  final PlanContentEntity subjectPlanData;
-  final String parentAcademy;  // Almacenar como cadena de texto
+  final PlanContentEntity? subjectPlanData; // Ahora es opcional
+  final String parentAcademy; // Almacenar como cadena de texto
   final String lastModificationDateTime;
   final String lastModificationContributor;
 
@@ -15,12 +15,12 @@ class SubjectEntity {
     String? id,
     required this.name,
     required this.planName,
-    required this.subjectPlanData,
-    required DocumentReference parentAcademy,  // Recibe como DocumentReference
+    this.subjectPlanData, // Campo opcional
+    required DocumentReference parentAcademy,
     required this.lastModificationContributor,
     required this.lastModificationDateTime,
   })  : id = id ?? const Uuid().v4(),
-        parentAcademy = parentAcademy.path; // Almacena como String de path
+        parentAcademy = parentAcademy.path; // Convertir a path como String
 
   // Método para convertir a Map
   Map<String, dynamic> toMap() {
@@ -28,21 +28,27 @@ class SubjectEntity {
       'id': id,
       'name': name,
       'planName': planName,
-      'subjectPlanData': subjectPlanData.toMap(),  // Convertir objeto a Map directamente
-      'parentAcademy': parentAcademy,  // Almacena el path
+      'subjectPlanData': subjectPlanData?.toMap(), // Convertir solo si no es null
+      'parentAcademy': parentAcademy, // Almacena el path como String
       'lastModificationDateTime': lastModificationDateTime,
       'lastModificationContributor': lastModificationContributor,
     };
   }
 
   // Método para convertir desde Map
-  factory SubjectEntity.fromMap(String id, Map<String, dynamic> data, FirebaseFirestore firestore) {
+  factory SubjectEntity.fromMap(
+    String id,
+    Map<String, dynamic> data,
+    FirebaseFirestore firestore,
+  ) {
     return SubjectEntity(
       id: id,
       name: data['name'] ?? '',
       planName: data['planName'] ?? '',
-      subjectPlanData: PlanContentEntity.fromMap(data['subjectPlanData'] ?? {}),  // Convertir Map a PlanContentEntity
-      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''),  // Convertir el path a DocumentReference
+      subjectPlanData: data['subjectPlanData'] != null
+          ? PlanContentEntity.fromMap(data['subjectPlanData'])
+          : null, // Manejar null para subjectPlanData
+      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''), // Convertir el path a DocumentReference
       lastModificationDateTime: data['lastModificationDateTime'] ?? '',
       lastModificationContributor: data['lastModificationContributor'] ?? '',
     );

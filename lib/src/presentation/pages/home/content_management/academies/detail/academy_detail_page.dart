@@ -30,6 +30,7 @@ class AcademyDetailPage extends StatefulWidget {
 
 class _AcademyDetailPageState extends State<AcademyDetailPage> {
   int _activeIndex = 0;
+  bool _isLoadingSubjects = true;
 
   void _handleToggle(int index) {
     setState(() {
@@ -44,8 +45,16 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
         ChangeNotifierProvider(create: (context) => ActiveIndexNotifier()),
         ChangeNotifierProvider(create: (context) => ScrollControllerNotifier()),
         FutureProvider<List<SubjectEntity>>(
-          create: (context) => Provider.of<SubjectProvider>(context, listen: false)
-              .getSubjectsByAcademyID(widget.academy.id),
+          create: (context) async {
+            final subjects = await Provider.of<SubjectProvider>(
+              context,
+              listen: false,
+            ).getSubjectsByAcademyID(widget.academy.id);
+            setState(() {
+              _isLoadingSubjects = false;
+            });
+            return subjects;
+          },
           initialData: [],
         ),
       ],
@@ -56,118 +65,119 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
               padding: const EdgeInsets.symmetric(vertical: 30.0),
               child: Stack(
                 children: [
-                  subjects.isEmpty
-                      ? const Center(
-                          child: AteneaCircularProgress(),
-                        )
-                      : Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+                  if (_isLoadingSubjects)
+                    const Center(
+                      child: AteneaCircularProgress(),
+                    ) 
+                  else
+                    Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: MediaQuery.of(context).size.width * 0.05,
+                          ),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10.0),
+                              Text(
+                                'Academia Seleccionada',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.primaryColor,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.regular,
+                                ),
+                              ),
+                              Text(
+                                widget.academy.name,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.primaryColor,
+                                  size: FontSizes.h3,
+                                  weight: FontWeights.semibold,
+                                ),
+                              ),
+                              AteneaCard(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Redactado por:',
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyles.builder(
+                                        color: AppColors.ateneaBlack,
+                                        size: FontSizes.body1,
+                                        weight: FontWeights.semibold,
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.academy.lastModificationContributor,
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyles.builder(
+                                        color: AppColors.grayColor,
+                                        size: FontSizes.body2,
+                                        weight: FontWeights.regular,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Última Actualización:',
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyles.builder(
+                                        color: AppColors.ateneaBlack,
+                                        size: FontSizes.body1,
+                                        weight: FontWeights.semibold,
+                                      ),
+                                    ),
+                                    Text(
+                                      AppUiHelpers.formatDateStringToWords(
+                                        widget.academy.lastModificationDateTime,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyles.builder(
+                                        color: AppColors.grayColor,
+                                        size: FontSizes.body2,
+                                        weight: FontWeights.regular,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Planes de estudio',
+                                style: AppTextStyles.builder(
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              ToggleButtonsWidget(
+                                onToggle: _handleToggle,
+                                toggleOptions: const ['401', '440'],
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: scrollNotifier.scrollController,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * 0.05,
+                              ),
                               child: Column(
                                 children: [
-                                  const SizedBox(height: 10.0),
-                                  
-                                  Text(
-                                    'Academia Seleccionada',
-                                    textAlign: TextAlign.center,
-                                    style: AppTextStyles.builder(
-                                      color: AppColors.primaryColor,
-                                      size: FontSizes.body2,
-                                      weight: FontWeights.regular,
-                                    ),
-                                  ),
-
-                                  Text(
-                                    widget.academy.name,
-                                    textAlign: TextAlign.center,
-                                    style: AppTextStyles.builder(
-                                      color: AppColors.primaryColor,
-                                      size: FontSizes.h3,
-                                      weight: FontWeights.semibold,
-                                    ),
-                                  ),
-
-                                  AteneaCard(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Redactado por:',
-                                          textAlign: TextAlign.center,
-                                          style: AppTextStyles.builder(
-                                            color: AppColors.ateneaBlack,
-                                            size: FontSizes.body1,
-                                            weight: FontWeights.semibold,
-                                          ),
-                                        ),
-                                        Text(
-                                          widget.academy.lastModificationContributor,
-                                          textAlign: TextAlign.center,
-                                          style: AppTextStyles.builder(
-                                            color: AppColors.grayColor,
-                                            size: FontSizes.body2,
-                                            weight: FontWeights.regular,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          'Última Actualización:',
-                                          textAlign: TextAlign.center,
-                                          style: AppTextStyles.builder(
-                                            color: AppColors.ateneaBlack,
-                                            size: FontSizes.body1,
-                                            weight: FontWeights.semibold,
-                                          ),
-                                        ),
-                                        Text(
-                                          AppUiHelpers.formatDateStringToWords(widget.academy.lastModificationDateTime),
-                                          textAlign: TextAlign.center,
-                                          style: AppTextStyles.builder(
-                                            color: AppColors.grayColor,
-                                            size: FontSizes.body2,
-                                            weight: FontWeights.regular,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ), 
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'Planes de estudio',
-                                    style: AppTextStyles.builder(
-                                      size: FontSizes.body2,
-                                      weight: FontWeights.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  ToggleButtonsWidget(
-                                    onToggle: _handleToggle,
-                                    toggleOptions: const ['401', '440'],
-                                  ),
-                                  const SizedBox(height: 10),
+                                  _renderedContent(subjects),
+                                  const SizedBox(height: 50.0),
                                 ],
                               ),
                             ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                controller: scrollNotifier.scrollController,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: MediaQuery.of(context).size.width * 0.05,
-                                  ),
-                                  child: Column(
-                                    children: [ 
-
-                                      _renderedContent(subjects),
-                                      const SizedBox(height: 50.0),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
+                      ],
+                    ),
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -182,7 +192,7 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                             onPressedCallback: () {
                               Navigator.push(
                                 context,
-                                AteneaPageAnimator(page: const SubjectCreateNewPage()),
+                                AteneaPageAnimator(page: SubjectCreateNewPage( parentAcademy : widget.academy )),
                               );
                             },
                           ),
@@ -210,7 +220,11 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      AteneaPageAnimator(page: AcademyManageContent(managingAcademy: widget.academy,)),
+                                      AteneaPageAnimator(
+                                        page: AcademyManageContent(
+                                          managingAcademy: widget.academy,
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),
@@ -230,19 +244,14 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
     );
   }
 
-  Widget _renderedContent(List<SubjectEntity> subjects) {
-  final filteredSubjects = subjects
-      .where((subject) => subject.planName == (_activeIndex == 0 ? '401' : '440'))
-      .toList();
-
-  if (filteredSubjects.isEmpty) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
+  Widget _renderEmptySubjectsMessage() {
+    return Center(
       child: AteneaCard(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Plan sin materias',
+              'No hay materias registradas',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(
                 color: AppColors.ateneaBlack,
@@ -251,24 +260,31 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
               ),
             ),
             Text(
-              'No hay materias registradas para este plan de estudio, prueba crear una materia.',
+              'Prueba crear una nueva materia para esta academia.',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(
                 color: AppColors.grayColor,
                 size: FontSizes.body2,
                 weight: FontWeights.regular,
               ),
-            ),
-            const SizedBox(height: 3),
+            )
           ],
-        )
-      )
+        ),
+      ),
     );
   }
 
-  return Column(
-    children: filteredSubjects.map((subject) => SubjectItemRow(subject: subject)).toList(),
-  );
-}
+  Widget _renderedContent(List<SubjectEntity> subjects) {
+    final filteredSubjects = subjects
+        .where((subject) => subject.planName == (_activeIndex == 0 ? '401' : '440'))
+        .toList();
 
+    if (filteredSubjects.isEmpty) {
+      return _renderEmptySubjectsMessage();
+    }
+
+    return Column(
+      children: filteredSubjects.map((subject) => SubjectItemRow(subject: subject)).toList(),
+    );
+  }
 }

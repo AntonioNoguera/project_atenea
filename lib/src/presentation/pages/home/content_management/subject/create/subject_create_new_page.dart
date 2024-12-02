@@ -1,33 +1,103 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
+import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/widgets/atenea_contributor_local_wokspace.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
+import 'package:uuid/uuid.dart';
 
 class SubjectCreateNewPage extends StatefulWidget {
+  final AcademyEntity parentAcademy;
 
-  const SubjectCreateNewPage({super.key});
-  
+  const SubjectCreateNewPage({super.key, required this.parentAcademy});
+
   @override
   _SubjectCreateNewPageState createState() => _SubjectCreateNewPageState();
-
 }
 
 class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
   final TextEditingController _subjectNameController = TextEditingController();
-  final GlobalKey<AteneaContributorLocalWorkspaceState> _childKey = GlobalKey<AteneaContributorLocalWorkspaceState>();
+  final GlobalKey<AteneaContributorLocalWorkspaceState> _childKey =
+      GlobalKey<AteneaContributorLocalWorkspaceState>();
+
+  late String _candidateUUID;
+  late int _activePlanIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _candidateUUID = const Uuid().v4();
+    _activePlanIndex = 0;
+  }
 
   @override
   void dispose() {
     _subjectNameController.dispose();
     super.dispose();
+  }
+
+  Future<void> _saveSubject() async {
+    final subjectName = _subjectNameController.text.trim();
+    if (subjectName.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('El nombre de la asignatura no puede estar vacío.')),
+      );
+      return;
+    }
+
+    // Determina el plan seleccionado
+    final planName = _activePlanIndex == 0 ? '401' : '440';
+
+    // Obtiene el DocumentReference de la academia padre
+    final parentAcademyRef = FirebaseFirestore.instance.doc( '${SystemEntitiesTypes.academy.value}/${widget.parentAcademy.id}',);
+
+    // Obtiene la sesión actual para recuperar el usuario
+    final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
+    final session = await sessionProvider.getSession();
+    if (session == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No se pudo obtener la sesión del usuario.')),
+      );
+      return;
+    }
+
+    // Crea el SubjectEntity
+    final newSubject = SubjectEntity(
+      id: _candidateUUID,
+      name: subjectName,
+      planName: planName,
+      subjectPlanData: null, // Opcional, inicializado en null
+      parentAcademy: parentAcademyRef,
+      lastModificationContributor: session.userId,
+      lastModificationDateTime: DateTime.now().toIso8601String(),
+    );
+
+    // Invoca el método del hijo para guardar permisos locales
+    _invokeChildSaveChanges();
+
+    try {
+      // Llama al proveedor para guardar la asignatura
+      await Provider.of<SubjectProvider>(context, listen: false).addSubject(newSubject);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Asignatura guardada con éxito')),
+      );
+      Navigator.pop(context); // Regresa a la pantalla anterior
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al guardar la asignatura: $e')),
+      );
+    }
   }
 
   void _invokeChildSaveChanges() {
@@ -37,7 +107,9 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
   }
 
   void _handleToggle(BuildContext context, int index) {
-    Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
+    setState(() {
+      _activePlanIndex = index;
+    });
   }
 
   @override
@@ -57,6 +129,15 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                       children: [
                         const SizedBox(height: 10.0),
                         Text(
+                          'Creando',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.builder(
+                            color: AppColors.primaryColor,
+                            size: FontSizes.body2,
+                            weight: FontWeights.regular,
+                          ),
+                        ),
+                        Text(
                           'Nueva Asignatura',
                           textAlign: TextAlign.center,
                           style: AppTextStyles.builder(
@@ -65,14 +146,35 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                             weight: FontWeights.semibold,
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: 'para la academia ',
+                            style: AppTextStyles.builder(
+                              color: AppColors.primaryColor,
+                              size: FontSizes.body2,
+                              weight: FontWeights.regular,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: widget.parentAcademy.name,
+                                style: AppTextStyles.builder(
+                                  color: AppColors.primaryColor,
+                                  size: FontSizes.body2,
+                                  weight: FontWeights.semibold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20.0),
                         Text(
                           'Plan de Estudios',
                           textAlign: TextAlign.center,
                           style: AppTextStyles.builder(
                             color: AppColors.primaryColor,
-                            size: FontSizes.h5,
-                            weight: FontWeights.regular,
+                            size: FontSizes.body1,
+                            weight: FontWeights.semibold,
                           ),
                         ),
                         ToggleButtonsWidget(
@@ -80,33 +182,25 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                           toggleOptions: const ['401', '440'],
                         ),
                         const SizedBox(height: 15.0),
-                        Text(
-                          'Ingresa el nombre de la nueva asignatura',
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.builder(
-                            size: FontSizes.h5,
-                            weight: FontWeights.regular,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 5.0),
                         AteneaField(
-                          placeHolder: 'Nuevo Nombre',
-                          inputNameText: 'Nombres',
+                          placeHolder: 'Ejemplo: Administración',
+                          inputNameText: 'Nombre de la Asignatura',
                           controller: _subjectNameController,
                         ),
                         const SizedBox(height: 20.0),
                         Text(
-                          'Ingenieros con permisos',
+                          'Contribuidores para la materia',
+                          textAlign: TextAlign.center,
                           style: AppTextStyles.builder(
-                            size: FontSizes.h5,
                             color: AppColors.primaryColor,
+                            size: FontSizes.body1,
+                            weight: FontWeights.semibold,
                           ),
                         ),
                         Flexible(
                           child: AteneaContributorLocalWorkspace(
                             key: _childKey,
-                            entityUUID: 'unique-subject-id',
+                            entityUUID: _candidateUUID, // Usar el UUID generado
                             entityType: SystemEntitiesTypes.subject,
                           ),
                         ),
@@ -124,9 +218,9 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                         children: [
                           AteneaButtonV2(
                             btnStyles: const AteneaButtonStyles(
-                                backgroundColor: AppColors.secondaryColor,
-                                textColor: AppColors.ateneaWhite,
-                              ),
+                              backgroundColor: AppColors.secondaryColor,
+                              textColor: AppColors.ateneaWhite,
+                            ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -135,8 +229,7 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
                           const SizedBox(width: 10.0),
                           Expanded(
                             child: AteneaButtonV2(
-                               
-                              onPressed: _invokeChildSaveChanges, // Invoca la acción del hijo
+                              onPressed: _saveSubject, // Llama al método para guardar la asignatura
                               text: 'Crear Asignatura',
                             ),
                           ),
