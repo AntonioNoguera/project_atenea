@@ -6,43 +6,74 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/su
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/theme_or_file_subject_manage_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 
 class SubjectModifyContentPage extends StatefulWidget {
-  const SubjectModifyContentPage({super.key, required SubjectEntity subject});
+  final String subjectId;
+
+  const SubjectModifyContentPage({super.key, required this.subjectId});
 
   @override
-  _SubjectModifyContentPageState createState() => _SubjectModifyContentPageState();
+  _SubjectModifyContentPageState createState() =>
+      _SubjectModifyContentPageState();
 }
 
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
-  List<String> topics = ['Tema 1', 'Tema 2', 'Tema 3'];
-  List<String> resources = [
-    'Recurso 1',
-    'Recurso 2',
-    'Recurso 3',
-    'Recurso 4',
-    'Recurso 5',
-    'Recurso 6',
-    'Recurso 7',
-    'Recurso 8',
-    'Recurso 9',
-    'Recurso 10',
-    'Recurso 11',
-  ];
+  List<String> topics = [];
+  List<String> resources = [];
+  SubjectEntity? _subject;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSubjectData();
+  }
+
+  Future<void> _loadSubjectData() async {
+    try {
+      final subjectProvider =
+          Provider.of<SubjectProvider>(context, listen: false);
+      final subject = await subjectProvider.getSubjectByIdUseCase(
+        widget.subjectId,
+      );
+
+      if (subject != null) {
+        setState(() {
+          _subject = subject;
+          topics = subject.subjectPlanData?.subjectThemes.halfTerm ?? [];
+          resources = subject.subjectPlanData?.subjectFiles.halfTerm ?? [];
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = true; // Mantener la pantalla de carga si no encuentra la asignatura
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = true; // Mantener la pantalla de carga en caso de error
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al cargar la asignatura: $e')),
+      );
+    }
+  }
 
   void _handleToggle(BuildContext context, int index) {
     Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ScrollControllerNotifier>(context, listen: false).setButtonCollapsed();
+      Provider.of<ScrollControllerNotifier>(context, listen: false)
+          .setButtonCollapsed();
     });
-
   }
 
   void _onReorder(int oldIndex, int newIndex, List<String> list) {
@@ -54,7 +85,8 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   void _editItem(BuildContext context, int index, List<String> list) {
-    TextEditingController controller = TextEditingController(text: list[index]);
+    TextEditingController controller =
+        TextEditingController(text: list[index]);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -102,121 +134,72 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
               ),
               child: Stack(
                 children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
+                  _isLoading || _subject == null
+                      ? const Center(child: AteneaCircularProgress())
+                      : Column(
                           children: [
-                            Text(
-                              'Estas editando los contenidos de:',
-                              style: AppTextStyles.builder(
-                                color: AppColors.primaryColor,
-                                size: FontSizes.body2,
-                                weight: FontWeights.regular,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Estas editando los contenidos de:',
+                                    style: AppTextStyles.builder(
+                                      color: AppColors.primaryColor,
+                                      size: FontSizes.body2,
+                                      weight: FontWeights.regular,
+                                    ),
+                                  ),
+                                  Text(
+                                    _subject!.name,
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyles.builder(
+                                      color: AppColors.primaryColor,
+                                      size: FontSizes.h3,
+                                      weight: FontWeights.semibold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  ToggleButtonsWidget(
+                                    onToggle: (index) =>
+                                        _handleToggle(context, index),
+                                    toggleOptions: const ['Temas', 'Recursos'],
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
                               ),
                             ),
-
-                            //const SizedBox(height: 10.0,),
-
-                            Text(
-                              'Temas Selectos de Ingeniería de Software',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.builder(
-                                color: AppColors.primaryColor,
-                                size: FontSizes.h3,
-                                weight: FontWeights.semibold,
+                            Expanded(
+                              child: SingleChildScrollView(
+                                controller: scrollNotifier.scrollController,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 10.0),
+                                      _renderedContent(
+                                          activeIndexNotifier.activeIndex),
+                                      const SizedBox(height: 60.0),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 10),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Plan de estudio:',
-                                  style: AppTextStyles.builder(
-                                    size: FontSizes.body2,
-                                    weight: FontWeights.bold,
-                                  ),
-                                ),
-                                
-                                const SizedBox(width: 5,),
-
-                                Text(
-                                  '401',
-                                  style: AppTextStyles.builder(
-                                    size: FontSizes.body2,
-                                    weight: FontWeights.regular,
-                                  ),
-                                ),
-
-                                const SizedBox(width: 5.0,),
-                                
-                                Text(
-                                  '|',
-                                  style: AppTextStyles.builder(
-                                    size: FontSizes.body2,
-                                    weight: FontWeights.light,
-                                  ),
-                                ),
-
-                                const SizedBox(width: 5.0,),
-
-                                Text(
-                                  'Folio:',
-                                  style: AppTextStyles.builder(
-                                    size: FontSizes.body2,
-                                    weight: FontWeights.bold,
-                                  ),
-                                ),
-                                const SizedBox(width: 5,),
-                                Text(
-                                  '6641168477',
-                                  style: AppTextStyles.builder(
-                                    size: FontSizes.body2,
-                                    weight: FontWeights.regular,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                           
-                            const SizedBox(height: 15),
-                            ToggleButtonsWidget(
-                              onToggle: (index) => _handleToggle(context, index),
-                              toggleOptions: const ['Temas', 'Recursos'],
-                            ),
-                            const SizedBox(height: 10),
                           ],
                         ),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          controller: scrollNotifier.scrollController,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width * 0.05,
-                            ),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 10.0),
-                                _renderedContent(activeIndexNotifier.activeIndex),
-                                const SizedBox(height: 60.0),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                    ],
-                  ),
                   Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05,),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05,
+                      ),
                       child: Column(
                         children: [
                           if (activeIndexNotifier.activeIndex == 0)
@@ -247,21 +230,18 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                             ),
                           const SizedBox(height: 10),
                           Row(
-                            children: [ 
+                            children: [
                               AteneaButtonV2(
-                                  text: 'Cancelar',
-                                  btnStyles: const AteneaButtonStyles(
-                                    backgroundColor: AppColors.secondaryColor,
-                                    textColor: AppColors.ateneaWhite,
-                                  ),
-
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  }, 
+                                text: 'Cancelar',
+                                btnStyles: const AteneaButtonStyles(
+                                  backgroundColor: AppColors.secondaryColor,
+                                  textColor: AppColors.ateneaWhite,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
                               ),
-
                               const SizedBox(width: 10.0),
-
                               Expanded(
                                 child: AteneaButtonV2(
                                   text: 'Guardar Cambios',
@@ -269,7 +249,6 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                     backgroundColor: AppColors.primaryColor,
                                     textColor: AppColors.ateneaWhite,
                                   ),
-
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -293,11 +272,27 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   Widget _renderedContent(int activeIndex) {
     final List<String> currentList = activeIndex == 0 ? topics : resources;
 
+    if (currentList.isEmpty) {
+      return Center(
+        child: Text(
+          activeIndex == 0
+              ? 'No hay temas disponibles para editar.'
+              : 'No hay recursos disponibles para editar.',
+          style: TextStyle(
+            color: AppColors.grayColor,
+            fontSize: FontSizes.body2,
+            fontWeight: FontWeights.regular,
+          ),
+        ),
+      );
+    }
+
     return ReorderableListView(
       shrinkWrap: true,
       buildDefaultDragHandles: false,
       padding: EdgeInsets.zero,
-      onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex, currentList),
+      onReorder: (oldIndex, newIndex) =>
+          _onReorder(oldIndex, newIndex, currentList),
       proxyDecorator: (Widget child, int index, Animation<double> animation) {
         return Material(
           elevation: 6.0,

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/subject_detail_page.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/subject_modify_content_page.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart';
-
 
 class SubjectItemRow extends StatelessWidget {
   final SubjectEntity subject;  
@@ -33,7 +32,7 @@ class SubjectItemRow extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: SubjectDetailPage(subject : subject))
+              AteneaPageAnimator(page: SubjectModifyContentPage(subjectId : subject.id))
             );
           },
           child: Column(

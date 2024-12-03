@@ -175,6 +175,37 @@ class SubjectDetailPage extends StatelessWidget {
     );
   }
 
+  Widget _renderEmptySubjectsMessage( String type ) {
+    return Center(
+      child: AteneaCard(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'No hay $type dados de alta',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.ateneaBlack,
+                size: FontSizes.body1,
+                weight: FontWeights.semibold,
+              ),
+            ),
+            Text(
+              'Prueba añadir alguno',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.grayColor,
+                size: FontSizes.body2,
+                weight: FontWeights.regular,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
   Widget _renderedContent(int activeIndex, SubjectEntity subject) {
     final Map<int, Widget> renderedContent = {
       0: subject.subjectPlanData?.subjectThemes != null
@@ -204,12 +235,8 @@ class SubjectDetailPage extends StatelessWidget {
                   ),
               ],
             )
-          : const Center(
-              child: Text(
-                'No hay temas disponibles',
-                textAlign: TextAlign.center,
-              ),
-            ),
+          :  _renderEmptySubjectsMessage('temas'),
+
       1: subject.subjectPlanData?.subjectFiles != null
           ? Column(
               children: [
@@ -237,12 +264,7 @@ class SubjectDetailPage extends StatelessWidget {
                   ),
               ],
             )
-          : const Center(
-              child: Text(
-                'No hay archivos disponibles',
-                textAlign: TextAlign.center,
-              ),
-            ),
+          : _renderEmptySubjectsMessage('archivos'),
     };
 
     return renderedContent[activeIndex] ?? const Text('Unrenderable');
