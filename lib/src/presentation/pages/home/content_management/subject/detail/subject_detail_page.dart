@@ -155,10 +155,12 @@ class SubjectDetailPage extends StatelessWidget {
                             child: AteneaButtonV2(
                               text: 'Modificar Contenido',
                               onPressed: () {
+                                /*
                                 Navigator.push(
                                   context,
                                   AteneaPageAnimator(page: SubjectModifyContentPage(subject: subject)),
                                 );
+                                */
                               },
                             ),
                           ),

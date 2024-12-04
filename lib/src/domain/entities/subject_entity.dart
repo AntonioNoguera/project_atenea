@@ -6,8 +6,8 @@ class SubjectEntity {
   final String id;
   final String name;
   final String planName;
-  final PlanContentEntity? subjectPlanData; // Ahora es opcional
-  final String parentAcademy; // Almacenar como cadena de texto
+  final PlanContentEntity? subjectPlanData;
+  final String parentAcademy;
   final String lastModificationDateTime;
   final String lastModificationContributor;
 

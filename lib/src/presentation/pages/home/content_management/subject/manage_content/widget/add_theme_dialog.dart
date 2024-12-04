@@ -6,11 +6,29 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 
-class AddThemeDialog extends StatelessWidget {
-  const AddThemeDialog ({super.key});
+class AddThemeDialog extends StatefulWidget {
+  final Function(String themeName, String type) onAddTheme;
 
-  void _handleToggle(int index) { 
-    print(index.toString());
+  const AddThemeDialog({super.key, required this.onAddTheme});
+
+  @override
+  State<AddThemeDialog> createState() => _AddThemeDialogState();
+}
+
+class _AddThemeDialogState extends State<AddThemeDialog> {
+  final TextEditingController _themeNameController = TextEditingController();
+  int _activeIndex = 0; // 0 = Medio Curso, 1 = Ordinario
+
+  @override
+  void dispose() {
+    _themeNameController.dispose();
+    super.dispose();
+  }
+
+  void _handleToggle(int index) {
+    setState(() {
+      _activeIndex = index;
+    });
   }
 
   @override
@@ -22,7 +40,7 @@ class AddThemeDialog extends StatelessWidget {
         content: ConstrainedBox(
           constraints: const BoxConstraints(
             minWidth: 1000,
-            maxHeight: 600, // Limita la altura máxima a 300
+            maxHeight: 600,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -35,15 +53,13 @@ class AddThemeDialog extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-
-                const SizedBox(height: 10,),
-
-                const AteneaField(
+                const SizedBox(height: 10),
+                AteneaField(
                   placeHolder: 'Nombre del Tema',
                   inputNameText: 'Nombre del tema',
-                ), 
-
-                const SizedBox(height: 20,),
+                  controller: _themeNameController,
+                ),
+                const SizedBox(height: 20),
                 Text(
                   'Esta unidad temática corresponde a',
                   style: AppTextStyles.builder(
@@ -54,10 +70,8 @@ class AddThemeDialog extends StatelessWidget {
                 ),
                 ToggleButtonsWidget(
                   onToggle: _handleToggle,
-                  toggleOptions: const ['Medio Curso', 'Ordinario'],
+                  toggleOptions: const ['Medio Curso', 'Ordinario'], 
                 ),
- 
-
               ],
             ),
           ),
@@ -76,7 +90,16 @@ class AddThemeDialog extends StatelessWidget {
           AteneaButtonCallback(
             textButton: 'Aceptar',
             onPressedCallback: () {
-              Navigator.of(context).pop();
+              final themeName = _themeNameController.text.trim();
+              if (themeName.isNotEmpty) {
+                final type = _activeIndex == 0 ? 'Medio Curso' : 'Ordinario';
+                widget.onAddTheme(themeName, type);
+                Navigator.of(context).pop();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('El nombre del tema no puede estar vacío')),
+                );
+              }
             },
           ),
         ],

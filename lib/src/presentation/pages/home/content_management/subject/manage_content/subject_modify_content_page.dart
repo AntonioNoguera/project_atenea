@@ -14,6 +14,7 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_folding_button.da
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 
 class SubjectModifyContentPage extends StatefulWidget {
   final String subjectId;
@@ -118,6 +119,16 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     );
   }
 
+  void _addThemeCallback(String newTheme, String type) {
+    setState(() {
+      if (type == 'Medio Curso') {
+        topics.add(newTheme);
+      } else if (type == 'Ordinario') {
+        resources.add(newTheme);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -210,20 +221,9 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return const AddThemeDialog();
-                                  },
-                                );
-                              },
-                            ),
-                          if (activeIndexNotifier.activeIndex == 1)
-                            AteneaFoldingButton(
-                              data: 'Añadir Recurso',
-                              svgIcon: 'assets/svg/add.svg',
-                              onPressedCallback: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const AddFileDialog();
+                                    return AddThemeDialog(
+                                      onAddTheme: _addThemeCallback,
+                                    );
                                   },
                                 );
                               },
@@ -270,51 +270,92 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   Widget _renderedContent(int activeIndex) {
-    final List<String> currentList = activeIndex == 0 ? topics : resources;
+  // Selecciona la lista actual según el índice activo
+  final List<String> currentList = activeIndex == 0 ? topics : resources;
 
-    if (currentList.isEmpty) {
-      return Center(
+  if (currentList.isEmpty) {
+    return Center(
+      child: activeIndex == 0
+          ? _renderEmptySubjectsMessage('temas')
+          : _renderEmptySubjectsMessage('archivos'),
+    );
+  }
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Text(
-          activeIndex == 0
-              ? 'No hay temas disponibles para editar.'
-              : 'No hay recursos disponibles para editar.',
-          style: TextStyle(
-            color: AppColors.grayColor,
-            fontSize: FontSizes.body2,
-            fontWeight: FontWeights.regular,
+          activeIndex == 0 ? 'Temas de Medio Curso' : 'Temas Ordinarios',
+          style: AppTextStyles.builder(
+            color: AppColors.primaryColor,
+            size: FontSizes.body1,
+            weight: FontWeights.semibold,
           ),
         ),
-      );
-    }
+      ),
+      ReorderableListView(
+        shrinkWrap: true,
+        buildDefaultDragHandles: false,
+        padding: EdgeInsets.zero,
+        onReorder: (oldIndex, newIndex) =>
+            _onReorder(oldIndex, newIndex, currentList),
+        proxyDecorator: (Widget child, int index, Animation<double> animation) {
+          return Material(
+            elevation: 6.0,
+            color: Colors.transparent,
+            shadowColor: Colors.black.withOpacity(0.3),
+            child: child,
+          );
+        },
+        children: [
+          for (int index = 0; index < currentList.length; index++)
+            ThemeOrFileSubjectManageRow(
+              key: ValueKey(currentList[index]),
+              content: currentList[index],
+              index: index,
+              onEdit: () => _editItem(context, index, currentList),
+              onDelete: () {
+                setState(() {
+                  currentList.removeAt(index);
+                });
+              },
+            ),
+        ],
+      ),
+    ],
+  );
+}
 
-    return ReorderableListView(
-      shrinkWrap: true,
-      buildDefaultDragHandles: false,
-      padding: EdgeInsets.zero,
-      onReorder: (oldIndex, newIndex) =>
-          _onReorder(oldIndex, newIndex, currentList),
-      proxyDecorator: (Widget child, int index, Animation<double> animation) {
-        return Material(
-          elevation: 6.0,
-          color: Colors.transparent,
-          shadowColor: Colors.black.withOpacity(0.3),
-          child: child,
-        );
-      },
-      children: [
-        for (int index = 0; index < currentList.length; index++)
-          ThemeOrFileSubjectManageRow(
-            key: ValueKey(currentList[index]),
-            content: currentList[index],
-            index: index,
-            onEdit: () => _editItem(context, index, currentList),
-            onDelete: () {
-              setState(() {
-                currentList.removeAt(index);
-              });
-            },
-          ),
-      ],
+
+  Widget _renderEmptySubjectsMessage(String type) {
+    return Center(
+      child: AteneaCard(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'No hay $type dados de alta',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.ateneaBlack,
+                size: FontSizes.body1,
+                weight: FontWeights.semibold,
+              ),
+            ),
+            Text(
+              'Prueba añadir alguno',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.grayColor,
+                size: FontSizes.body2,
+                weight: FontWeights.regular,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
