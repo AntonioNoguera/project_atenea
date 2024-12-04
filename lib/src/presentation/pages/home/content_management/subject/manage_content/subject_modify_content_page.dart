@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_file_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_theme_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/theme_or_file_subject_manage_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
@@ -27,8 +27,9 @@ class SubjectModifyContentPage extends StatefulWidget {
 }
 
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
-  List<String> topics = [];
-  List<String> resources = [];
+  ContentEntity topics = ContentEntity(halfTerm: [], ordinary: []);
+  ContentEntity resources = ContentEntity(halfTerm: [], ordinary: []);
+
   SubjectEntity? _subject;
   bool _isLoading = true;
 
@@ -49,8 +50,10 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
       if (subject != null) {
         setState(() {
           _subject = subject;
-          topics = subject.subjectPlanData?.subjectThemes.halfTerm ?? [];
-          resources = subject.subjectPlanData?.subjectFiles.halfTerm ?? [];
+          topics = subject.subjectPlanData?.subjectThemes ??
+              ContentEntity(halfTerm: [], ordinary: []);
+          resources = subject.subjectPlanData?.subjectFiles ??
+              ContentEntity(halfTerm: [], ordinary: []);
           _isLoading = false;
         });
       } else {
@@ -86,8 +89,8 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   void _editItem(BuildContext context, int index, List<String> list) {
-    TextEditingController controller =
-        TextEditingController(text: list[index]);
+    TextEditingController controller = TextEditingController(text: list[index]);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -119,12 +122,12 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     );
   }
 
-  void _addThemeCallback(String newTheme, String type) {
+  void _addNewTheme(String themeName, String type) {
     setState(() {
       if (type == 'Medio Curso') {
-        topics.add(newTheme);
-      } else if (type == 'Ordinario') {
-        resources.add(newTheme);
+        topics.halfTerm.add(themeName);
+      } else {
+        topics.ordinary.add(themeName);
       }
     });
   }
@@ -222,7 +225,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AddThemeDialog(
-                                      onAddTheme: _addThemeCallback,
+                                      onAddTheme: _addNewTheme,
                                     );
                                   },
                                 );
@@ -270,92 +273,76 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   Widget _renderedContent(int activeIndex) {
-  // Selecciona la lista actual según el índice activo
-  final List<String> currentList = activeIndex == 0 ? topics : resources;
+    final currentList = activeIndex == 0 ? topics : resources;
 
-  if (currentList.isEmpty) {
-    return Center(
-      child: activeIndex == 0
-          ? _renderEmptySubjectsMessage('temas')
-          : _renderEmptySubjectsMessage('archivos'),
-    );
-  }
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Text(
-          activeIndex == 0 ? 'Temas de Medio Curso' : 'Temas Ordinarios',
-          style: AppTextStyles.builder(
-            color: AppColors.primaryColor,
-            size: FontSizes.body1,
-            weight: FontWeights.semibold,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (currentList.halfTerm.isNotEmpty) ...[
+          Text(
+            'Contenido de Medio Curso',
+            style: AppTextStyles.builder(
+              color: AppColors.primaryColor,
+              size: FontSizes.body1,
+              weight: FontWeights.semibold,
+            ),
           ),
-        ),
-      ),
-      ReorderableListView(
-        shrinkWrap: true,
-        buildDefaultDragHandles: false,
-        padding: EdgeInsets.zero,
-        onReorder: (oldIndex, newIndex) =>
-            _onReorder(oldIndex, newIndex, currentList),
-        proxyDecorator: (Widget child, int index, Animation<double> animation) {
-          return Material(
-            elevation: 6.0,
-            color: Colors.transparent,
-            shadowColor: Colors.black.withOpacity(0.3),
-            child: child,
-          );
-        },
-        children: [
-          for (int index = 0; index < currentList.length; index++)
-            ThemeOrFileSubjectManageRow(
-              key: ValueKey(currentList[index]),
-              content: currentList[index],
-              index: index,
-              onEdit: () => _editItem(context, index, currentList),
-              onDelete: () {
-                setState(() {
-                  currentList.removeAt(index);
-                });
-              },
-            ),
+          ReorderableListView(
+            shrinkWrap: true,
+            buildDefaultDragHandles: false,
+            padding: EdgeInsets.zero,
+            onReorder: (oldIndex, newIndex) =>
+                _onReorder(oldIndex, newIndex, currentList.halfTerm),
+            children: [
+              for (int index = 0; index < currentList.halfTerm.length; index++)
+                ThemeOrFileSubjectManageRow(
+                  key: ValueKey(currentList.halfTerm[index]),
+                  content: currentList.halfTerm[index],
+                  index: index,
+                  onEdit: () =>
+                      _editItem(context, index, currentList.halfTerm),
+                  onDelete: () {
+                    setState(() {
+                      currentList.halfTerm.removeAt(index);
+                    });
+                  },
+                ),
+            ],
+          ),
         ],
-      ),
-    ],
-  );
-}
-
-
-  Widget _renderEmptySubjectsMessage(String type) {
-    return Center(
-      child: AteneaCard(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'No hay $type dados de alta',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.builder(
-                color: AppColors.ateneaBlack,
-                size: FontSizes.body1,
-                weight: FontWeights.semibold,
-              ),
+        if (currentList.ordinary.isNotEmpty) ...[
+          Text(
+            'Contenido Ordinario',
+            style: AppTextStyles.builder(
+              color: AppColors.primaryColor,
+              size: FontSizes.body1,
+              weight: FontWeights.semibold,
             ),
-            Text(
-              'Prueba añadir alguno',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.builder(
-                color: AppColors.grayColor,
-                size: FontSizes.body2,
-                weight: FontWeights.regular,
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+          ReorderableListView(
+            shrinkWrap: true,
+            buildDefaultDragHandles: false,
+            padding: EdgeInsets.zero,
+            onReorder: (oldIndex, newIndex) =>
+                _onReorder(oldIndex, newIndex, currentList.ordinary),
+            children: [
+              for (int index = 0; index < currentList.ordinary.length; index++)
+                ThemeOrFileSubjectManageRow(
+                  key: ValueKey(currentList.ordinary[index]),
+                  content: currentList.ordinary[index],
+                  index: index,
+                  onEdit: () =>
+                      _editItem(context, index, currentList.ordinary),
+                  onDelete: () {
+                    setState(() {
+                      currentList.ordinary.removeAt(index);
+                    });
+                  },
+                ),
+            ],
+          ),
+        ],
+      ],
     );
   }
 }
