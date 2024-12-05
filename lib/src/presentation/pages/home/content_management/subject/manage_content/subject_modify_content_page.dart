@@ -23,13 +23,14 @@ class SubjectModifyContentPage extends StatefulWidget {
   const SubjectModifyContentPage({super.key, required this.subjectId});
 
   @override
-  _SubjectModifyContentPageState createState() =>
-      _SubjectModifyContentPageState();
+  _SubjectModifyContentPageState createState() => _SubjectModifyContentPageState();
 }
 
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   ContentEntity topics = ContentEntity(halfTerm: [], ordinary: []);
   ContentEntity resources = ContentEntity(halfTerm: [], ordinary: []);
+
+  String _lastSemesterStageSelected = '';
 
   SubjectEntity? _subject;
   bool _isLoading = true;
@@ -59,12 +60,12 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         });
       } else {
         setState(() {
-          _isLoading = true; // Mantener la pantalla de carga si no encuentra la asignatura
+          _isLoading = true;
         });
       }
     } catch (e) {
       setState(() {
-        _isLoading = true; // Mantener la pantalla de carga en caso de error
+        _isLoading = true;
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al cargar la asignatura: $e')),
@@ -129,6 +130,8 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
       } else {
         topics.ordinary.add(themeName);
       }
+
+      _lastSemesterStageSelected = type;
     });
   }
 
@@ -140,23 +143,14 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'No hay $type dados de alta',
+              'No hay $type dados de alta, prueba añadir alguno.',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(
-                color: AppColors.ateneaBlack,
-                size: FontSizes.body1,
-                weight: FontWeights.semibold,
-              ),
-            ),
-            Text(
-              'Prueba añadir alguno',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.builder(
-                color: AppColors.grayColor,
+                color: AppColors.textColor,
                 size: FontSizes.body2,
                 weight: FontWeights.regular,
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -257,6 +251,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                   builder: (BuildContext context) {
                                     return AddThemeDialog(
                                       onAddTheme: _addNewTheme,
+                                      previousSemesterStage: _lastSemesterStageSelected,
                                     );
                                   },
                                 );
@@ -399,7 +394,6 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
           ),
         ] else ... [
           _renderEmptySubjectsMessage('$currentListString de ordinario'),
-
         ],
       ],
     );

@@ -3,28 +3,46 @@ import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'toggle_button_atom.dart';
 
-class ToggleButtonsWidget extends StatelessWidget {
-  final ValueChanged<int> onToggle;
+class ToggleButtonsWidget extends StatefulWidget {
   final List<String> toggleOptions;
+  final String previousOptionSelected;
+  final Function(int) onToggle;
 
-  const ToggleButtonsWidget({
-    required this.onToggle,
+  ToggleButtonsWidget({
     required this.toggleOptions,
-    super.key,
+    this.previousOptionSelected = '',
+    required this.onToggle,
   });
+
+  @override
+  _ToggleButtonsWidgetState createState() => _ToggleButtonsWidgetState();
+}
+
+class _ToggleButtonsWidgetState extends State<ToggleButtonsWidget> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.previousOptionSelected.isNotEmpty) {
+      Future.microtask(() {
+        int index = widget.toggleOptions.indexOf(widget.previousOptionSelected);
+        Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
+        widget.onToggle(index);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: toggleOptions.asMap().entries.map((entry) {
+      children: widget.toggleOptions.asMap().entries.map((entry) {
         int index = entry.key;
         String option = entry.value;
         return Expanded(
           child: Padding(
             padding: EdgeInsets.only(
-              left: index == 0 ? 0 : 2.0, // Espacio a la izquierda de todos menos el primero
-              right: index == toggleOptions.length - 1 ? 0 : 2.0, // Espacio a la derecha de todos menos el último
+              left: index == 0 ? 0 : 2.0,
+              right: index == widget.toggleOptions.length - 1 ? 0 : 2.0,
             ),
             child: Consumer<ActiveIndexNotifier>(
               builder: (context, activeIndexNotifier, child) {
@@ -33,7 +51,7 @@ class ToggleButtonsWidget extends StatelessWidget {
                   isActive: activeIndexNotifier.activeIndex == index,
                   onPressed: () {
                     activeIndexNotifier.setActiveIndex(index); // Cambia el índice activo
-                    onToggle(index); // Notifica el cambio
+                    widget.onToggle(index); // Notifica el cambio
                   },
                 );
               },

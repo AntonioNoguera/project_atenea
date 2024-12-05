@@ -8,8 +8,14 @@ import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20
 
 class AddThemeDialog extends StatefulWidget {
   final Function(String themeName, String type) onAddTheme;
+  final String previousSemesterStage;
+  final List<String> toggleOptions = const ['Medio Curso', 'Ordinario'];
 
-  const AddThemeDialog({super.key, required this.onAddTheme});
+  const AddThemeDialog({
+    super.key, 
+    required this.onAddTheme, 
+    required this.previousSemesterStage
+  });
 
   @override
   State<AddThemeDialog> createState() => _AddThemeDialogState();
@@ -70,7 +76,8 @@ class _AddThemeDialogState extends State<AddThemeDialog> {
                 ),
                 ToggleButtonsWidget(
                   onToggle: _handleToggle,
-                  toggleOptions: const ['Medio Curso', 'Ordinario'], 
+                  toggleOptions: widget.toggleOptions,
+                  previousOptionSelected: widget.previousSemesterStage,
                 ),
               ],
             ),
@@ -92,7 +99,7 @@ class _AddThemeDialogState extends State<AddThemeDialog> {
             onPressedCallback: () {
               final themeName = _themeNameController.text.trim();
               if (themeName.isNotEmpty) {
-                final type = _activeIndex == 0 ? 'Medio Curso' : 'Ordinario';
+                final type = widget.toggleOptions[_activeIndex];
                 widget.onAddTheme(themeName, type);
                 Navigator.of(context).pop();
               } else {
