@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_file_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_theme_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/theme_or_file_subject_manage_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
@@ -75,8 +76,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ScrollControllerNotifier>(context, listen: false)
-          .setButtonCollapsed();
+      Provider.of<ScrollControllerNotifier>(context, listen: false).setButtonCollapsed();
     });
   }
 
@@ -130,6 +130,37 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         topics.ordinary.add(themeName);
       }
     });
+  }
+
+  
+  Widget _renderEmptySubjectsMessage( String type ) {
+    return Center(
+      child: AteneaCard(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'No hay $type dados de alta',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.ateneaBlack,
+                size: FontSizes.body1,
+                weight: FontWeights.semibold,
+              ),
+            ),
+            Text(
+              'Prueba añadir alguno',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.builder(
+                color: AppColors.grayColor,
+                size: FontSizes.body2,
+                weight: FontWeights.regular,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -231,6 +262,21 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                 );
                               },
                             ),
+                            
+                          if (activeIndexNotifier.activeIndex == 1)
+                            AteneaFoldingButton(
+                              data: 'Añadir Recurso',
+                              svgIcon: 'assets/svg/add.svg',
+                              onPressedCallback: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AddFileDialog();
+                                  },
+                                );
+                              },
+                            ),
+                          
                           const SizedBox(height: 10),
                           Row(
                             children: [
@@ -274,12 +320,14 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
 
   Widget _renderedContent(int activeIndex) {
     final currentList = activeIndex == 0 ? topics : resources;
-
+    final currentListString = activeIndex == 0 ? 'temas' : 'recursos';  
+    
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (currentList.halfTerm.isNotEmpty) ...[
-          Text(
+
+        Text(
+            textAlign: TextAlign.center,
             'Contenido de Medio Curso',
             style: AppTextStyles.builder(
               color: AppColors.primaryColor,
@@ -287,6 +335,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
               weight: FontWeights.semibold,
             ),
           ),
+        if (currentList.halfTerm.isNotEmpty) ...[
           ReorderableListView(
             shrinkWrap: true,
             buildDefaultDragHandles: false,
@@ -309,9 +358,14 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                 ),
             ],
           ),
+        ] else ... [
+          _renderEmptySubjectsMessage('$currentListString de medio curso'),
         ],
-        if (currentList.ordinary.isNotEmpty) ...[
-          Text(
+
+        const SizedBox(height: 30),
+
+        Text(
+            textAlign: TextAlign.center,
             'Contenido Ordinario',
             style: AppTextStyles.builder(
               color: AppColors.primaryColor,
@@ -319,6 +373,8 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
               weight: FontWeights.semibold,
             ),
           ),
+        if (currentList.ordinary.isNotEmpty) ...[
+          
           ReorderableListView(
             shrinkWrap: true,
             buildDefaultDragHandles: false,
@@ -341,8 +397,12 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                 ),
             ],
           ),
+        ] else ... [
+          _renderEmptySubjectsMessage('$currentListString de ordinario'),
+
         ],
       ],
     );
   }
 }
+
