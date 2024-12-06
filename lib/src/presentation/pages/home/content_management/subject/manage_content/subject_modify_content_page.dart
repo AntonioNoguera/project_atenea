@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
+import 'package:proyect_atenea/src/domain/use_cases/subject_use_case.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_file_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_theme_dialog.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/delete_subject_content_dialog.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/edit_theme_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/theme_or_file_subject_manage_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
@@ -90,38 +93,36 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   void _editItem(BuildContext context, int index, List<String> list) {
-    TextEditingController controller = TextEditingController(text: list[index]);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return EditThemeDialog(
+        currentText: list[index],
+        onSave: (newText) {
+          setState(() {
+            list[index] = newText;
+          });
+        },
+      );
+    },
+  );
+}
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Editar elemento'),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(hintText: 'Nuevo nombre'),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancelar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Guardar'),
-              onPressed: () {
-                setState(() {
-                  list[index] = controller.text;
-                });
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+void deleteItem(BuildContext context, int index, List<String> list) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return DeleteSubjectContentDialog(
+        itemText: list[index],
+        onDelete: () {
+          setState(() {
+            list.removeAt(index);
+          });
+        },
+      );
+    },
+  );
+}
 
   void _addNewTheme(String themeName, String type) {
     setState(() {
@@ -314,89 +315,82 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   Widget _renderedContent(int activeIndex) {
-    final currentList = activeIndex == 0 ? topics : resources;
-    final currentListString = activeIndex == 0 ? 'temas' : 'recursos';  
-    
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
+  final currentList = activeIndex == 0 ? topics : resources;
+  final currentListString = activeIndex == 0 ? 'temas' : 'recursos';
 
-        Text(
-            textAlign: TextAlign.center,
-            'Contenido de Medio Curso',
-            style: AppTextStyles.builder(
-              color: AppColors.primaryColor,
-              size: FontSizes.body1,
-              weight: FontWeights.semibold,
-            ),
-          ),
-        if (currentList.halfTerm.isNotEmpty) ...[
-          ReorderableListView(
-            shrinkWrap: true,
-            buildDefaultDragHandles: false,
-            padding: EdgeInsets.zero,
-            onReorder: (oldIndex, newIndex) =>
-                _onReorder(oldIndex, newIndex, currentList.halfTerm),
-            children: [
-              for (int index = 0; index < currentList.halfTerm.length; index++)
-                ThemeOrFileSubjectManageRow(
-                  key: ValueKey(currentList.halfTerm[index]),
-                  content: currentList.halfTerm[index],
-                  index: index,
-                  onEdit: () =>
-                      _editItem(context, index, currentList.halfTerm),
-                  onDelete: () {
-                    setState(() {
-                      currentList.halfTerm.removeAt(index);
-                    });
-                  },
-                ),
-            ],
-          ),
-        ] else ... [
-          _renderEmptySubjectsMessage('$currentListString de medio curso'),
-        ],
-
-        const SizedBox(height: 30),
-
-        Text(
-            textAlign: TextAlign.center,
-            'Contenido Ordinario',
-            style: AppTextStyles.builder(
-              color: AppColors.primaryColor,
-              size: FontSizes.body1,
-              weight: FontWeights.semibold,
-            ),
-          ),
-        if (currentList.ordinary.isNotEmpty) ...[
-          
-          ReorderableListView(
-            shrinkWrap: true,
-            buildDefaultDragHandles: false,
-            padding: EdgeInsets.zero,
-            onReorder: (oldIndex, newIndex) =>
-                _onReorder(oldIndex, newIndex, currentList.ordinary),
-            children: [
-              for (int index = 0; index < currentList.ordinary.length; index++)
-                ThemeOrFileSubjectManageRow(
-                  key: ValueKey(currentList.ordinary[index]),
-                  content: currentList.ordinary[index],
-                  index: index,
-                  onEdit: () =>
-                      _editItem(context, index, currentList.ordinary),
-                  onDelete: () {
-                    setState(() {
-                      currentList.ordinary.removeAt(index);
-                    });
-                  },
-                ),
-            ],
-          ),
-        ] else ... [
-          _renderEmptySubjectsMessage('$currentListString de ordinario'),
-        ],
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Text(
+        textAlign: TextAlign.center,
+        'Contenido de Medio Curso',
+        style: AppTextStyles.builder(
+          color: AppColors.primaryColor,
+          size: FontSizes.body1,
+          weight: FontWeights.semibold,
+        ),
+      ),
+      if (currentList.halfTerm.isNotEmpty) ...[
+        ReorderableListView(
+          shrinkWrap: true,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          onReorder: (oldIndex, newIndex) =>
+              _onReorder(oldIndex, newIndex, currentList.halfTerm),
+          children: [
+            for (int index = 0; index < currentList.halfTerm.length; index++)
+              ThemeOrFileSubjectManageRow(
+                key: ValueKey(currentList.halfTerm[index]),
+                content: currentList.halfTerm[index],
+                index: index,
+                onEdit: () => _editItem(context, index, currentList.halfTerm),
+                onDelete: () =>
+                    deleteItem(context, index, currentList.halfTerm),
+              ),
+          ],
+        ),
+      ] else ...[
+        _renderEmptySubjectsMessage('$currentListString de medio curso'),
       ],
-    );
-  }
+
+      const SizedBox(height: 30),
+
+      Text(
+        textAlign: TextAlign.center,
+        'Contenido Ordinario',
+        style: AppTextStyles.builder(
+          color: AppColors.primaryColor,
+          size: FontSizes.body1,
+          weight: FontWeights.semibold,
+        ),
+      ),
+      if (currentList.ordinary.isNotEmpty) ...[
+        ReorderableListView(
+          shrinkWrap: true,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          onReorder: (oldIndex, newIndex) =>
+              _onReorder(oldIndex, newIndex, currentList.ordinary),
+          children: [
+            for (int index = 0; index < currentList.ordinary.length; index++)
+              ThemeOrFileSubjectManageRow(
+                key: ValueKey(currentList.ordinary[index]),
+                content: currentList.ordinary[index],
+                index: index,
+                onEdit: () => _editItem(context, index, currentList.ordinary),
+                onDelete: () =>
+                    deleteItem(context, index, currentList.ordinary),
+              ),
+          ],
+        ),
+      ] else ...[
+        _renderEmptySubjectsMessage('$currentListString de ordinario'),
+      ],
+    ],
+  );
+}
+
+
+
 }
 
