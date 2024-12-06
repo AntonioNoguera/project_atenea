@@ -4,28 +4,49 @@ import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
-class AddFileDialog extends StatelessWidget {
+class AddFileDialog extends StatefulWidget {
   const AddFileDialog({super.key});
 
-  Future<void> _pickFile(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+  @override
+  _AddFileDialogState createState() => _AddFileDialogState();
+}
 
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      print('File name: ${file.name}');
-      print('File size: ${file.size}');
-      if (file.bytes != null) {
-        print('File bytes length: ${file.bytes!.length}');
-      } else {
-        print('File path: ${file.path}');
+class _AddFileDialogState extends State<AddFileDialog> {
+  final TextEditingController _fileNameController = TextEditingController();
+  PlatformFile? _selectedFile;
+
+  Future<void> _pickFile() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+      if (result != null) {
+        setState(() {
+          _selectedFile = result.files.first;
+        });
       }
-      // Puedes manejar el archivo seleccionado aquí
-    } else {
-      // El usuario canceló la selección del archivo
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Error al seleccionar el archivo: $e',
+            style: AppTextStyles.builder(
+              color: AppColors.ateneaWhite,
+              size: FontSizes.body2,
+            ),
+          ),
+        ),
+      );
     }
+  }
+
+  @override
+  void dispose() {
+    _fileNameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,7 +58,7 @@ class AddFileDialog extends StatelessWidget {
         content: ConstrainedBox(
           constraints: const BoxConstraints(
             minWidth: 1000,
-            maxHeight: 600, // Limita la altura máxima a 600
+            maxHeight: 600,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -51,35 +72,29 @@ class AddFileDialog extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
-                const AteneaField(
-                  placeHolder: 'Nombre del Tema',
-                  inputNameText: 'Nombre del tema',
+                AteneaField(
+                  placeHolder: 'Ej. Introducción a la programación',
+                  inputNameText: 'Nombre del archivo',
+                  controller: _fileNameController,
                 ),
                 const SizedBox(height: 20),
-                AteneaButtonV2(
-                  onPressed: () => _pickFile(context),
-                  text: 'Seleccionar Archivo',
-                  
-                  svgIcon: SvgButtonStyle(
-                    svgPath: 'assets/svg/add.svg',
-                    svgDimentions: 20.0
-                  ),
 
-                  textStyle: AppTextStyles.builder(
-                    size: FontSizes.body1,
-                    color: AppColors.ateneaWhite,
-                    weight: FontWeights.regular,
-                  ),
-                ),
-
-                Text(
-                  'Estatus del Archivo',
-                  style: AppTextStyles.builder(
-                    color: AppColors.grayColor,
-                    weight: FontWeights.regular,
-                    size: FontSizes.body2
-                  ),
-                ),
+                if (_selectedFile == null)
+                   AteneaButtonV2(
+                    onPressed: _pickFile,
+                    text: 'Seleccionar Archivo',
+                    svgIcon: SvgButtonStyle(
+                      svgPath: 'assets/svg/add.svg',
+                      svgDimentions: 20.0,
+                    ),
+                    textStyle: AppTextStyles.builder(
+                      size: FontSizes.body1,
+                      color: AppColors.ateneaWhite,
+                      weight: FontWeights.regular,
+                    ),
+                  ),  
+                 
+                if (_selectedFile != null) _buildFileInfo(),
               ],
             ),
           ),
@@ -98,12 +113,99 @@ class AddFileDialog extends StatelessWidget {
           AteneaButtonCallback(
             textButton: 'Aceptar',
             onPressedCallback: () {
-              // Lógica para manejar la aceptación del archivo
-              Navigator.of(context).pop();
+              if (_selectedFile != null &&
+                  _fileNameController.text.trim().isNotEmpty) {
+                // Lógica para manejar el archivo y su contenido
+                print('Archivo aceptado: ${_selectedFile!.name}');
+                Navigator.of(context).pop();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Por favor selecciona un archivo y proporciona un nombre.',
+                    ),
+                  ),
+                );
+              }
             },
           ),
         ],
       ),
     );
   }
+
+  Widget _buildFileInfo() {
+  return AteneaCard(
+    child : Column(
+      children: [ 
+        Text(
+          'Archivo Seleccionado',
+          style: AppTextStyles.builder(
+            color: AppColors.primaryColor,
+            size: FontSizes.body1,
+            weight: FontWeights.semibold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Información del archivo
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Alinea los textos al inicio
+                children: [
+                  Text(
+                    'Nombre:\n${_selectedFile!.name}',
+                    style: AppTextStyles.builder(
+                      color: AppColors.textColor,
+                      size: FontSizes.body2,
+                      weight: FontWeights.regular,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0), // Espaciado entre textos
+                  Text(
+                    'Tamaño: ${(_selectedFile!.size / 1024).toStringAsFixed(2)} KB',
+                    style: AppTextStyles.builder(
+                      color: AppColors.textColor,
+                      size: FontSizes.body2,
+                      weight: FontWeights.regular,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0), // Espaciado entre textos
+                  if (_selectedFile!.bytes != null)
+                    Text(
+                      'Contenido: ${_selectedFile!.bytes!.length} bytes',
+                      style: AppTextStyles.builder(
+                        color: AppColors.textColor,
+                        size: FontSizes.body2,
+                        weight: FontWeights.regular,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            // Botón de acción para cambiar el archivo
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: AteneaButtonV2(
+                btnStyles: const AteneaButtonStyles(
+                  backgroundColor: AppColors.ateneaWhite,
+                  textColor: AppColors.ateneaBlack,
+                ),
+                svgIcon: SvgButtonStyle(
+                  svgPath: 'assets/svg/add.svg',
+                  svgDimentions: 35.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ]
+    )
+  );
+}
+
+
 }

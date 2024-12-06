@@ -66,6 +66,7 @@ class AteneaDialog extends StatelessWidget {
                 style: AppTextStyles.builder(
                   color: AppColors.primaryColor,
                   size: FontSizes.h4,
+                  weight: FontWeights.semibold,
                 ),
                 textAlign: TextAlign.center,
               ),
