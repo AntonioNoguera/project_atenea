@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_button_column.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
@@ -16,7 +17,7 @@ class AddFileDialog extends StatefulWidget {
 }
 
 class _AddFileDialogState extends State<AddFileDialog> {
-  final TextEditingController _fileNameController = TextEditingController();
+  TextEditingController _fileNameController = TextEditingController();
   PlatformFile? _selectedFile;
 
   Future<void> _pickFile() async {
@@ -27,6 +28,13 @@ class _AddFileDialogState extends State<AddFileDialog> {
         setState(() {
           _selectedFile = result.files.first;
         });
+
+        //Tomar unicamente los primeros 20 caracteres del nombre del archivo
+        _fileNameController = TextEditingController(text: _selectedFile!.name.length > 30
+          ? '${_selectedFile!.name.substring(0, 30)}...'
+          : _selectedFile!.name,
+        );
+
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -63,14 +71,7 @@ class _AddFileDialogState extends State<AddFileDialog> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Text(
-                  'Nombra tu archivo',
-                  style: AppTextStyles.builder(
-                    color: AppColors.primaryColor.withOpacity(0.7),
-                    size: FontSizes.body2,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                
                 const SizedBox(height: 10),
                 AteneaField(
                   placeHolder: 'Ej. Introducción a la programación',
@@ -136,8 +137,9 @@ class _AddFileDialogState extends State<AddFileDialog> {
 
   Widget _buildFileInfo() {
   return AteneaCard(
-    child : Column(
-      children: [ 
+    child: Column( 
+      children: [
+        // Título
         Text(
           'Archivo Seleccionado',
           style: AppTextStyles.builder(
@@ -146,65 +148,101 @@ class _AddFileDialogState extends State<AddFileDialog> {
             weight: FontWeights.semibold,
           ),
           textAlign: TextAlign.center,
+        ), 
+        
+        // Nombre del archivo
+        Text(
+          _selectedFile!.name,
+          style: AppTextStyles.builder(
+            color: AppColors.primaryColor.withOpacity(.8),
+            size: FontSizes.body3,
+            weight: FontWeights.regular,
+          ),
+          textAlign: TextAlign.center,
         ),
+        const SizedBox(height: 6.0),
 
+        // Información del archivo y botón
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          
           children: [
             // Información del archivo
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start, // Alinea los textos al inicio
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Nombre:\n${_selectedFile!.name}',
-                    style: AppTextStyles.builder(
-                      color: AppColors.textColor,
-                      size: FontSizes.body2,
-                      weight: FontWeights.regular,
-                    ),
-                  ),
-                  const SizedBox(height: 4.0), // Espaciado entre textos
-                  Text(
-                    'Tamaño: ${(_selectedFile!.size / 1024).toStringAsFixed(2)} KB',
-                    style: AppTextStyles.builder(
-                      color: AppColors.textColor,
-                      size: FontSizes.body2,
-                      weight: FontWeights.regular,
-                    ),
-                  ),
-                  const SizedBox(height: 4.0), // Espaciado entre textos
-                  if (_selectedFile!.bytes != null)
-                    Text(
-                      'Contenido: ${_selectedFile!.bytes!.length} bytes',
+                  RichText(
+                    text: TextSpan(
+                      text: 'Tipo de Archivo: ',
                       style: AppTextStyles.builder(
                         color: AppColors.textColor,
                         size: FontSizes.body2,
-                        weight: FontWeights.regular,
+                        weight: FontWeights.semibold,
                       ),
+                      children: [
+                        TextSpan(
+                          text: _selectedFile!.extension ?? 'Desconocido',
+                          style: AppTextStyles.builder(
+                            color: AppColors.textColor,
+                            size: FontSizes.body2,
+                            weight: FontWeights.regular,
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Tamaño: ',
+                      style: AppTextStyles.builder(
+                        color: AppColors.textColor,
+                        size: FontSizes.body2,
+                        weight: FontWeights.semibold,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '${(_selectedFile!.size / 1024).toStringAsFixed(2)} KB',
+                          style: AppTextStyles.builder(
+                            color: AppColors.textColor,
+                            size: FontSizes.body2,
+                            weight: FontWeights.regular,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
             // Botón de acción para cambiar el archivo
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: AteneaButtonV2(
-                btnStyles: const AteneaButtonStyles(
-                  backgroundColor: AppColors.ateneaWhite,
-                  textColor: AppColors.ateneaBlack,
+              child: AteneaButtonColumn(
+                padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
+                text: 'Cambiar Archivo',
+                textStyle: AppTextStyles.builder(
+                  color: AppColors.ateneaWhite,
+                  size: FontSizes.body4,
+                  weight: FontWeights.regular,
+                ),
+                btnStyles: AteneaButtonStyles(
+                  backgroundColor: AppColors.heavyPrimaryColor.withOpacity(.8),
+                  textColor: AppColors.ateneaWhite,
                 ),
                 svgIcon: SvgButtonStyle(
-                  svgPath: 'assets/svg/add.svg',
+                  svgPath: 'assets/svg/replace.svg',
                   svgDimentions: 35.0,
                 ),
               ),
             ),
           ],
         ),
-      ]
-    )
+      ],
+    ),
   );
+
 }
 
 

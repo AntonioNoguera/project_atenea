@@ -45,8 +45,9 @@ flutter:
     - assets/svg/add.svg
     - assets/svg/edit.svg
     - assets/svg/eye.svg
-    - assets/svg/trashcan.svg
+    - assets/svg/trashcan.svg 
     
+    - assets/svg/replace.svg 
     - assets/svg/check.svg
       
     - assets/svg/drag_indicator.svg
