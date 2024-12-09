@@ -108,21 +108,21 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   );
 }
 
-void deleteItem(BuildContext context, int index, List<String> list) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return DeleteSubjectContentDialog(
-        itemText: list[index],
-        onDelete: () {
-          setState(() {
-            list.removeAt(index);
-          });
-        },
-      );
-    },
-  );
-}
+  void deleteItem(BuildContext context, int index, List<String> list) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DeleteSubjectContentDialog(
+          itemText: list[index],
+          onDelete: () {
+            setState(() {
+              list.removeAt(index);
+            });
+          },
+        );
+      },
+    );
+  }
 
   void _addNewTheme(String themeName, String type) {
     setState(() {

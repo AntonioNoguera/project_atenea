@@ -4,32 +4,36 @@ publish_to: none
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.1
+  sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: ^5.4.2
+
+  # Firebase dependencies
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.3.4
+  firebase_storage: ^12.3.1
+  cloud_firestore: ^5.5.1
+
+  # Other dependencies
   cupertino_icons: ^1.0.8
-  firebase_auth: ^5.3.0
-  firebase_core: ^3.5.0
-  flutter_svg: ^2.0.10+1
-  path_provider: ^2.0.11
+  flutter_svg: ^2.0.16
+  path_provider: ^2.1.5
   provider: ^6.0.5
-  fluttertoast: ^8.1.1
-  flutter_colorpicker: ^1.1.0
-  shared_preferences: ^2.0.15
-  get_it: ^7.2.0
-  file_picker: ^5.0.0
-  uuid: ^3.0.6
-  lottie: ^3.1.3
-  intl: ^0.18.0
+  fluttertoast: ^8.2.0 
+  shared_preferences: ^2.3.3
+  get_it: ^8.0.2
+  file_picker: ^5.5.0
+  uuid: ^4.5.1
+  lottie: ^3.2.0
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  
+  flutter_lints: ^5.0.0
+
 flutter:
   uses-material-design: true
   assets:
@@ -45,16 +49,13 @@ flutter:
     - assets/svg/add.svg
     - assets/svg/edit.svg
     - assets/svg/eye.svg
-    - assets/svg/trashcan.svg 
-    
-    - assets/svg/replace.svg 
+    - assets/svg/trashcan.svg
+    - assets/svg/replace.svg
     - assets/svg/check.svg
-      
     - assets/svg/drag_indicator.svg
     - assets/svg/crossed_folder.svg
     - assets/svg/view_file.svg
     - assets/svg/add_user.svg
-    
     - assets/images/backgrounds/top_left_asset.png
     - assets/images/backgrounds/dart_vector.png
     - assets/images/backgrounds/down_left_asset.png
