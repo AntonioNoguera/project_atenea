@@ -1,23 +1,20 @@
+import 'dart:typed_data'; // Import necesario para Uint8List
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../domain/entities/file_entity.dart';
 
-abstract class FileRemoteDataSource {
-  Future<void> uploadFile(FileEntity file, List<int> fileBytes);
-  Stream<List<FileEntity>> getFiles(String subjectId);
-  Future<void> deleteFile(String fileId, String storagePath);
-}
-
-class FileRemoteDataSourceImpl implements FileRemoteDataSource {
+class FileDataSource {
   final FirebaseFirestore firestore;
   final FirebaseStorage storage;
 
-  FileRemoteDataSourceImpl({required this.firestore, required this.storage});
+  FileDataSource({required this.firestore, required this.storage});
 
-  @override
   Future<void> uploadFile(FileEntity file, List<int> fileBytes) async {
+    // Convertir List<int> a Uint8List
+    final Uint8List uint8FileBytes = Uint8List.fromList(fileBytes);
+
     final storageRef = storage.ref().child('files/${file.subjectId}/${file.name}');
-    final uploadTask = storageRef.putData(fileBytes);
+    final uploadTask = storageRef.putData(uint8FileBytes);
 
     await uploadTask.whenComplete(() async {
       final downloadUrl = await storageRef.getDownloadURL();
@@ -36,7 +33,6 @@ class FileRemoteDataSourceImpl implements FileRemoteDataSource {
     });
   }
 
-  @override
   Stream<List<FileEntity>> getFiles(String subjectId) {
     return firestore
         .collection('files')
@@ -58,7 +54,6 @@ class FileRemoteDataSourceImpl implements FileRemoteDataSource {
     });
   }
 
-  @override
   Future<void> deleteFile(String fileId, String storagePath) async {
     // Eliminar de Firestore
     await firestore.collection('files').doc(fileId).delete();
