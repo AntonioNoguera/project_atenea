@@ -14,7 +14,7 @@ class FileRepositoryImpl implements FileRepository {
   }
 
   @override
-  Stream<List<FileEntity>> getFiles(String subjectId) {
+  Future<List<FileEntity>> getFiles(String subjectId) {
     return remoteDataSource.getFiles(subjectId);
   }
 

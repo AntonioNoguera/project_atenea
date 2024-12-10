@@ -9,6 +9,7 @@ class FileDataSource {
 
   FileDataSource({required this.firestore, required this.storage});
 
+  /// Subir un archivo
   Future<void> uploadFile(FileEntity file, List<int> fileBytes) async {
     // Convertir List<int> a Uint8List
     final Uint8List uint8FileBytes = Uint8List.fromList(fileBytes);
@@ -19,46 +20,51 @@ class FileDataSource {
     await uploadTask.whenComplete(() async {
       final downloadUrl = await storageRef.getDownloadURL();
 
-      final fileData = {
-        'id': file.id,
-        'name': file.name,
-        'extension': file.extension,
-        'size': file.size,
-        'downloadUrl': downloadUrl,
-        'subjectId': file.subjectId,
-        'uploadedAt': file.uploadedAt,
-      };
+      // Actualizar el campo `downloadUrl` en el FileEntity
+      final updatedFile = FileEntity(
+        id: file.id,
+        name: file.name,
+        extension: file.extension,
+        size: file.size,
+        downloadUrl: downloadUrl,
+        subjectId: file.subjectId,
+        uploadedAt: file.uploadedAt,
+      );
 
-      await firestore.collection('files').doc(file.id).set(fileData);
+      // Usar toMap para guardar en Firestore
+      await firestore.collection('files').doc(file.id).set(updatedFile.toMap());
     });
   }
 
-  Stream<List<FileEntity>> getFiles(String subjectId) {
-    return firestore
-        .collection('files')
-        .where('subjectId', isEqualTo: subjectId)
-        .snapshots()
-        .map((querySnapshot) {
+  /// Obtener archivos por `subjectId`
+  Future<List<FileEntity>> getFiles(String subjectId) async {
+    try {
+      final querySnapshot = await firestore
+          .collection('files')
+          .where('subjectId', isEqualTo: subjectId)
+          .get();
+
+      // Usar fromMap para convertir los datos
       return querySnapshot.docs.map((doc) {
-        final data = doc.data();
-        return FileEntity(
-          id: data['id'],
-          name: data['name'],
-          extension: data['extension'],
-          size: data['size'],
-          downloadUrl: data['downloadUrl'],
-          subjectId: data['subjectId'],
-          uploadedAt: data['uploadedAt'],
-        );
+        return FileEntity.fromMap(doc.data(), doc.id);
       }).toList();
-    });
+    } catch (e) {
+      print('Error al obtener archivos: $e');
+      throw Exception('Error al obtener archivos: $e');
+    }
   }
 
+  /// Eliminar un archivo
   Future<void> deleteFile(String fileId, String storagePath) async {
-    // Eliminar de Firestore
-    await firestore.collection('files').doc(fileId).delete();
+    try {
+      // Eliminar de Firestore
+      await firestore.collection('files').doc(fileId).delete();
 
-    // Eliminar de Firebase Storage
-    await storage.ref(storagePath).delete();
+      // Eliminar de Firebase Storage
+      await storage.ref(storagePath).delete();
+    } catch (e) {
+      print('Error al eliminar el archivo: $e');
+      throw Exception('Error al eliminar el archivo: $e');
+    }
   }
 }
