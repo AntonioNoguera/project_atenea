@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
-import 'package:proyect_atenea/src/domain/use_cases/subject_use_case.dart';
+import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/subject_entity.dart'; 
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_file_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_theme_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/delete_subject_content_dialog.dart';
@@ -31,7 +33,7 @@ class SubjectModifyContentPage extends StatefulWidget {
 
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   ContentEntity topics = ContentEntity(halfTerm: [], ordinary: []);
-  ContentEntity resources = ContentEntity(halfTerm: [], ordinary: []);
+  List<FileEntity>? subjectFiles = [];
 
   String _lastSemesterStageSelected = '';
 
@@ -48,33 +50,38 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     try {
       final subjectProvider =
           Provider.of<SubjectProvider>(context, listen: false);
+      print('Cargando asignatura con ID: ${widget.subjectId}');
+      
       final subject = await subjectProvider.getSubjectByIdUseCase(
         widget.subjectId,
       );
 
       if (subject != null) {
+        print('Asignatura cargada correctamente: ${subject.name}');
         setState(() {
           _subject = subject;
-          topics = subject.subjectPlanData?.subjectThemes ??
+          topics = subject.subjectPlanData?.subjectThemes ?? 
               ContentEntity(halfTerm: [], ordinary: []);
-          resources = subject.subjectPlanData?.subjectFiles ??
-              ContentEntity(halfTerm: [], ordinary: []);
+          subjectFiles = subject.subjectPlanData?.subjectFiles ?? [];
           _isLoading = false;
         });
       } else {
+        print('No se encontró la asignatura.');
         setState(() {
-          _isLoading = true;
+          _isLoading = false;
         });
       }
     } catch (e) {
+      print('Error al cargar la asignatura: $e');
       setState(() {
-        _isLoading = true;
+        _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al cargar la asignatura: $e')),
       );
     }
   }
+
 
   void _handleToggle(BuildContext context, int index) {
     Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
@@ -84,44 +91,99 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     });
   }
 
-  void _onReorder(int oldIndex, int newIndex, List<String> list) {
+  void _onReorder<T>(int oldIndex, int newIndex, List<T> list) {
     setState(() {
       if (newIndex > oldIndex) newIndex -= 1;
       final item = list.removeAt(oldIndex);
       list.insert(newIndex, item);
     });
+    print('Lista reordenada: $list');
   }
 
-  void _editItem(BuildContext context, int index, List<String> list) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return EditThemeDialog(
-        currentText: list[index],
-        onSave: (newText) {
-          setState(() {
-            list[index] = newText;
-          });
+
+  void _editItem<T>(BuildContext context, int index, List<T> list) {
+    if (list is List<String>) {
+      // Lógica específica para listas de String
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return EditThemeDialog(
+            currentText: list[index] as String,
+            onSave: (newText) {
+              setState(() {
+                list[index] = newText as T;
+              });
+            },
+          );
         },
       );
-    },
-  );
-}
+    } else if (list is List<FileEntity>) {
+      // Lógica específica para listas de FileEntity
+      var file = list[index] as FileEntity; 
 
-  void deleteItem(BuildContext context, int index, List<String> list) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return DeleteSubjectContentDialog(
-          itemText: list[index],
-          onDelete: () {
-            setState(() {
-              list.removeAt(index);
-            });
-          },
-        );
-      },
-    );
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return EditThemeDialog(
+            currentText: file.name as String,
+            onSave: (newText) {
+              setState(() {
+                list[index] = FileEntity(
+                  id: file.id,
+                  name: newText,
+                  extension: file.extension,
+                  size: file.size,
+                  downloadUrl: file.downloadUrl,
+                  subjectId: file.subjectId,
+                  uploadedAt: file.uploadedAt,
+                ) as T;
+              });
+            },
+          );
+        },
+      );
+    } else {
+      print('Tipo no soportado para editar.');
+    }
+  }
+
+  void deleteItem<T>(BuildContext context, int index, List<T> list) {
+    if (list is List<String>) {
+      // Lógica para eliminar elementos de tipo String
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DeleteSubjectContentDialog(
+            itemText: list[index] as String,
+            onDelete: () {
+              setState(() {
+                list.removeAt(index);
+              });
+              print('Elemento eliminado: ${list}');
+            },
+          );
+        },
+      );
+    } else if (list is List<FileEntity>) {
+      // Lógica para eliminar elementos de tipo FileEntity 
+      var file = list[index] as FileEntity;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return DeleteSubjectContentDialog(
+            itemText: file.name, // Usar el nombre del archivo
+            onDelete: () {
+              setState(() {
+                list.removeAt(index);
+              });
+              print('Archivo eliminado: $file}');
+            },
+          );
+        },
+      );
+    } else {
+      print('Tipo de lista no soportado para eliminar.');
+    }
   }
 
   void _addNewTheme(String themeName, String type) {
@@ -136,7 +198,6 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     });
   }
 
-  
   Widget _renderEmptySubjectsMessage( String type ) {
     return Center(
       child: AteneaCard(
@@ -266,9 +327,17 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                               onPressedCallback: () {
                                 showDialog(
                                   context: context,
-                                  builder: (BuildContext context) {
-                                    return const AddFileDialog();
-                                  },
+                                  builder: (context) => AddFileDialog(
+                                    onFileAdded: (fileEntity, fileBytes) {
+                                      setState(() {
+                                        // Añadir el archivo a la lista local
+                                        subjectFiles ??= []; // Inicializa si es null
+                                        subjectFiles!.add(fileEntity);
+                                      });
+                                      print('Archivo añadido: ${fileEntity.name}');
+                                      print('Bytes del archivo: ${fileBytes.length}');
+                                    },
+                                  ),
                                 );
                               },
                             ),
@@ -315,82 +384,131 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   Widget _renderedContent(int activeIndex) {
-  final currentList = activeIndex == 0 ? topics : resources;
-  final currentListString = activeIndex == 0 ? 'temas' : 'recursos';
+    if (activeIndex == 0) {
+      // Renderizar Temas
+      return _renderThemes();
+    } else if (activeIndex == 1) {
+      // Renderizar Recursos
+      return _renderResources();
+    } else {
+      // Manejo de un índice inesperado
+      return Center(
+        child: Text(
+          'Índice desconocido',
+          style: AppTextStyles.builder(
+            color: AppColors.ateneaRed,
+            size: FontSizes.body1,
+            weight: FontWeights.semibold,
+          ),
+        ),
+      );
+    }
+  }
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Text(
-        textAlign: TextAlign.center,
-        'Contenido de Medio Curso',
-        style: AppTextStyles.builder(
-          color: AppColors.primaryColor,
-          size: FontSizes.body1,
-          weight: FontWeights.semibold,
+  Widget _renderThemes() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          textAlign: TextAlign.center,
+          'Contenido de Medio Curso',
+          style: AppTextStyles.builder(
+            color: AppColors.primaryColor,
+            size: FontSizes.body1,
+            weight: FontWeights.semibold,
+          ),
         ),
-      ),
-      if (currentList.halfTerm.isNotEmpty) ...[
-        ReorderableListView(
-          shrinkWrap: true,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          onReorder: (oldIndex, newIndex) =>
-              _onReorder(oldIndex, newIndex, currentList.halfTerm),
-          children: [
-            for (int index = 0; index < currentList.halfTerm.length; index++)
-              ThemeOrFileSubjectManageRow(
-                key: ValueKey(currentList.halfTerm[index]),
-                content: currentList.halfTerm[index],
-                index: index,
-                onEdit: () => _editItem(context, index, currentList.halfTerm),
-                onDelete: () =>
-                    deleteItem(context, index, currentList.halfTerm),
-              ),
-          ],
+        if (topics.halfTerm.isNotEmpty) ...[
+          ReorderableListView(
+            shrinkWrap: true,
+            buildDefaultDragHandles: false,
+            padding: EdgeInsets.zero,
+            onReorder: (oldIndex, newIndex) =>
+                _onReorder(oldIndex, newIndex, topics.halfTerm),
+            children: [
+              for (int index = 0; index < topics.halfTerm.length; index++)
+                ThemeOrFileSubjectManageRow(
+                  key: ValueKey(topics.halfTerm[index]),
+                  content: topics.halfTerm[index],
+                  index: index,
+                  onEdit: () => _editItem(context, index, topics.halfTerm),
+                  onDelete: () => deleteItem(context, index, topics.halfTerm),
+                ),
+            ],
+          ),
+        ] else ...[
+          _renderEmptySubjectsMessage('temas de medio curso'),
+        ],
+        const SizedBox(height: 30),
+        Text(
+          textAlign: TextAlign.center,
+          'Contenido Ordinario',
+          style: AppTextStyles.builder(
+            color: AppColors.primaryColor,
+            size: FontSizes.body1,
+            weight: FontWeights.semibold,
+          ),
         ),
-      ] else ...[
-        _renderEmptySubjectsMessage('$currentListString de medio curso'),
+        if (topics.ordinary.isNotEmpty) ...[
+          ReorderableListView(
+            shrinkWrap: true,
+            buildDefaultDragHandles: false,
+            padding: EdgeInsets.zero,
+            onReorder: (oldIndex, newIndex) =>
+                _onReorder(oldIndex, newIndex, topics.ordinary),
+            children: [
+              for (int index = 0; index < topics.ordinary.length; index++)
+                ThemeOrFileSubjectManageRow(
+                  key: ValueKey(topics.ordinary[index]),
+                  content: topics.ordinary[index],
+                  index: index,
+                  onEdit: () => _editItem(context, index, topics.ordinary),
+                  onDelete: () => deleteItem(context, index, topics.ordinary),
+                ),
+            ],
+          ),
+        ] else ...[
+          _renderEmptySubjectsMessage('temas ordinarios'),
+        ],
       ],
+    );
+  }
 
-      const SizedBox(height: 30),
-
-      Text(
-        textAlign: TextAlign.center,
-        'Contenido Ordinario',
-        style: AppTextStyles.builder(
-          color: AppColors.primaryColor,
-          size: FontSizes.body1,
-          weight: FontWeights.semibold,
+  Widget _renderResources() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'Recursos Adjuntos',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.builder(
+            color: AppColors.primaryColor,
+            size: FontSizes.body1,
+            weight: FontWeights.semibold,
+          ),
         ),
-      ),
-      if (currentList.ordinary.isNotEmpty) ...[
-        ReorderableListView(
-          shrinkWrap: true,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          onReorder: (oldIndex, newIndex) =>
-              _onReorder(oldIndex, newIndex, currentList.ordinary),
-          children: [
-            for (int index = 0; index < currentList.ordinary.length; index++)
-              ThemeOrFileSubjectManageRow(
-                key: ValueKey(currentList.ordinary[index]),
-                content: currentList.ordinary[index],
-                index: index,
-                onEdit: () => _editItem(context, index, currentList.ordinary),
-                onDelete: () =>
-                    deleteItem(context, index, currentList.ordinary),
-              ),
-          ],
-        ),
-      ] else ...[
-        _renderEmptySubjectsMessage('$currentListString de ordinario'),
+        if (subjectFiles != null && subjectFiles!.isNotEmpty) ...[
+          ReorderableListView(
+            shrinkWrap: true,
+            buildDefaultDragHandles: false,
+            padding: EdgeInsets.zero,
+            onReorder: (oldIndex, newIndex) =>
+                _onReorder(oldIndex, newIndex, subjectFiles!),
+            children: [
+              for (int index = 0; index < subjectFiles!.length; index++)
+                ThemeOrFileSubjectManageRow(
+                  key: ValueKey(subjectFiles![index].id),
+                  content: subjectFiles![index].name,
+                  index: index,
+                  onEdit: () => _editItem(context, index, subjectFiles!),
+                  onDelete: () => deleteItem(context, index, subjectFiles!),
+                ),
+            ],
+          ),
+        ] else ...[
+          _renderEmptySubjectsMessage('recursos adjuntos'),
+        ],
       ],
-    ],
-  );
+    );
+  }
 }
-
-
-
-}
-

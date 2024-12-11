@@ -1,5 +1,7 @@
 // domain/entities/content_entity.dart
 
+import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
+
 class ContentEntity {
   final List<String> halfTerm;
   final List<String> ordinary;

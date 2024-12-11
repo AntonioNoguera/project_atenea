@@ -164,7 +164,7 @@ class SplashPage extends StatelessWidget {
 
   final mockPlanContentEntity = PlanContentEntity(
     subjectThemes: mockContentEntity,
-    subjectFiles: mockContentEntity,
+    subjectFiles: null,
   );
 
   List<SubjectEntity> subjects = [];

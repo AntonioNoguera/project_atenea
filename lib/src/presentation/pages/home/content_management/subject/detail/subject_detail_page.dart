@@ -242,28 +242,21 @@ class SubjectDetailPage extends StatelessWidget {
       1: subject.subjectPlanData?.subjectFiles != null
           ? Column(
               children: [
-                if (subject.subjectPlanData!.subjectFiles!.halfTerm != null)
+                /*
+                if (subject.subjectPlanData!.subjectFiles != null)
+                  
                   ThemeOrFileSubject(
                     contentType: 'Archivos Medio Termino',
                     hasSvg: true,
-                    content: subject.subjectPlanData!.subjectFiles!.halfTerm!,
+                    content: subject.subjectPlanData!.subjectFiles!,
                   )
+                  
                 else
                   const Text(
-                    'No hay archivos para Medio Termino',
+                    'No hay archivos',
                     textAlign: TextAlign.center,
                   ),
-                if (subject.subjectPlanData!.subjectFiles!.ordinary != null)
-                  ThemeOrFileSubject(
-                    contentType: 'Archivos Ordinario',
-                    hasSvg: true,
-                    content: subject.subjectPlanData!.subjectFiles!.ordinary!,
-                  )
-                else
-                  const Text(
-                    'No hay archivos para Ordinario',
-                    textAlign: TextAlign.center,
-                  ),
+                */
               ],
             )
           : _renderEmptySubjectsMessage('archivos'),

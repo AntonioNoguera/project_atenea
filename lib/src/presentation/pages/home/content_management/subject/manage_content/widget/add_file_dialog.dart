@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_column.dart';
@@ -10,7 +11,9 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
 class AddFileDialog extends StatefulWidget {
-  const AddFileDialog({super.key});
+
+  final void Function(FileEntity, List<int>) onFileAdded;
+  const AddFileDialog({super.key, required this.onFileAdded});
 
   @override
   _AddFileDialogState createState() => _AddFileDialogState();
@@ -20,36 +23,35 @@ class _AddFileDialogState extends State<AddFileDialog> {
   TextEditingController _fileNameController = TextEditingController();
   PlatformFile? _selectedFile;
 
-  Future<void> _pickFile() async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
+ Future<void> _pickFile() async {
+  try {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(withData: true); // Cargar los bytes del archivo
 
-      if (result != null) {
-        setState(() {
-          _selectedFile = result.files.first;
-        });
+    if (result != null) {
+      setState(() {
+        _selectedFile = result.files.first;
+      });
 
-        //Tomar unicamente los primeros 20 caracteres del nombre del archivo
-        _fileNameController = TextEditingController(text: _selectedFile!.name.length > 30
+      // Tomar unicamente los primeros 20 caracteres del nombre del archivo
+      _fileNameController.text = _selectedFile!.name.length > 30
           ? '${_selectedFile!.name.substring(0, 30)}...'
-          : _selectedFile!.name,
-        );
-
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Error al seleccionar el archivo: $e',
-            style: AppTextStyles.builder(
-              color: AppColors.ateneaWhite,
-              size: FontSizes.body2,
-            ),
+          : _selectedFile!.name;
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Error al seleccionar el archivo: $e',
+          style: AppTextStyles.builder(
+            color: AppColors.ateneaWhite,
+            size: FontSizes.body2,
           ),
         ),
-      );
-    }
+      ),
+    );
   }
+}
+
 
   @override
   void dispose() {
@@ -114,12 +116,25 @@ class _AddFileDialogState extends State<AddFileDialog> {
           AteneaButtonCallback(
             textButton: 'Aceptar',
             onPressedCallback: () {
-              if (_selectedFile != null &&
-                  _fileNameController.text.trim().isNotEmpty) {
-                // Lógica para manejar el archivo y su contenido
-                print('Archivo aceptado: ${_selectedFile!.name}');
+              if (_selectedFile != null && _selectedFile!.bytes != null && _fileNameController.text.trim().isNotEmpty) {
+                print('Archivo seleccionado: ${_selectedFile!.name}');
+                print('Bytes del archivo: ${_selectedFile!.bytes!.length}');
+                print('Nombre del archivo proporcionado: ${_fileNameController.text}');
+                
+                final fileEntity = FileEntity(
+                  id: '',
+                  name: _fileNameController.text,
+                  extension: _selectedFile!.extension ?? 'unknown',
+                  size: _selectedFile!.size,
+                  downloadUrl: '',
+                  subjectId: 'subject-id',
+                  uploadedAt: DateTime.now().toIso8601String(),
+                );
+
+                widget.onFileAdded(fileEntity, _selectedFile!.bytes!);
                 Navigator.of(context).pop();
               } else {
+                print('Error: No se ha seleccionado un archivo o el nombre está vacío.');
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(

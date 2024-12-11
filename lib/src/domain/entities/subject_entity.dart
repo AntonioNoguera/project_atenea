@@ -21,8 +21,7 @@ class SubjectEntity {
     String? lastModificationDateTime,
   })  : id = id ?? const Uuid().v4(),
         parentAcademy = parentAcademy.path,
-        lastModificationDateTime = DateTime.now().toString();
-        
+        lastModificationDateTime = lastModificationDateTime ?? DateTime.now().toString();
 
   // Método para convertir a Map
   Map<String, dynamic> toMap() {
@@ -48,7 +47,7 @@ class SubjectEntity {
       name: data['name'] ?? '',
       planName: data['planName'] ?? '',
       subjectPlanData: data['subjectPlanData'] != null
-          ? PlanContentEntity.fromMap(data['subjectPlanData'])
+          ? PlanContentEntity.fromMap(Map<String, dynamic>.from(data['subjectPlanData'] as Map))
           : null, // Manejar null para subjectPlanData
       parentAcademy: firestore.doc(data['parentAcademy'] ?? ''), // Convertir el path a DocumentReference
       lastModificationDateTime: data['lastModificationDateTime'] ?? '',
