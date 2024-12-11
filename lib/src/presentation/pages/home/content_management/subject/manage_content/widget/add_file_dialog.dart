@@ -121,8 +121,7 @@ class _AddFileDialogState extends State<AddFileDialog> {
                 print('Bytes del archivo: ${_selectedFile!.bytes!.length}');
                 print('Nombre del archivo proporcionado: ${_fileNameController.text}');
                 
-                final fileEntity = FileEntity(
-                  id: '',
+                final fileEntity = FileEntity( 
                   name: _fileNameController.text,
                   extension: _selectedFile!.extension ?? 'unknown',
                   size: _selectedFile!.size,

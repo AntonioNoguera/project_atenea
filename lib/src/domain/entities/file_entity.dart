@@ -1,27 +1,28 @@
+import 'package:uuid/uuid.dart';
 
 class FileEntity {
-  final String id;
-  final String name;
-  final String extension;
-  final int size; 
-  final String downloadUrl;
-  final String subjectId;
-  final String uploadedAt;
+  String id;
+  String name;
+  String extension;
+  int size; 
+  String downloadUrl;
+  String subjectId;
+  String uploadedAt;
 
   FileEntity({
-    required this.id,
+    String? id,
     required this.name,
     required this.extension,
     required this.size,
     required this.downloadUrl,
     required this.subjectId,
     required this.uploadedAt,
-  });
+  }) : id = id ?? const Uuid().v4();
 
   // Convertir Firestore snapshot a FileEntity
   factory FileEntity.fromMap(Map<String, dynamic> map, String id) {
-    return FileEntity(
-      id: id,
+    return FileEntity( 
+      id: id ?? '',
       name: map['name'] ?? '',
       extension: map['type'] ?? '',
       size: map['size'] ?? 0,
