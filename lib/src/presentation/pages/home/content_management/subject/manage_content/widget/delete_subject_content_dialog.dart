@@ -61,7 +61,7 @@ class DeleteSubjectContentDialog extends StatelessWidget {
           ),
         ),
         AteneaButtonCallback(
-          textButton: 'Guardar',
+          textButton: 'Aceptar',
           onPressedCallback: () {
              onDelete();
             Navigator.of(context).pop();

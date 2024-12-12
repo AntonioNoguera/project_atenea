@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/add_pinned_subject_dialog.dart';
-import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
 

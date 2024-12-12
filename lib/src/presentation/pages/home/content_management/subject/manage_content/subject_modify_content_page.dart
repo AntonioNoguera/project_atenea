@@ -82,7 +82,6 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     }
   }
 
-
   void _handleToggle(BuildContext context, int index) {
     Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
 
@@ -99,7 +98,6 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     });
     print('Lista reordenada: $list');
   }
-
 
   void _editItem<T>(BuildContext context, int index, List<T> list) {
     if (list is List<String>) {
@@ -125,7 +123,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         context: context,
         builder: (BuildContext context) {
           return EditThemeDialog(
-            currentText: file.name as String,
+            currentText: file.name,
             onSave: (newText) {
               setState(() {
                 list[index] = FileEntity(
@@ -175,8 +173,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             onDelete: () {
               setState(() {
                 list.removeAt(index);
-              });
-              print('Archivo eliminado: $file}');
+              }); 
             },
           );
         },
