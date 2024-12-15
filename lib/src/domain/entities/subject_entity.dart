@@ -29,8 +29,8 @@ class SubjectEntity {
       'id': id,
       'name': name,
       'planName': planName,
-      'subjectPlanData': subjectPlanData?.toMap(), // Convertir solo si no es null
-      'parentAcademy': parentAcademy, // Almacena el path como String
+      'subjectPlanData': subjectPlanData?.toMap(),
+      'parentAcademy': parentAcademy,
       'lastModificationDateTime': lastModificationDateTime,
       'lastModificationContributor': lastModificationContributor,
     };
@@ -48,8 +48,8 @@ class SubjectEntity {
       planName: data['planName'] ?? '',
       subjectPlanData: data['subjectPlanData'] != null
           ? PlanContentEntity.fromMap(Map<String, dynamic>.from(data['subjectPlanData'] as Map))
-          : null, // Manejar null para subjectPlanData
-      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''), // Convertir el path a DocumentReference
+          : null,
+      parentAcademy: firestore.doc(data['parentAcademy'] ?? ''),
       lastModificationDateTime: data['lastModificationDateTime'] ?? '',
       lastModificationContributor: data['lastModificationContributor'] ?? '',
     );

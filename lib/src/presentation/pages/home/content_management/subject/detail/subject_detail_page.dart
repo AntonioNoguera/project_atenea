@@ -6,14 +6,15 @@ import 'package:proyect_atenea/src/presentation/providers/app_state_providers/ac
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/app_ui_helpers.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/widget/theme_or_file_subject.dart';
+import 'package:proyect_atenea/src/presentation/utils/ui_utilities.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
-import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart'; 
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart'; 
+import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
+import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart'; 
 
 class SubjectDetailPage extends StatelessWidget {
   final SubjectEntity subject;
@@ -217,7 +218,7 @@ class SubjectDetailPage extends StatelessWidget {
                   ThemeOrFileSubject(
                     contentType: 'Temas Medio Termino',
                     hasSvg: false,
-                    content: subject.subjectPlanData!.subjectThemes!.halfTerm!,
+                    content: UiUtilities.hashMapToOrderedList(subject.subjectPlanData!.subjectThemes.halfTerm) ?? [] ,
                   )
                 else
                   const Text(
@@ -228,7 +229,7 @@ class SubjectDetailPage extends StatelessWidget {
                   ThemeOrFileSubject(
                     contentType: 'Temas Ordinario',
                     hasSvg: false,
-                    content: subject.subjectPlanData!.subjectThemes!.ordinary!,
+                    content: UiUtilities.hashMapToOrderedList(subject.subjectPlanData!.subjectThemes.halfTerm) ?? [] ,
                   )
                 else
                   const Text(

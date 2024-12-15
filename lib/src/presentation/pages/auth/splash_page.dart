@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -158,9 +160,17 @@ class SplashPage extends StatelessWidget {
 
   // 3. Crear y guardar una nueva materia
   final mockContentEntity = ContentEntity(
-    halfTerm: ['Tema1', 'Tema2', 'Tema3'],
-    ordinary: ['Examen1', 'Examen2'],
-  );
+  halfTerm: HashMap.from({
+    1: 'Tema1',
+    2: 'Tema2',
+    3: 'Tema3',
+  }),
+  
+  ordinary: HashMap.from({
+    1: 'Examen1',
+    2: 'Examen2',
+  }),
+);
 
   final mockPlanContentEntity = PlanContentEntity(
     subjectThemes: mockContentEntity,

@@ -1,10 +1,8 @@
-// domain/entities/content_entity.dart
-
-import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
+import 'dart:collection';
 
 class ContentEntity {
-  final List<String> halfTerm;
-  final List<String> ordinary;
+  final HashMap<int, String> halfTerm; // Cambiado a HashMap<int, String>
+  final HashMap<int, String> ordinary; // Cambiado a HashMap<int, String>
 
   ContentEntity({
     required this.halfTerm,
@@ -14,16 +12,20 @@ class ContentEntity {
   // Método para convertir a Map
   Map<String, dynamic> toMap() {
     return {
-      'halfTerm': halfTerm,
-      'ordinary': ordinary,
+      'halfTerm': halfTerm.map((key, value) => MapEntry(key.toString(), value)), // Convertir claves a String
+      'ordinary': ordinary.map((key, value) => MapEntry(key.toString(), value)), // Convertir claves a String
     };
   }
 
   // Método para convertir desde Map
   factory ContentEntity.fromMap(Map<String, dynamic> data) {
     return ContentEntity(
-      halfTerm: List<String>.from(data['halfTerm'] ?? []),
-      ordinary: List<String>.from(data['ordinary'] ?? []),
+      halfTerm: HashMap<int, String>.from(
+        (data['halfTerm'] ?? {}).map((key, value) => MapEntry(int.parse(key), value)),
+      ),
+      ordinary: HashMap<int, String>.from(
+        (data['ordinary'] ?? {}).map((key, value) => MapEntry(int.parse(key), value)),
+      ),
     );
   }
 }

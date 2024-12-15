@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/su
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
+import 'package:proyect_atenea/src/presentation/utils/ui_utilities.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
@@ -32,8 +34,9 @@ class SubjectModifyContentPage extends StatefulWidget {
 }
 
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
-  ContentEntity topics = ContentEntity(halfTerm: [], ordinary: []);
-  List<FileEntity>? subjectFiles = [];
+
+  ContentEntity topics = ContentEntity(halfTerm: HashMap(), ordinary: HashMap());
+  HashMap<int,FileEntity> subjectFiles = HashMap();
 
   String _lastSemesterStageSelected = '';
 
@@ -60,9 +63,8 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         print('Asignatura cargada correctamente: ${subject.name}');
         setState(() {
           _subject = subject;
-          topics = subject.subjectPlanData?.subjectThemes ?? 
-              ContentEntity(halfTerm: [], ordinary: []);
-          subjectFiles = subject.subjectPlanData?.subjectFiles ?? [];
+          topics = subject.subjectPlanData?.subjectThemes ?? ContentEntity(halfTerm: HashMap(), ordinary: HashMap());
+          subjectFiles = subject.subjectPlanData?.subjectFiles ?? HashMap();
           _isLoading = false;
         });
       } else {
@@ -90,16 +92,18 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     });
   }
 
-  void _onReorder<T>(int oldIndex, int newIndex, List<T> list) {
+  void _onReorder<T>(int oldIndex, int newIndex, HashMap<int, T> list) {
     setState(() {
       if (newIndex > oldIndex) newIndex -= 1;
+      /*
       final item = list.removeAt(oldIndex);
       list.insert(newIndex, item);
+      */
     });
     print('Lista reordenada: $list');
   }
 
-  void _editItem<T>(BuildContext context, int index, List<T> list) {
+  void _editItem<T> (BuildContext context, int index, HashMap<int, T> list ) {
     if (list is List<String>) {
       // Lógica específica para listas de String
       showDialog(
@@ -145,7 +149,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     }
   }
 
-  void deleteItem<T>(BuildContext context, int index, List<T> list) {
+  void deleteItem<T>(BuildContext context, int index, HashMap<int, T> list) {
     if (list is List<String>) {
       // Lógica para eliminar elementos de tipo String
       showDialog(
@@ -155,7 +159,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             itemText: list[index] as String,
             onDelete: () {
               setState(() {
-                list.removeAt(index);
+                //list.removeAt(index);
               });
               print('Elemento eliminado: ${list}');
             },
@@ -172,7 +176,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             itemText: file.name, // Usar el nombre del archivo
             onDelete: () {
               setState(() {
-                list.removeAt(index);
+                //list.removeAt(index);
               }); 
             },
           );
@@ -186,11 +190,11 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   void _addNewTheme(String themeName, String type) {
     setState(() {
       if (type == 'Medio Curso') {
-        topics.halfTerm.add(themeName);
+        topics.halfTerm[topics.halfTerm.length + 1] = themeName;
       } else {
-        topics.ordinary.add(themeName);
+        topics.ordinary[topics.ordinary.length + 1] = themeName; 
       }
-
+ 
       _lastSemesterStageSelected = type;
     });
   }
@@ -327,9 +331,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                   builder: (context) => AddFileDialog(
                                     onFileAdded: (fileEntity, fileBytes) {
                                       setState(() {
-                                        // Añadir el archivo a la lista local
-                                        subjectFiles ??= []; // Inicializa si es null
-                                        subjectFiles!.add(fileEntity);
+                                        //Todo: subjectFiles!.add(fileEntity);
                                       });
                                       print('Archivo añadido: ${fileEntity.name}');
                                       print('Bytes del archivo: ${fileBytes.length}');
@@ -426,7 +428,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
               for (int index = 0; index < topics.halfTerm.length; index++)
                 ThemeOrFileSubjectManageRow(
                   key: ValueKey(topics.halfTerm[index]),
-                  content: topics.halfTerm[index],
+                  content: topics.halfTerm[index] ?? '',
                   index: index,
                   onEdit: () => _editItem(context, index, topics.halfTerm),
                   onDelete: () => deleteItem(context, index, topics.halfTerm),
@@ -457,7 +459,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
               for (int index = 0; index < topics.ordinary.length; index++)
                 ThemeOrFileSubjectManageRow(
                   key: ValueKey(topics.ordinary[index]),
-                  content: topics.ordinary[index],
+                  content: topics.ordinary[index] ?? 'Unreadable Data' ,
                   index: index,
                   onEdit: () => _editItem(context, index, topics.ordinary),
                   onDelete: () => deleteItem(context, index, topics.ordinary),
@@ -484,7 +486,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             weight: FontWeights.semibold,
           ),
         ),
-        if (subjectFiles != null && subjectFiles!.isNotEmpty) ...[
+        if (subjectFiles.isNotEmpty) ...[
           ReorderableListView(
             shrinkWrap: true,
             buildDefaultDragHandles: false,
@@ -492,14 +494,15 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             onReorder: (oldIndex, newIndex) =>
                 _onReorder(oldIndex, newIndex, subjectFiles!),
             children: [
-              for (int index = 0; index < subjectFiles!.length; index++)
-                ThemeOrFileSubjectManageRow(
-                  key: ValueKey(subjectFiles![index].id),
-                  content: subjectFiles![index].name,
-                  index: index,
-                  onEdit: () => _editItem(context, index, subjectFiles!),
-                  onDelete: () => deleteItem(context, index, subjectFiles!),
-                ),
+              for (int index = 0; index < subjectFiles!.length; index++) 
+                if (subjectFiles[index] != null)
+                  ThemeOrFileSubjectManageRow(
+                    key: ValueKey(subjectFiles[index]!.id),
+                    content: subjectFiles[index]!.name,
+                    index: index,
+                    onEdit: () => _editItem(context, index, subjectFiles!),
+                    onDelete: () => deleteItem(context, index, subjectFiles!),
+                  ),
             ],
           ),
         ] else ...[

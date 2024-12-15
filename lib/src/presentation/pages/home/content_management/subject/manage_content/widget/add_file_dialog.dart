@@ -7,6 +7,7 @@ import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_column.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
+import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_field.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
@@ -22,36 +23,43 @@ class AddFileDialog extends StatefulWidget {
 class _AddFileDialogState extends State<AddFileDialog> {
   TextEditingController _fileNameController = TextEditingController();
   PlatformFile? _selectedFile;
+  bool _isLoading = false; // Nueva variable para controlar el estado de carga
 
- Future<void> _pickFile() async {
-  try {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(withData: true); // Cargar los bytes del archivo
+  Future<void> _pickFile() async {
+    setState(() {
+      _isLoading = true; // Inicia el estado de carga
+    });
 
-    if (result != null) {
-      setState(() {
-        _selectedFile = result.files.first;
-      });
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(withData: true);
 
-      // Tomar unicamente los primeros 20 caracteres del nombre del archivo
-      _fileNameController.text = _selectedFile!.name.length > 30
-          ? '${_selectedFile!.name.substring(0, 30)}...'
-          : _selectedFile!.name;
-    }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Error al seleccionar el archivo: $e',
-          style: AppTextStyles.builder(
-            color: AppColors.ateneaWhite,
-            size: FontSizes.body2,
+      if (result != null) {
+        setState(() {
+          _selectedFile = result.files.first;
+          // Tomar unicamente los primeros 30 caracteres del nombre del archivo
+          _fileNameController.text = _selectedFile!.name.length > 30
+              ? '${_selectedFile!.name.substring(0, 30)}...'
+              : _selectedFile!.name;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Error al seleccionar el archivo: $e',
+            style: AppTextStyles.builder(
+              color: AppColors.ateneaWhite,
+              size: FontSizes.body2,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } finally {
+      setState(() {
+        _isLoading = false; // Finaliza el estado de carga
+      });
+    }
   }
-}
-
 
   @override
   void dispose() {
@@ -73,7 +81,6 @@ class _AddFileDialogState extends State<AddFileDialog> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                
                 const SizedBox(height: 10),
                 AteneaField(
                   placeHolder: 'Ej. Introducción a la programación',
@@ -81,9 +88,13 @@ class _AddFileDialogState extends State<AddFileDialog> {
                   controller: _fileNameController,
                 ),
                 const SizedBox(height: 20),
-
-                if (_selectedFile == null)
-                   AteneaButtonV2(
+ 
+                if (_isLoading)
+                  const Center(
+                    child: AteneaCircularProgress() 
+                  )
+                else if (_selectedFile == null)
+                  AteneaButtonV2(
                     onPressed: _pickFile,
                     text: 'Seleccionar Archivo',
                     svgIcon: SvgButtonStyle(
@@ -95,8 +106,7 @@ class _AddFileDialogState extends State<AddFileDialog> {
                       color: AppColors.ateneaWhite,
                       weight: FontWeights.regular,
                     ),
-                  ),  
-                 
+                  ),
                 if (_selectedFile != null) _buildFileInfo(),
               ],
             ),
@@ -116,9 +126,10 @@ class _AddFileDialogState extends State<AddFileDialog> {
           AteneaButtonCallback(
             textButton: 'Aceptar',
             onPressedCallback: () {
-              if (_selectedFile != null && _selectedFile!.bytes != null && _fileNameController.text.trim().isNotEmpty) { 
-                
-                final fileEntity = FileEntity( 
+              if (_selectedFile != null &&
+                  _selectedFile!.bytes != null &&
+                  _fileNameController.text.trim().isNotEmpty) {
+                final fileEntity = FileEntity(
                   name: _fileNameController.text,
                   extension: _selectedFile!.extension ?? 'unknown',
                   size: _selectedFile!.size,
@@ -148,9 +159,8 @@ class _AddFileDialogState extends State<AddFileDialog> {
 
   Widget _buildFileInfo() {
     return AteneaCard(
-      child: Column( 
+      child: Column(
         children: [
-          // Título
           Text(
             'Archivo Seleccionado',
             style: AppTextStyles.builder(
@@ -159,9 +169,7 @@ class _AddFileDialogState extends State<AddFileDialog> {
               weight: FontWeights.semibold,
             ),
             textAlign: TextAlign.center,
-          ), 
-          
-          // Nombre del archivo
+          ),
           Text(
             _selectedFile!.name,
             style: AppTextStyles.builder(
@@ -172,13 +180,9 @@ class _AddFileDialogState extends State<AddFileDialog> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 6.0),
-
-          // Información del archivo y botón
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            
             children: [
-              // Información del archivo
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,7 +218,8 @@ class _AddFileDialogState extends State<AddFileDialog> {
                         ),
                         children: [
                           TextSpan(
-                            text: '${(_selectedFile!.size / 1024).toStringAsFixed(2)} KB',
+                            text:
+                                '${(_selectedFile!.size / 1024).toStringAsFixed(2)} KB',
                             style: AppTextStyles.builder(
                               color: AppColors.textColor,
                               size: FontSizes.body2,
@@ -227,7 +232,6 @@ class _AddFileDialogState extends State<AddFileDialog> {
                   ],
                 ),
               ),
-              // Botón de acción para cambiar el archivo
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: AteneaButtonColumn(
@@ -239,7 +243,8 @@ class _AddFileDialogState extends State<AddFileDialog> {
                     weight: FontWeights.regular,
                   ),
                   btnStyles: AteneaButtonStyles(
-                    backgroundColor: AppColors.heavyPrimaryColor.withOpacity(.8),
+                    backgroundColor:
+                        AppColors.heavyPrimaryColor.withOpacity(.8),
                     textColor: AppColors.ateneaWhite,
                   ),
                   svgIcon: SvgButtonStyle(
