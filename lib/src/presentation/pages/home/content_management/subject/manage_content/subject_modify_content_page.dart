@@ -35,8 +35,10 @@ class SubjectModifyContentPage extends StatefulWidget {
 
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
 
-  ContentEntity topics = ContentEntity(halfTerm: HashMap(), ordinary: HashMap());
-  HashMap<int,FileEntity> subjectFiles = HashMap();
+  List<String> halfTerm =  [];
+  List<String> ordinary =  [];
+
+  List<FileEntity> subjectFiles = [];
 
   String _lastSemesterStageSelected = '';
 
@@ -63,8 +65,9 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         print('Asignatura cargada correctamente: ${subject.name}');
         setState(() {
           _subject = subject;
-          topics = subject.subjectPlanData?.subjectThemes ?? ContentEntity(halfTerm: HashMap(), ordinary: HashMap());
-          subjectFiles = subject.subjectPlanData?.subjectFiles ?? HashMap();
+          ordinary = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.halfTerm) ?? [];
+          halfTerm = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.ordinary) ?? [];
+          subjectFiles = UiUtilities.hashMapToOrderedList(subject.subjectPlanData?.subjectFiles) ?? [];
           _isLoading = false;
         });
       } else {
@@ -92,20 +95,18 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     });
   }
 
-  void _onReorder<T>(int oldIndex, int newIndex, HashMap<int, T> list) {
+  void _onReorder<T>(int oldIndex, int newIndex, List<T> list) {
     setState(() {
       if (newIndex > oldIndex) newIndex -= 1;
-      /*
       final item = list.removeAt(oldIndex);
       list.insert(newIndex, item);
-      */
     });
+
     print('Lista reordenada: $list');
   }
 
-  void _editItem<T> (BuildContext context, int index, HashMap<int, T> list ) {
+  void _editItem<T>(BuildContext context, int index, List<T> list) {
     if (list is List<String>) {
-      // Lógica específica para listas de String
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -120,8 +121,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         },
       );
     } else if (list is List<FileEntity>) {
-      // Lógica específica para listas de FileEntity
-      var file = list[index] as FileEntity; 
+      var file = list[index] as FileEntity;
 
       showDialog(
         context: context,
@@ -149,9 +149,8 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     }
   }
 
-  void deleteItem<T>(BuildContext context, int index, HashMap<int, T> list) {
+  void deleteItem<T>(BuildContext context, int index, List<T> list) {
     if (list is List<String>) {
-      // Lógica para eliminar elementos de tipo String
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -159,7 +158,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             itemText: list[index] as String,
             onDelete: () {
               setState(() {
-                //list.removeAt(index);
+                list.removeAt(index);
               });
               print('Elemento eliminado: ${list}');
             },
@@ -167,17 +166,16 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         },
       );
     } else if (list is List<FileEntity>) {
-      // Lógica para eliminar elementos de tipo FileEntity 
       var file = list[index] as FileEntity;
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return DeleteSubjectContentDialog(
-            itemText: file.name, // Usar el nombre del archivo
+            itemText: file.name,
             onDelete: () {
               setState(() {
-                //list.removeAt(index);
-              }); 
+                list.removeAt(index);
+              });
             },
           );
         },
@@ -190,11 +188,11 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   void _addNewTheme(String themeName, String type) {
     setState(() {
       if (type == 'Medio Curso') {
-        topics.halfTerm[topics.halfTerm.length + 1] = themeName;
+        halfTerm.add(themeName);
       } else {
-        topics.ordinary[topics.ordinary.length + 1] = themeName; 
+        ordinary.add(themeName);
       }
- 
+
       _lastSemesterStageSelected = type;
     });
   }
@@ -417,21 +415,21 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             weight: FontWeights.semibold,
           ),
         ),
-        if (topics.halfTerm.isNotEmpty) ...[
+        if (halfTerm.isNotEmpty) ...[
           ReorderableListView(
             shrinkWrap: true,
             buildDefaultDragHandles: false,
             padding: EdgeInsets.zero,
             onReorder: (oldIndex, newIndex) =>
-                _onReorder(oldIndex, newIndex, topics.halfTerm),
+                _onReorder(oldIndex, newIndex, halfTerm),
             children: [
-              for (int index = 0; index < topics.halfTerm.length; index++)
+              for (int index = 0; index < halfTerm.length; index++)
                 ThemeOrFileSubjectManageRow(
-                  key: ValueKey(topics.halfTerm[index]),
-                  content: topics.halfTerm[index] ?? '',
+                  key: ValueKey(halfTerm[index]),
+                  content: halfTerm[index],
                   index: index,
-                  onEdit: () => _editItem(context, index, topics.halfTerm),
-                  onDelete: () => deleteItem(context, index, topics.halfTerm),
+                  onEdit: () => _editItem(context, index, halfTerm),
+                  onDelete: () => deleteItem(context, index, halfTerm),
                 ),
             ],
           ),
@@ -448,21 +446,21 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             weight: FontWeights.semibold,
           ),
         ),
-        if (topics.ordinary.isNotEmpty) ...[
+        if (ordinary.isNotEmpty) ...[
           ReorderableListView(
             shrinkWrap: true,
             buildDefaultDragHandles: false,
             padding: EdgeInsets.zero,
             onReorder: (oldIndex, newIndex) =>
-                _onReorder(oldIndex, newIndex, topics.ordinary),
+                _onReorder(oldIndex, newIndex, ordinary),
             children: [
-              for (int index = 0; index < topics.ordinary.length; index++)
+              for (int index = 0; index < ordinary.length; index++)
                 ThemeOrFileSubjectManageRow(
-                  key: ValueKey(topics.ordinary[index]),
-                  content: topics.ordinary[index] ?? 'Unreadable Data' ,
+                  key: ValueKey(ordinary[index]),
+                  content: ordinary[index],
                   index: index,
-                  onEdit: () => _editItem(context, index, topics.ordinary),
-                  onDelete: () => deleteItem(context, index, topics.ordinary),
+                  onEdit: () => _editItem(context, index, ordinary),
+                  onDelete: () => deleteItem(context, index, ordinary),
                 ),
             ],
           ),
@@ -494,15 +492,14 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             onReorder: (oldIndex, newIndex) =>
                 _onReorder(oldIndex, newIndex, subjectFiles!),
             children: [
-              for (int index = 0; index < subjectFiles!.length; index++) 
-                if (subjectFiles[index] != null)
-                  ThemeOrFileSubjectManageRow(
-                    key: ValueKey(subjectFiles[index]!.id),
-                    content: subjectFiles[index]!.name,
-                    index: index,
-                    onEdit: () => _editItem(context, index, subjectFiles!),
-                    onDelete: () => deleteItem(context, index, subjectFiles!),
-                  ),
+              for (int index = 0; index < subjectFiles.length; index++)  
+                ThemeOrFileSubjectManageRow(
+                  key: ValueKey(subjectFiles[index].id),
+                  content: subjectFiles[index].name,
+                  index: index,
+                  onEdit: () => _editItem(context, index, subjectFiles!),
+                  onDelete: () => deleteItem(context, index, subjectFiles!),
+                ),
             ],
           ),
         ] else ...[

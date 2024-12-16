@@ -33,7 +33,7 @@ class SplashPage extends StatelessWidget {
     final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
 
     // Inicializar todos los datos
-    //initializeAllData(departmentProvider, userProvider, academyProvider, subjectProvider, sessionProvider, FirebaseFirestore.instance);
+    initializeAllData(departmentProvider, userProvider, academyProvider, subjectProvider, sessionProvider, FirebaseFirestore.instance);
 
     // Contenido de la pantalla de splash
     final splashContent = SafeArea(
@@ -161,9 +161,9 @@ class SplashPage extends StatelessWidget {
   // 3. Crear y guardar una nueva materia
   final mockContentEntity = ContentEntity(
   halfTerm: HashMap.from({
-    1: 'Tema1',
-    2: 'Tema2',
     3: 'Tema3',
+    1: 'Tema1',
+    2: 'Tema2', 
   }),
   
   ordinary: HashMap.from({
