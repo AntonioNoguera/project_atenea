@@ -3,8 +3,8 @@ import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
 
 class PlanContentEntity {
-  final ContentEntity subjectThemes;
-  final HashMap<int, FileEntity>? subjectFiles;
+  ContentEntity subjectThemes;
+  HashMap<int, FileEntity>? subjectFiles;
 
   PlanContentEntity({
     required this.subjectThemes,

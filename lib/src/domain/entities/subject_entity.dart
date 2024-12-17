@@ -4,9 +4,9 @@ import 'package:proyect_atenea/src/domain/entities/plan_content_entity.dart';
 
 class SubjectEntity {
   final String id;
-  final String name;
+  String name;
   final String planName;
-  final PlanContentEntity? subjectPlanData;
+  PlanContentEntity? subjectPlanData;
   final String parentAcademy;
   final String lastModificationDateTime;
   final String lastModificationContributor;
@@ -54,4 +54,5 @@ class SubjectEntity {
       lastModificationContributor: data['lastModificationContributor'] ?? '',
     );
   }
+ 
 }

@@ -2,8 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
+import 'package:provider/provider.dart'; 
 import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart'; 
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_file_dialog.dart';
@@ -36,8 +35,7 @@ class SubjectModifyContentPage extends StatefulWidget {
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
 
   List<String> halfTerm =  [];
-  List<String> ordinary =  [];
-
+  List<String> ordinary =  []; 
   List<FileEntity> subjectFiles = [];
 
   String _lastSemesterStageSelected = '';
@@ -65,8 +63,8 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         print('Asignatura cargada correctamente: ${subject.name}');
         setState(() {
           _subject = subject;
-          ordinary = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.halfTerm) ?? [];
-          halfTerm = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.ordinary) ?? [];
+          ordinary = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.ordinary) ?? [];
+          halfTerm = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.halfTerm) ?? [];
           subjectFiles = UiUtilities.hashMapToOrderedList(subject.subjectPlanData?.subjectFiles) ?? [];
           _isLoading = false;
         });
@@ -218,6 +216,30 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     );
   }
 
+  void _saveSubjectChanges() async {
+  if (_subject == null) return;
+
+  final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
+
+  _subject!.subjectPlanData?.subjectThemes.halfTerm = UiUtilities.orderedListToHashMap(halfTerm);
+  _subject!.subjectPlanData?.subjectThemes.ordinary = UiUtilities.orderedListToHashMap(ordinary);
+  _subject!.subjectPlanData?.subjectFiles = UiUtilities.orderedListToHashMap(subjectFiles);
+
+  try {
+    await subjectProvider.updateSubject(_subject!);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Los cambios se han guardado correctamente')),
+    );
+  } catch (e) {
+    print('Error: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al guardar los cambios: $e')),
+    );
+  }
+}
+
+
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -361,7 +383,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                     textColor: AppColors.ateneaWhite,
                                   ),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    _saveSubjectChanges();
                                   },
                                 ),
                               ),
@@ -381,24 +403,12 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   Widget _renderedContent(int activeIndex) {
-    if (activeIndex == 0) {
-      // Renderizar Temas
+    if (activeIndex == 0) { 
       return _renderThemes();
-    } else if (activeIndex == 1) {
-      // Renderizar Recursos
+    } else if (activeIndex == 1) { 
       return _renderResources();
     } else {
-      // Manejo de un índice inesperado
-      return Center(
-        child: Text(
-          'Índice desconocido',
-          style: AppTextStyles.builder(
-            color: AppColors.ateneaRed,
-            size: FontSizes.body1,
-            weight: FontWeights.semibold,
-          ),
-        ),
-      );
+      return const SizedBox(); 
     }
   }
 

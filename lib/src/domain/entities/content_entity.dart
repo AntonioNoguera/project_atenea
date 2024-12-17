@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 class ContentEntity {
-  final HashMap<int, String> halfTerm; // Cambiado a HashMap<int, String>
-  final HashMap<int, String> ordinary; // Cambiado a HashMap<int, String>
+  HashMap<int, String> halfTerm; // Cambiado a HashMap<int, String>
+  HashMap<int, String> ordinary; // Cambiado a HashMap<int, String>
 
   ContentEntity({
     required this.halfTerm,
@@ -23,6 +23,7 @@ class ContentEntity {
       halfTerm: HashMap<int, String>.from(
         (data['halfTerm'] ?? {}).map((key, value) => MapEntry(int.parse(key), value)),
       ),
+      
       ordinary: HashMap<int, String>.from(
         (data['ordinary'] ?? {}).map((key, value) => MapEntry(int.parse(key), value)),
       ),

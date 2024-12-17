@@ -33,7 +33,7 @@ class SplashPage extends StatelessWidget {
     final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
 
     // Inicializar todos los datos
-    initializeAllData(departmentProvider, userProvider, academyProvider, subjectProvider, sessionProvider, FirebaseFirestore.instance);
+    //initializeAllData(departmentProvider, userProvider, academyProvider, subjectProvider, sessionProvider, FirebaseFirestore.instance);
 
     // Contenido de la pantalla de splash
     final splashContent = SafeArea(

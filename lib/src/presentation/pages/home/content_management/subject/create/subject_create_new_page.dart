@@ -1,7 +1,12 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/academy_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/content_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
+import 'package:proyect_atenea/src/domain/entities/plan_content_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/widgets/atenea_contributor_local_wokspace.dart';
@@ -76,7 +81,10 @@ class _SubjectCreateNewPageState extends State<SubjectCreateNewPage> {
       id: _candidateUUID,
       name: subjectName,
       planName: planName,
-      subjectPlanData: null, // Opcional, inicializado en null
+      subjectPlanData: PlanContentEntity(
+        subjectThemes: ContentEntity(halfTerm: HashMap<int, String>(), ordinary: HashMap<int, String>()),
+        subjectFiles: HashMap<int, FileEntity>(),
+      ),  
       parentAcademy: parentAcademyRef,
       lastModificationContributor: session.userId, 
     );
