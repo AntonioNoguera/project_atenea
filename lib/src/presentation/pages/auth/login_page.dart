@@ -83,7 +83,8 @@ class LoginPage extends StatelessWidget {
                 weight: FontWeights.semibold,
               ),
             ),
-            const SizedBox(height: 60),
+            
+             const Spacer(),
             Text(
               'Inicia Sesión',
               style: AppTextStyles.builder(
@@ -91,7 +92,7 @@ class LoginPage extends StatelessWidget {
                 size: FontSizes.h3,
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             AteneaField(
               placeHolder: 'Ejemplo: Fernando',
               inputNameText: 'Usuario',
@@ -105,16 +106,17 @@ class LoginPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            Row(children: [
-Expanded(
-              child : AteneaButtonV2(
-                shouldLoad: true,
-                text: 'Iniciar',
-                onPressed: () => _login(context),
-              )
+            Row(
+              children: [
+                Expanded(
+                    child : AteneaButtonV2(
+                      shouldLoad: true,
+                      text: 'Iniciar',
+                      onPressed: () => _login(context),
+                    )
+                  ),
+              ],
             ),
-            
-            ],),
              const Spacer(),
             Text(
               '¿Eres nuevo por acá?, ¡Regístrate!',
