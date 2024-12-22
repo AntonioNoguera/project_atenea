@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/profile/my_profile_page.dart';
@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
           return const Center(child: Text('Error al cargar la sesión'));
         } else {
           final session = snapshot.data ?? SessionEntity.defaultValues();
-          return _buildHomePage(context, session);
+          return _HomePageBody(session: session);
         }
       },
     );
@@ -35,102 +35,150 @@ class HomePage extends StatelessWidget {
     SessionEntity? session = await sessionProvider.getSession();
     return session ?? SessionEntity.defaultValues();
   }
+}
 
-  Widget _buildHomePage(BuildContext context, SessionEntity session) {
-    int selectedIndex = 0;
+class _HomePageBody extends StatelessWidget {
+  final SessionEntity session;
 
-    void onItemTapped(int index) {
-      selectedIndex = index;
-    }
+  const _HomePageBody({required this.session});
 
-    final List<Widget> pages = [
-      const MySubjectsPage(),
-      MyProfilePage(session),
-    ];
+  @override
+  Widget build(BuildContext context) {
+    return PageSelector(
+      pages: [
+        const MySubjectsPage(),
+        MyProfilePage(session),
+      ],
+    );
+  }
+}
 
-    return StatefulBuilder(
-      builder: (context, setState) {
+class PageSelector extends StatelessWidget {
+  final List<Widget> pages;
+
+  const PageSelector({required this.pages});
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedIndex = ValueNotifier<int>(0);
+    return ValueListenableBuilder<int>(
+      valueListenable: selectedIndex,
+      builder: (context, value, child) {
         return AteneaScaffold(
           body: Stack(
             children: <Widget>[
               IndexedStack(
-                index: selectedIndex,
+                index: selectedIndex.value,
                 children: pages,
               ),
               Positioned(
                 left: 20,
                 right: 20,
                 bottom: 20,
-                child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(30), // Redondea los bordes
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        // Ajusta el cálculo considerando el padding
-                        AnimatedPositioned(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                          left: (MediaQuery.of(context).size.width - 40) /
-                              2 *
-                              selectedIndex, // Cálculo dinámico
-                          top: 0, // Margen superior para centrado vertical
-                          width: (MediaQuery.of(context).size.width /
-                              2), // Ajustar el ancho del óvalo
-                          height: 61, // Altura del óvalo
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.ateneaWhite
-                                  .withOpacity(0.2), // Color translúcido
-                              borderRadius: BorderRadius.circular(
-                                  40), // Bordes redondeados para el óvalo
-                            ),
-                          ),
-                        ),
-
-                        BottomNavigationBar(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          selectedItemColor: AppColors.ateneaWhite,
-                          unselectedItemColor:
-                              AppColors.ateneaWhite.withOpacity(0.6),
-                          currentIndex: selectedIndex,
-                          onTap: (index) {
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                          },
-                          type: BottomNavigationBarType.fixed,
-                          items: const [
-                            BottomNavigationBarItem(
-                              icon: Icon(Icons.book, size: 27),
-                              label: 'Mis Materias',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Icon(Icons.account_circle, size: 27),
-                              label: 'Mi Perfil',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                child: CustomNavigationBar(
+                  selectedIndex: selectedIndex.value,
+                  onItemTapped: (index) {
+                    selectedIndex.value = index;
+                  },
                 ),
               ),
             ],
           ),
         );
       },
+    );
+  }
+}
+class CustomNavigationBar extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onItemTapped;
+
+  const CustomNavigationBar({
+    required this.selectedIndex,
+    required this.onItemTapped,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(30),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              selectedIconTheme: IconThemeData(
+                color: AppColors.ateneaWhite,
+              ),
+              unselectedIconTheme: IconThemeData(
+                color: AppColors.ateneaWhite.withOpacity(0.6),
+              ),
+              selectedItemColor: AppColors.ateneaWhite,
+              unselectedItemColor: AppColors.ateneaWhite.withOpacity(0.6),
+              type: BottomNavigationBarType.fixed,
+              
+            ),
+          ),
+          child: Stack(
+            children: [
+              AnimatedIndicator(selectedIndex: selectedIndex),
+              BottomNavigationBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                currentIndex: selectedIndex,
+                onTap: onItemTapped,
+                type: BottomNavigationBarType.fixed,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.book, size: 27),
+                    label: 'Mis Materias',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.account_circle, size: 27),
+                    label: 'Mi Perfil',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedIndicator extends StatelessWidget {
+  final int selectedIndex;
+
+  const AnimatedIndicator({required this.selectedIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      left: (MediaQuery.of(context).size.width - 40) / 2 * selectedIndex,
+      top: 0,
+      width: (MediaQuery.of(context).size.width / 2),
+      height: 61,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.ateneaWhite.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(40),
+        ),
+      ),
     );
   }
 }

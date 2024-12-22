@@ -351,7 +351,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                   builder: (context) => AddFileDialog(
                                     onFileAdded: (fileEntity, fileBytes) {
                                       setState(() {
-                                        //Todo: subjectFiles!.add(fileEntity);
+                                        subjectFiles.add(fileEntity);
                                       });
                                       print('Archivo añadido: ${fileEntity.name}');
                                       print('Bytes del archivo: ${fileBytes.length}');
