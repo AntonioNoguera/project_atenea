@@ -14,11 +14,13 @@ class AteneaPermitsRow extends StatelessWidget {
     required this.uuid,
     required this.type
   }) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
+ 
     return FutureBuilder<List<PermitTypes>>(
-      future: Provider.of<SessionProvider>(context, listen: false).hasPermissionForUUID(uuid, type.value),
+      //Todo change implementation from SessionProvider to UserProvider
+      //future: Provider.of<SessionProvider>(context, listen: false).hasPermissionForUUID(uuid, type.value),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(height: 24,);
@@ -53,7 +55,9 @@ class AteneaPermitsRow extends StatelessWidget {
         }
       },
     );
+ 
   }
+ 
 
   Widget _buildPermitIcon(String assetPath) {
     return Padding(

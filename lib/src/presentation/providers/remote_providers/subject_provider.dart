@@ -60,4 +60,6 @@ class SubjectProvider with ChangeNotifier {
     print('Materias obtenidas: ${subjects.map((s) => s.name).toList()}');
     return subjects;
   }
+
+
 }

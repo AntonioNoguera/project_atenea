@@ -1,5 +1,6 @@
 // domain/use_cases/subject_use_cases.dart
 
+import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/domain/repositories/subject_repository.dart';
 

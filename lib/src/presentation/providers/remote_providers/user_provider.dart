@@ -12,6 +12,7 @@ class UserProvider with ChangeNotifier {
   final UpdateUserUseCase updateUserUseCase;
   final DeleteUserUseCase deleteUserUseCase;
   final GetAllUsersUseCase getAllUsersUseCase;
+  final GetUserPermissionsUseCase getUserPermissionsUseCase;
 
   UserProvider({
     required this.loginUserUseCase,
@@ -20,7 +21,10 @@ class UserProvider with ChangeNotifier {
     required this.updateUserUseCase,
     required this.deleteUserUseCase,
     required this.getAllUsersUseCase,
+    required this.getUserPermissionsUseCase
   });
+
+  UserEntity? _currentUser = null;
 
   List<UserEntity> _users = [];
   String? _errorMessage;
@@ -203,5 +207,15 @@ class UserProvider with ChangeNotifier {
       case SystemEntitiesTypes.subject:
         return user.userPermissions.subject;
     }
+  }
+
+  void getUserPermissions(String userID) {
+    getUserPermissionsUseCase.call(userID).then((permissions) {
+      if (permissions != null) {
+        _currentUser!.userPermissions = permissions;
+      }
+      
+      notifyListeners();
+    });
   }
 }

@@ -72,6 +72,7 @@ locator.registerFactory<SessionRepository>(() => SessionRepositoryImpl(locator<S
   locator.registerFactory(() => UpdateUserUseCase(locator<UserRepository>()));
   locator.registerFactory(() => DeleteUserUseCase(locator<UserRepository>()));
   locator.registerFactory(() => GetAllUsersUseCase(locator<UserRepository>())); 
+  locator.registerFactory(() => GetUserPermissionsUseCase(locator<UserRepository>())); 
 
     // [ACADEMY]
     
@@ -87,9 +88,7 @@ locator.registerFactory(() => LoadSessionUseCase(locator<SessionRepository>()));
 locator.registerFactory(() => SaveSessionUseCase(locator<SessionRepository>()));
 locator.registerFactory(() => ClearSessionUseCase(locator<SessionRepository>()));
 locator.registerFactory(() => HasSessionUseCase(locator<LoadSessionUseCase>()));
-locator.registerFactory(() => UpdateSessionTokenUseCase(
-    locator<SaveSessionUseCase>(), locator<LoadSessionUseCase>()));
-locator.registerFactory(() => HasPermissionForUUIDUseCase(locator<LoadSessionUseCase>()));
+locator.registerFactory(() => UpdateSessionTokenUseCase(locator<SaveSessionUseCase>(), locator<LoadSessionUseCase>())); 
 
 
     // [DEPARTMENT]
@@ -142,6 +141,7 @@ locator.registerFactory(() => HasPermissionForUUIDUseCase(locator<LoadSessionUse
     updateUserUseCase : locator<UpdateUserUseCase>(),
     deleteUserUseCase : locator<DeleteUserUseCase>(),
     getAllUsersUseCase : locator<GetAllUsersUseCase>(),
+    getUserPermissionsUseCase: locator<GetUserPermissionsUseCase>(),
   ));
 
   locator.registerFactory(() => SessionProvider(
@@ -150,7 +150,6 @@ locator.registerFactory(() => HasPermissionForUUIDUseCase(locator<LoadSessionUse
   clearSessionUseCase: locator<ClearSessionUseCase>(),
   hasSessionUseCase: locator<HasSessionUseCase>(),
   updateSessionTokenUseCase: locator<UpdateSessionTokenUseCase>(),
-  hasPermissionForUUIDUseCase: locator<HasPermissionForUUIDUseCase>(),
 ));
 
 }

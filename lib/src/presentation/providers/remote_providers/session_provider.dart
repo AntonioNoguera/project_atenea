@@ -8,8 +8,7 @@ class SessionProvider with ChangeNotifier {
   final SaveSessionUseCase _saveSessionUseCase;
   final ClearSessionUseCase _clearSessionUseCase;
   final HasSessionUseCase _hasSessionUseCase;
-  final UpdateSessionTokenUseCase _updateSessionTokenUseCase;
-  final HasPermissionForUUIDUseCase _hasPermissionForUUIDUseCase;
+  final UpdateSessionTokenUseCase _updateSessionTokenUseCase; 
 
   SessionEntity? _session;
 
@@ -18,14 +17,12 @@ class SessionProvider with ChangeNotifier {
     required SaveSessionUseCase saveSessionUseCase,
     required ClearSessionUseCase clearSessionUseCase,
     required HasSessionUseCase hasSessionUseCase,
-    required UpdateSessionTokenUseCase updateSessionTokenUseCase,
-    required HasPermissionForUUIDUseCase hasPermissionForUUIDUseCase,
+    required UpdateSessionTokenUseCase updateSessionTokenUseCase, 
   })  : _loadSessionUseCase = loadSessionUseCase,
         _saveSessionUseCase = saveSessionUseCase,
         _clearSessionUseCase = clearSessionUseCase,
         _hasSessionUseCase = hasSessionUseCase,
-        _updateSessionTokenUseCase = updateSessionTokenUseCase,
-        _hasPermissionForUUIDUseCase = hasPermissionForUUIDUseCase;
+        _updateSessionTokenUseCase = updateSessionTokenUseCase;
 
   // Verificar si hay sesión activa
   bool hasSession() {
@@ -68,34 +65,4 @@ class SessionProvider with ChangeNotifier {
 
 
      SessionEntity? get currentSession => _session;
-
-    // Verificar permisos para una entidad específica por UUID y nivel de entidad
-  Future<List<PermitTypes>> hasPermissionForUUID(String uuid, String entityLevel) async {
-    print('Iniciando verificación de permisos para UUID: $uuid y nivel de entidad: $entityLevel');
-
-    // Asegúrate de que la sesión esté cargada
-    if (_session == null) {
-      print('Sesión no encontrada, cargando sesión...');
-      await loadSession();
-    } else {
-      print('Sesión ya cargada.');
-    }
-
-    // Imprime la sesión actual para verificar su estado
-    print('Estado de la sesión actual:');
-    print('Usuario ID: ${_session?.userId}');
-    print('Usuario Nombre: ${_session?.userName}');
-    print('Permisos del usuario: ${_session?.userPermissions}');
-    print('Token válido hasta: ${_session?.tokenValidUntil}');
-
-    // Ejecuta el caso de uso para verificar los permisos
-    print('Ejecutando caso de uso hasPermissionForUUIDUseCase...');
-    final permissions = await _hasPermissionForUUIDUseCase.execute(uuid, entityLevel);
-
-    // Notifica a los listeners de cualquier cambio relevante en la UI
-    notifyListeners();
-    print('Permisos obtenidos para UUID: $uuid, Nivel de entidad: $entityLevel -> $permissions');
-
-    return permissions;
-  }
 }

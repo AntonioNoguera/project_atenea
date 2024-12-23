@@ -18,8 +18,7 @@ class LoadSessionUseCase {
         // Imprime la sesión actual para verificar su estado
           print('---- leyendo session almacenada ----');
           print('Usuario ID: ${session.userId}');
-          print('Usuario Nombre: ${session.userName}');
-          print('Permisos del usuario: ${session.userPermissions}');
+          print('Usuario Nombre: ${session.userName}'); 
           print('Token válido hasta: ${session.tokenValidUntil}');
       } else {
         print('No se encontró una sesión almacenada.');
@@ -48,8 +47,7 @@ class SaveSessionUseCase {
             // Imprime la sesión actual para verificar su estado
           print('---- session almacenada ----');
           print('Usuario ID: ${session.userId}');
-          print('Usuario Nombre: ${session.userName}');
-          print('Permisos del usuario: ${session.userPermissions}');
+          print('Usuario Nombre: ${session.userName}'); 
           print('Token válido hasta: ${session.tokenValidUntil}');
 
     } catch (e) {
@@ -99,52 +97,10 @@ class UpdateSessionTokenUseCase {
         token: newToken,
         userId: currentSession.userId,
         userName: currentSession.userName,
-        userPermissions: currentSession.userPermissions,
+        savedSubjects: currentSession.savedSubjects,
         tokenValidUntil: currentSession.tokenValidUntil,
       );
       await _saveSessionUseCase.execute(updatedSession);
     }
-  }
-}
-
-// Caso de uso para verificar permisos para una entidad específica
-class HasPermissionForUUIDUseCase {
-  final LoadSessionUseCase _loadSessionUseCase;
-
-  HasPermissionForUUIDUseCase(this._loadSessionUseCase);
-
-  Future<List<PermitTypes>> execute(String uuid, String entityLevel) async {
-    final session = await _loadSessionUseCase.execute();
-    if (session == null) {
-      print('Sesión no encontrada. Cargando...');
-      return [];
-    }
-
-    if (session.userPermissions.isSuper) {
-      print('Usuario superusuario. Tiene permisos completos.');
-      return PermitTypes.values.toList();
-    }
-
-    List<AtomicPermissionEntity> permissions;
-
-    switch (entityLevel.toLowerCase()) {
-      case 'departments':
-        permissions = session.userPermissions.department;
-        break;
-      case 'academies':
-        permissions = session.userPermissions.academy;
-        break;
-      case 'subjects':
-        permissions = session.userPermissions.subject;
-        break;
-      default:
-        print('Nivel de entidad inválido: $entityLevel');
-        return [];
-    }
-
-    final pathToCheck = '$entityLevel/$uuid';
-    final matchingPermissions = permissions.where((perm) => perm.permissionId.path == pathToCheck).toList();
-
-    return matchingPermissions.isNotEmpty ? matchingPermissions.first.permissionTypes : [];
   }
 }
