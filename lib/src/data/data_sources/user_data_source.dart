@@ -1,10 +1,7 @@
 // data/datasources/user_data_source.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
-import 'package:proyect_atenea/src/domain/use_cases/user_use_case.dart';
 
 class UserDataSource {
   final FirebaseFirestore firestore;
@@ -81,20 +78,6 @@ class UserDataSource {
     } catch (e) {
       print('Error obteniendo todos los usuarios: $e');
       return [];
-    }
-  }
-
-  Future<PermissionEntity?> getUserPermissions(String userID) async { 
-    try {
-      DocumentSnapshot doc = await firestore.collection(collectionName).doc(userID).get();
-      if (doc.exists) {
-        return PermissionEntity.fromMap(doc.data() as Map<String, dynamic>);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print('Error obteniendo el usuario: $e');
-      return null;
     }
   }
 }

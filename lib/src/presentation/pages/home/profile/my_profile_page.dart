@@ -47,7 +47,7 @@ class MyProfilePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0),
-            if ( true ) ...[
+            if (userSession.userPermissions.department.isNotEmpty || userSession.userPermissions.subject.isNotEmpty) ...[
               AteneaButtonV2(
                 text: 'Editar Contenidos',
                 xpndText: true,
@@ -70,8 +70,7 @@ class MyProfilePage extends StatelessWidget {
             ),
                         
             const SizedBox(height: 10.0),
-            //Todo : Search 4 a Better way to handle this
-            if (true ) ...[
+            if (userSession.userPermissions.department.isNotEmpty || userSession.userPermissions.subject.isNotEmpty) ...[
               AteneaButtonV2(
                 text: 'Administrar Usuarios',
                 xpndText: true,

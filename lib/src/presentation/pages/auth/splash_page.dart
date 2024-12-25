@@ -278,7 +278,7 @@ if (loginUser != null) {
     token: 'user_token_example', // Genera un token adecuado para la sesión
     userId: loginUser.id,
     userName: loginUser.fullName,
-    savedSubjects: [],
+    userPermissions: loginUser.userPermissions,
     tokenValidUntil: DateTime.now().add(const Duration(days: 30)),
   );
 

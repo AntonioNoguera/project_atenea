@@ -76,7 +76,7 @@ class _EditProfileDialogContentState extends State<_EditProfileDialogContent> {
       text: widget.userSession.userName.split(' ').last,
     );
     _emailController = TextEditingController(
-      text: widget.userSession.tokenValidUntil.toIso8601String(),
+      text: widget.userSession.userPermissions.toString(),
     );
   }
 
@@ -176,7 +176,7 @@ class _EditProfileDialogContentState extends State<_EditProfileDialogContent> {
                     userId: widget.userSession.userId,
                     userName:
                         '${_nombreController.text} ${_apellidoController.text}',
-                    savedSubjects: [],
+                    userPermissions: widget.userSession.userPermissions,
                     tokenValidUntil: widget.userSession.tokenValidUntil,
                   );
 

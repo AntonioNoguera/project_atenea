@@ -12,7 +12,7 @@ class UserEntity {
   final String fullName;
   final String passwordHash;
   final String createdAt;
-  PermissionEntity userPermissions;
+  final PermissionEntity userPermissions;
 
   UserEntity({
     String? id,

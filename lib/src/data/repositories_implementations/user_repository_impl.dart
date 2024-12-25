@@ -1,8 +1,6 @@
 // data/repositories/user_repository_impl.dart
  
 import 'package:proyect_atenea/src/data/data_sources/user_data_source.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/enum_fixed_values.dart';
-import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/domain/repositories/user_repository.dart';
 
@@ -39,10 +37,5 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<List<UserEntity>> getAllUsers() async {
     return await dataSource.getAllUsers();
-  }
-
-  @override
-  Future<PermissionEntity?> getUserPermissions( String userID) async {
-    return await dataSource.getUserPermissions(userID);
   }
 }

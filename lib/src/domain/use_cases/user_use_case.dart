@@ -1,6 +1,5 @@
 // domain/use_cases/user_use_cases.dart
 
-import 'package:proyect_atenea/src/domain/entities/shared/permission_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/user_entity.dart';
 import 'package:proyect_atenea/src/domain/repositories/user_repository.dart';
 
@@ -68,17 +67,4 @@ class GetAllUsersUseCase {
   Future<List<UserEntity>> call() async {
     return await repository.getAllUsers();
   }
-}
-
-
-// Caso de uso para actualizar el token de sesión
-class GetUserPermissionsUseCase {
-  final UserRepository repository;
-
-  GetUserPermissionsUseCase(this.repository);
-
-  Future<PermissionEntity?> call(String userID) async {
-    return await repository.getUserPermissions(userID);
-  }
-
 }

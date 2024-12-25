@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
           token: user.id, // Usa el ID del usuario como token de ejemplo
           userId: user.id,
           userName: user.fullName,
-          savedSubjects: [],
+          userPermissions: user.userPermissions,
           tokenValidUntil: DateTime.now().add(const Duration(days: 7)), // Por ejemplo, 7 días de validez
         );
 
