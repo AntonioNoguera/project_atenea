@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +13,17 @@ import 'package:proyect_atenea/src/presentation/providers/remote_providers/depar
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
-import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
-import 'package:proyect_atenea/src/firebase_options.dart'; 
+import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
+import 'package:proyect_atenea/src/firebase_options.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+
+// Handler para notificaciones en segundo plano
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Mensaje en segundo plano: ${message.notification?.title}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,10 +33,33 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Configuración de Firebase Messaging
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  // Solicitar permisos (solo para iOS)
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('Permisos otorgados');
+  } else {
+    print('Permisos denegados');
+  }
+
+  // Registrar el handler de notificaciones en segundo plano
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Obtener el token del dispositivo
+  String? token = await messaging.getToken();
+  print('FCM Token: $token');
+
+  // Inicializa la localización de fechas
   await initializeDateFormatting('es', null);
 
-  // Configura el service locator para registrar todas las dependencias
+  // Configura el service locator
   await setupLocator();
 
   runApp(const MyApp());

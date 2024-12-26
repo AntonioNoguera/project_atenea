@@ -11,6 +11,7 @@ buildscript {
         // Asegúrate de utilizar la versión más reciente del plugin de Gradle compatible
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 

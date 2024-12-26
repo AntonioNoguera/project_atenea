@@ -20,11 +20,7 @@ class AteneaPermitsRow extends StatelessWidget {
     // Obtener los permisos del SessionProvider
     final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
     final List<PermitTypes> permissions = sessionProvider.getEntityPermission(uuid, type);
-
-    if (permissions.isEmpty) {
-      return const Text('No tienes permisos');
-    }
-
+    
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
