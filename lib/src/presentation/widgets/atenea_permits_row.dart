@@ -12,46 +12,39 @@ class AteneaPermitsRow extends StatelessWidget {
   const AteneaPermitsRow({
     Key? key,
     required this.uuid,
-    required this.type
+    required this.type,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<PermitTypes>>(
-      future: Provider.of<SessionProvider>(context, listen: false).hasPermissionForUUID(uuid, type.value),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox(height: 24,);
-        } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
-          // Si no tiene permisos, no mostramos los íconos
-          return const Text('No tienes permisos');
-        } else {
-          // Mostrar íconos de permisos en función de los permisos obtenidos
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Centra verticalmente dentro del contenedor padre
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center, // Centra verticalmente el contenido dentro de la Row
-                children: [
-                  _buildPermitIcon('assets/svg/eye.svg'),
+    // Obtener los permisos del SessionProvider
+    final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
+    final List<PermitTypes> permissions = sessionProvider.getEntityPermission(uuid, type);
 
-                  if (snapshot.data != null) ...[
-                    if (snapshot.data!.contains(PermitTypes.edit))
-                      _buildPermitIcon('assets/svg/edit.svg'),
+    if (permissions.isEmpty) {
+      return const Text('No tienes permisos');
+    }
 
-                    if (snapshot.data!.contains(PermitTypes.manageContributors))
-                      _buildPermitIcon('assets/svg/add_user.svg'),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildPermitIcon('assets/svg/eye.svg'),
 
-                    if (snapshot.data!.contains(PermitTypes.delete))
-                      _buildPermitIcon('assets/svg/trashcan.svg'),
-                  ],
-                ],
-              ),
-            ],
-          );
-        }
-      },
+            if (permissions.contains(PermitTypes.edit))
+              _buildPermitIcon('assets/svg/edit.svg'),
+
+            if (permissions.contains(PermitTypes.manageContributors))
+              _buildPermitIcon('assets/svg/add_user.svg'),
+
+            if (permissions.contains(PermitTypes.delete))
+              _buildPermitIcon('assets/svg/trashcan.svg'),
+          ],
+        ),
+      ],
     );
   }
 
