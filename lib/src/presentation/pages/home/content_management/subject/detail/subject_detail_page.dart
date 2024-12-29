@@ -19,8 +19,10 @@ import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20
 
 class SubjectDetailPage extends StatelessWidget {
   final SubjectEntity subject;
+  final bool shouldUnpin;
 
-  const SubjectDetailPage({super.key, required this.subject});
+  const SubjectDetailPage({
+    super.key, required this.subject, this.shouldUnpin = false});
 
   void _handleToggle(BuildContext context, int index) {
     Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
@@ -160,7 +162,7 @@ class SubjectDetailPage extends StatelessWidget {
     final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
 
     // Llamamos al método para anclar
-    await sessionProvider.updatePinnedSubjects(subject.id);
+    await sessionProvider.updatePinnedSubjects(subject.id, shouldUnpin);
 
     // Opcionalmente, retroalimentar la UI (ej. mostrando SnackBar, etc.)
     ScaffoldMessenger.of(context).showSnackBar(

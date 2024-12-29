@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/subject_item_row.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/pin_subect_item_row.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/pin_subject_item_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
@@ -190,8 +190,8 @@ class _AddPinnedSubjectDialogContentState
                       itemBuilder: (context, index) {
                         final subject = _filteredSubjects[index];
                         return Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width * 0.05,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: MediaQuery.of(context).size.width * 0.05,
                           ),
                           child: PinSubjectItemRow(subject: subject),
                         );

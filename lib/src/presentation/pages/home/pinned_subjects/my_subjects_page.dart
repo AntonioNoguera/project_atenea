@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; 
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
+import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/pin_subject_item_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
@@ -88,14 +89,12 @@ class MySubjectsPage extends StatelessWidget {
             itemCount: subjects.length,
             itemBuilder: (context, index) {
               final subject = subjects[index];
-              return ListTile(
-                title: Text(subject.name),
-                subtitle: Text('ID: ${subject.id}'),
-                onTap: () {
-                  // Por ejemplo, podrías navegar a una pantalla de detalle,
-                  // o mostrar un diálogo con la info de la materia, etc.
-                },
-              );
+              return Padding ( 
+                padding: const EdgeInsets.symmetric(horizontal:  16.0), 
+                child : PinSubjectItemRow(
+                  subject: subject,
+                  shouldUnpin: true,
+                ));
             },
           );
         },

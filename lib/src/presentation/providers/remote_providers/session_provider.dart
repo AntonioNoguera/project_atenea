@@ -182,7 +182,7 @@ class SessionProvider with ChangeNotifier {
 }
 
 
-Future<void> updatePinnedSubjects(String subjectId, {bool remove = false}) async {
+Future<void> updatePinnedSubjects(String subjectId, bool remove) async {
   try {
     // 1. Cargamos la sesión actual si es null
     if (_session == null) {

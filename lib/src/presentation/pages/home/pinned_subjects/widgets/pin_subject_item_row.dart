@@ -9,10 +9,12 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_permits_row.dart'
 
 class PinSubjectItemRow extends StatelessWidget {
   final SubjectEntity subject;  
+  final bool shouldUnpin;
   
   const PinSubjectItemRow({
     super.key, 
-    required this.subject 
+    required this.subject,
+    this.shouldUnpin = false,
     });
 
   @override
@@ -33,7 +35,7 @@ class PinSubjectItemRow extends StatelessWidget {
           onPressed: () { 
             Navigator.push(
               context,
-              AteneaPageAnimator(page: SubjectDetailPage(subject : subject))
+              AteneaPageAnimator(page: SubjectDetailPage(subject : subject, shouldUnpin: shouldUnpin)),
             );
           },
           child: Column(
@@ -52,7 +54,8 @@ class PinSubjectItemRow extends StatelessWidget {
               ),
 
               Padding(
-                padding: const EdgeInsets.symmetric( horizontal: 16.0),
+                padding: EdgeInsets.symmetric(
+                                  horizontal: MediaQuery.of(context).size.width * 0.05),
                 child: Column(
                   children: [
                     const SizedBox(height: 8.0,),
