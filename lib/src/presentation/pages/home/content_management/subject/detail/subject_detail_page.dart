@@ -4,6 +4,7 @@ import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/subject_modify_content_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/app_ui_helpers.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/detail/widget/theme_or_file_subject.dart';
 import 'package:proyect_atenea/src/presentation/utils/ui_utilities.dart';
@@ -154,16 +155,21 @@ class SubjectDetailPage extends StatelessWidget {
                           const SizedBox(width: 10.0),
                           Expanded(
                             child: AteneaButtonV2(
-                              text: 'Modificar Contenido',
-                              onPressed: () {
-                                /*
-                                Navigator.push(
-                                  context,
-                                  AteneaPageAnimator(page: SubjectModifyContentPage(subject: subject)),
-                                );
-                                */
-                              },
-                            ),
+  text: 'Anclar Materia',
+  onPressed: () async {
+    final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
+
+    // Llamamos al método para anclar
+    await sessionProvider.updatePinnedSubjects(subject.id);
+
+    // Opcionalmente, retroalimentar la UI (ej. mostrando SnackBar, etc.)
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Materia anclada con éxito')),
+    );
+
+    // Navigator.pop(context); // si quieres regresar atrás
+  },
+),
                           ),
                         ],
                       ),
@@ -194,7 +200,7 @@ class SubjectDetailPage extends StatelessWidget {
               ),
             ),
             Text(
-              'Prueba añadir alguno',
+              'Esta materia cuenta sin $type, contacta con el adminsitrador si se considera que esto es un error.',
               textAlign: TextAlign.center,
               style: AppTextStyles.builder(
                 color: AppColors.grayColor,
@@ -240,7 +246,7 @@ class SubjectDetailPage extends StatelessWidget {
             )
           :  _renderEmptySubjectsMessage('temas'),
 
-      1: subject.subjectPlanData?.subjectFiles != null
+      1: (subject.subjectPlanData?.subjectFiles != null && subject.subjectPlanData!.subjectFiles!.isNotEmpty)
           ? Column(
               children: [
                 /*

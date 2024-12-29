@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/domain/entities/shared/atomic_permission_entity.dart';
@@ -14,6 +15,9 @@ class SessionProvider with ChangeNotifier {
   final HasSessionUseCase _hasSessionUseCase;
   final UpdateSessionTokenUseCase _updateSessionTokenUseCase;
   final HasPermissionForUUIDUseCase _hasPermissionForUUIDUseCase;
+  
+  final UpdateSessionUseCase _updateSessionUseCase;
+  
 
   SessionEntity? _session;
 
@@ -24,12 +28,14 @@ class SessionProvider with ChangeNotifier {
     required HasSessionUseCase hasSessionUseCase,
     required UpdateSessionTokenUseCase updateSessionTokenUseCase,
     required HasPermissionForUUIDUseCase hasPermissionForUUIDUseCase,
+    required UpdateSessionUseCase updateSessionUseCase,
   })  : _loadSessionUseCase = loadSessionUseCase,
         _saveSessionUseCase = saveSessionUseCase,
         _clearSessionUseCase = clearSessionUseCase,
         _hasSessionUseCase = hasSessionUseCase,
         _updateSessionTokenUseCase = updateSessionTokenUseCase,
-        _hasPermissionForUUIDUseCase = hasPermissionForUUIDUseCase;
+        _hasPermissionForUUIDUseCase = hasPermissionForUUIDUseCase,
+        _updateSessionUseCase = updateSessionUseCase;
 
   // Verificar si hay sesión activa
   bool hasSession() {
@@ -42,6 +48,40 @@ class SessionProvider with ChangeNotifier {
     _session = await _loadSessionUseCase.execute();
     notifyListeners();
   }
+
+  // Actualizar campos específicos de la sesión usando UpdateSessionUseCase
+  Future<void> updateSession({
+    String? token,
+    String? userId,
+    String? userName,
+    PermissionEntity? userPermissions,
+    DateTime? tokenValidUntil,
+    List? pinnedSubjects,
+  }) async {
+    try {
+      // Llamamos al caso de uso para actualizar
+      await _updateSessionUseCase.execute(
+        token: token,
+        userId: userId,
+        userName: userName,
+        userPermissions: userPermissions,
+        tokenValidUntil: tokenValidUntil,
+        pinnedSubjects: pinnedSubjects,
+      );
+
+      // Una vez que se ha actualizado la sesión, recargamos la sesión
+      // para reflejar los cambios en _session
+      _session = await _loadSessionUseCase.execute();
+
+      // Notificamos a los listeners (Widgets) que algo ha cambiado
+      notifyListeners();
+
+    } catch (e) {
+      print('Error al actualizar la sesión: $e');
+    }
+  }
+
+
 
   // Obtener la sesión actual
   Future<SessionEntity?> getSession() async {
@@ -140,4 +180,52 @@ class SessionProvider with ChangeNotifier {
 
   return [];
 }
+
+
+Future<void> updatePinnedSubjects(String subjectId, {bool remove = false}) async {
+  try {
+    // 1. Cargamos la sesión actual si es null
+    if (_session == null) {
+      await loadSession(); // Esto llamará a _loadSessionUseCase.execute() internamente
+    }
+
+    // Si después de cargar sigue siendo null, no podemos actualizar nada
+    if (_session == null) {
+      print('No existe sesión para actualizar pinnedSubjects');
+      return;
+    }
+
+    // 2. Obtenemos la lista actual de pinnedSubjects y la clonamos
+    final currentPinned = List.of(_session!.pinnedSubjects);
+
+    // 3. Dependiendo de si quieres agregar o remover
+    if (remove) {
+      // Filtramos la lista para quitar este subjectId
+      currentPinned.removeWhere((ref) => ref == subjectId);
+    } else { 
+      if (!currentPinned.contains(subjectId)) {
+        currentPinned.add(subjectId);
+      } else {
+        print('El subjectId "$subjectId" ya está en pinnedSubjects.');
+      }
+    }
+
+    // 4. Mandamos llamar updateSession(...) con la nueva lista
+    await updateSession(
+      pinnedSubjects: currentPinned,
+    );
+
+    print('pinnedSubjects actualizado exitosamente');
+  } catch (e) {
+    print('Error al actualizar pinnedSubjects: $e');
+  }
+}
+
+/// Helper para crear el DocumentReference (ajusta según tu estructura)
+DocumentReference _makeSubjectDocRef(String subjectId) {
+  // Ejemplo con Firestore:
+  // import 'package:cloud_firestore/cloud_firestore.dart';
+  return FirebaseFirestore.instance.doc('subjects/$subjectId');
+}
+
 }

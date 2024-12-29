@@ -26,11 +26,15 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
-    final departmentProvider = Provider.of<DepartmentProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false); 
-    final academyProvider = Provider.of<AcademyProvider>(context, listen: false); 
-    final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
+    final sessionProvider =
+        Provider.of<SessionProvider>(context, listen: false);
+    final departmentProvider =
+        Provider.of<DepartmentProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final academyProvider =
+        Provider.of<AcademyProvider>(context, listen: false);
+    final subjectProvider =
+        Provider.of<SubjectProvider>(context, listen: false);
 
     // Inicializar todos los datos
     //initializeAllData(departmentProvider, userProvider, academyProvider, subjectProvider, sessionProvider, FirebaseFirestore.instance);
@@ -129,163 +133,186 @@ class SplashPage extends StatelessWidget {
     );
   }
 
- Future<void> initializeAllData(
-  DepartmentProvider departmentProvider,
-  UserProvider userProvider,
-  AcademyProvider academyProvider,
-  SubjectProvider subjectProvider,
-  SessionProvider sessionProvider,
-  FirebaseFirestore firestore,
-) async {
-  // 1. Crear y guardar un nuevo departamento
-  final newDepartment = DepartmentEntity(name: 'Department Name');
-  await departmentProvider.saveDepartment(newDepartment);
-  print('Departamento guardado: ${newDepartment.name}');
+  Future<void> initializeAllData(
+    DepartmentProvider departmentProvider,
+    UserProvider userProvider,
+    AcademyProvider academyProvider,
+    SubjectProvider subjectProvider,
+    SessionProvider sessionProvider,
+    FirebaseFirestore firestore,
+  ) async {
+    // 1. Crear y guardar un nuevo departamento
+    final newDepartment = DepartmentEntity(name: 'Department Name');
+    await departmentProvider.saveDepartment(newDepartment);
+    print('Departamento guardado: ${newDepartment.name}');
 
-  // Crear un DocumentReference para el departamento guardado
-  final parentDepartment = firestore.collection('departments').doc(newDepartment.id);
+    // Crear un DocumentReference para el departamento guardado
+    final parentDepartment =
+        firestore.collection('departments').doc(newDepartment.id);
 
-  // 2. Crear y guardar una nueva academia
-  final newAcademy = AcademyEntity(
-    name: 'Academy Name',
-    parentDepartment: parentDepartment,
-    lastModificationContributor: 'admin',
-    lastModificationDateTime: DateTime.now().toString(),
-  );
-  await academyProvider.addAcademy(newAcademy);
-  print('Academia guardada: ${newAcademy.name}');
-
-  // Crear un DocumentReference para la academia guardada
-  final parentAcademy = firestore.collection('academies').doc(newAcademy.id);
-
-  // 3. Crear y guardar una nueva materia
-  final mockContentEntity = ContentEntity(
-  halfTerm: HashMap.from({
-    3: 'Tema3',
-    1: 'Tema1',
-    2: 'Tema2', 
-  }),
-  
-  ordinary: HashMap.from({
-    1: 'Examen1',
-    2: 'Examen2',
-  }),
-);
-
-  final mockPlanContentEntity = PlanContentEntity(
-    subjectThemes: mockContentEntity,
-    subjectFiles: null,
-  );
-
-  List<SubjectEntity> subjects = [];
-  for (int i = 1; i <= 3; i++) {
-    final newSubject = SubjectEntity(
-      name: 'Subject Name $i',
-      parentAcademy: parentAcademy,
-      planName: '401',
+    // 2. Crear y guardar una nueva academia
+    final newAcademy = AcademyEntity(
+      name: 'Academy Name',
+      parentDepartment: parentDepartment,
       lastModificationContributor: 'admin',
       lastModificationDateTime: DateTime.now().toString(),
-      subjectPlanData: mockPlanContentEntity,
     );
-    await subjectProvider.addSubject(newSubject);
-    subjects.add(newSubject);
-    print('Materia guardada: ${newSubject.name}');
-  }
+    await academyProvider.addAcademy(newAcademy);
+    print('Academia guardada: ${newAcademy.name}');
 
-  // 4. Inicializar datos de usuario
-  final newUser = await initializeUserData(userProvider, sessionProvider, newDepartment, newAcademy, subjects);
-  
-  // 5. Actualizar el último contribuidor de las entidades creadas
-  final updatedDepartment = DepartmentEntity(
-    id: newDepartment.id,
-    name: newDepartment.name,
-    lastModificationContributor: newUser.fullName,
-    lastModificationDateTime: DateTime.now().toString(),
-  );
-  await departmentProvider.saveDepartment(updatedDepartment);
-  print('Departamento actualizado con nuevo contribuidor: ${updatedDepartment.lastModificationContributor}');
+    // Crear un DocumentReference para la academia guardada
+    final parentAcademy = firestore.collection('academies').doc(newAcademy.id);
 
-  final updatedAcademy = AcademyEntity(
-    id: newAcademy.id,
-    name: newAcademy.name,
-    parentDepartment: newAcademy.parentDepartment,
-    lastModificationContributor: newUser.fullName,
-    lastModificationDateTime: DateTime.now().toString(),
-  );
-  await academyProvider.addAcademy(updatedAcademy);
-  print('Academia actualizada con nuevo contribuidor: ${updatedAcademy.lastModificationContributor}');
+    // 3. Crear y guardar una nueva materia
+    final mockContentEntity = ContentEntity(
+      halfTerm: HashMap.from({
+        3: 'Tema3',
+        1: 'Tema1',
+        2: 'Tema2',
+      }),
+      ordinary: HashMap.from({
+        1: 'Examen1',
+        2: 'Examen2',
+      }),
+    );
 
-  for (var subject in subjects) {
-    final updatedSubject = SubjectEntity(
-      id: subject.id,
-      name: subject.name,
-      planName: subject.planName,
-      parentAcademy: FirebaseFirestore.instance.doc(subject.parentAcademy),
+    final mockPlanContentEntity = PlanContentEntity(
+      subjectThemes: mockContentEntity,
+      subjectFiles: null,
+    );
+
+    List<SubjectEntity> subjects = [];
+    for (int i = 1; i <= 3; i++) {
+      final newSubject = SubjectEntity(
+        name: 'Subject Name $i',
+        parentAcademy: parentAcademy,
+        planName: '401',
+        lastModificationContributor: 'admin',
+        lastModificationDateTime: DateTime.now().toString(),
+        subjectPlanData: mockPlanContentEntity,
+      );
+      await subjectProvider.addSubject(newSubject);
+      subjects.add(newSubject);
+      print('Materia guardada: ${newSubject.name}');
+    }
+
+    // 4. Inicializar datos de usuario
+    final newUser = await initializeUserData(
+        userProvider, sessionProvider, newDepartment, newAcademy, subjects);
+
+    // 5. Actualizar el último contribuidor de las entidades creadas
+    final updatedDepartment = DepartmentEntity(
+      id: newDepartment.id,
+      name: newDepartment.name,
       lastModificationContributor: newUser.fullName,
       lastModificationDateTime: DateTime.now().toString(),
-      subjectPlanData: subject.subjectPlanData,
     );
-    await subjectProvider.addSubject(updatedSubject);
-    print('Materia actualizada con nuevo contribuidor: ${updatedSubject.lastModificationContributor}');
+    await departmentProvider.saveDepartment(updatedDepartment);
+    print(
+        'Departamento actualizado con nuevo contribuidor: ${updatedDepartment.lastModificationContributor}');
+
+    final updatedAcademy = AcademyEntity(
+      id: newAcademy.id,
+      name: newAcademy.name,
+      parentDepartment: newAcademy.parentDepartment,
+      lastModificationContributor: newUser.fullName,
+      lastModificationDateTime: DateTime.now().toString(),
+    );
+    await academyProvider.addAcademy(updatedAcademy);
+    print(
+        'Academia actualizada con nuevo contribuidor: ${updatedAcademy.lastModificationContributor}');
+
+    for (var subject in subjects) {
+      final updatedSubject = SubjectEntity(
+        id: subject.id,
+        name: subject.name,
+        planName: subject.planName,
+        parentAcademy: FirebaseFirestore.instance.doc(subject.parentAcademy),
+        lastModificationContributor: newUser.fullName,
+        lastModificationDateTime: DateTime.now().toString(),
+        subjectPlanData: subject.subjectPlanData,
+      );
+      await subjectProvider.addSubject(updatedSubject);
+      print(
+          'Materia actualizada con nuevo contribuidor: ${updatedSubject.lastModificationContributor}');
+    }
+
+    print('Inicialización y actualización completa de todos los datos.');
   }
 
-  print('Inicialización y actualización completa de todos los datos.');
-}
+  Future<UserEntity> initializeUserData(
+    UserProvider userProvider,
+    SessionProvider sessionProvider,
+    DepartmentEntity department,
+    AcademyEntity academy,
+    List<SubjectEntity> subjects,
+  ) async {
+    // Genera permisos utilizando los IDs de las entidades creadas
+    final userPermissions = PermissionEntity(
+      isSuper: false,
+      department: [
+        AtomicPermissionEntity(
+          permissionId:
+              FirebaseFirestore.instance.doc('departments/${department.id}'),
+          permissionTypes: [
+            PermitTypes.delete,
+            PermitTypes.edit,
+            PermitTypes.manageContributors
+          ],
+        ),
+      ],
+      academy: [
+        AtomicPermissionEntity(
+          permissionId:
+              FirebaseFirestore.instance.doc('academies/${academy.id}'),
+          permissionTypes: [
+            PermitTypes.delete,
+            PermitTypes.edit,
+            PermitTypes.manageContributors
+          ],
+        ),
+      ],
+      subject: subjects
+          .map((subject) => AtomicPermissionEntity(
+                permissionId:
+                    FirebaseFirestore.instance.doc('subjects/${subject.id}'),
+                permissionTypes: [
+                  PermitTypes.delete,
+                  PermitTypes.edit,
+                  PermitTypes.manageContributors
+                ],
+              ))
+          .toList(),
+    );
 
-Future<UserEntity> initializeUserData(
-  UserProvider userProvider, 
-  SessionProvider sessionProvider, 
-  DepartmentEntity department, 
-  AcademyEntity academy, 
-  List<SubjectEntity> subjects,
-) async {
-  // Genera permisos utilizando los IDs de las entidades creadas
-  final userPermissions = PermissionEntity(
-    isSuper: false,
-    department: [
-      AtomicPermissionEntity(
-        permissionId: FirebaseFirestore.instance.doc('departments/${department.id}'),
-        permissionTypes: [PermitTypes.delete, PermitTypes.edit, PermitTypes.manageContributors],
-      ),
-    ],
-    academy: [
-      AtomicPermissionEntity(
-        permissionId: FirebaseFirestore.instance.doc('academies/${academy.id}'),
-        permissionTypes: [PermitTypes.delete, PermitTypes.edit, PermitTypes.manageContributors],
-      ),
-    ],
-    subject: subjects.map((subject) => AtomicPermissionEntity(
-      permissionId: FirebaseFirestore.instance.doc('subjects/${subject.id}'),
-      permissionTypes: [PermitTypes.delete, PermitTypes.edit, PermitTypes.manageContributors],
-    )).toList(),
-  );
+    // Crear y guardar un usuario con permisos variados
+    final newUser = UserEntity(
+      userLevel: UserType.admin,
+      fullName: 'John Doe',
+      passwordHash: 'hashedPassword',
+      createdAt: DateTime.now().toString(),
+      userPermissions: userPermissions,
+    );
 
-  // Crear y guardar un usuario con permisos variados
-  final newUser = UserEntity(
-    userLevel: UserType.admin,
-    fullName: 'John Doe',
-    passwordHash: 'hashedPassword',
-    createdAt: DateTime.now().toString(),
-    userPermissions: userPermissions,
-  );
+    await userProvider.addUser(newUser);
 
-  await userProvider.addUser(newUser);
+    final loginUser =
+        await userProvider.loginUser('John Doe', 'hashedPassword');
+    if (loginUser != null) {
+      // Crea una entidad de sesión con los datos del usuario autenticado.
+      final sessionEntity = SessionEntity(
+        token: 'user_token_example', // Genera un token adecuado para la sesión
+        userId: loginUser.id,
+        userName: loginUser.fullName,
+        userPermissions: loginUser.userPermissions,
+        tokenValidUntil: DateTime.now().add(const Duration(days: 30)),
+        pinnedSubjects: [],
+      );
 
-  final loginUser = await userProvider.loginUser('John Doe', 'hashedPassword');
-if (loginUser != null) {
-  // Crea una entidad de sesión con los datos del usuario autenticado.
-  final sessionEntity = SessionEntity(
-    token: 'user_token_example', // Genera un token adecuado para la sesión
-    userId: loginUser.id,
-    userName: loginUser.fullName,
-    userPermissions: loginUser.userPermissions,
-    tokenValidUntil: DateTime.now().add(const Duration(days: 30)),
-  );
+      // Guarda la sesión usando SessionProvider.
+      await sessionProvider.saveSession(sessionEntity);
+    }
 
-  // Guarda la sesión usando SessionProvider.
-  await sessionProvider.saveSession(sessionEntity);
-}
-  
-  return newUser;
-}
+    return newUser;
+  }
 }

@@ -87,9 +87,9 @@ locator.registerFactory(() => LoadSessionUseCase(locator<SessionRepository>()));
 locator.registerFactory(() => SaveSessionUseCase(locator<SessionRepository>()));
 locator.registerFactory(() => ClearSessionUseCase(locator<SessionRepository>()));
 locator.registerFactory(() => HasSessionUseCase(locator<LoadSessionUseCase>()));
-locator.registerFactory(() => UpdateSessionTokenUseCase(
-    locator<SaveSessionUseCase>(), locator<LoadSessionUseCase>()));
+locator.registerFactory(() => UpdateSessionTokenUseCase(locator<SaveSessionUseCase>(), locator<LoadSessionUseCase>()));
 locator.registerFactory(() => HasPermissionForUUIDUseCase(locator<LoadSessionUseCase>()));
+locator.registerFactory(() => UpdateSessionUseCase(locator<SaveSessionUseCase>(), locator<LoadSessionUseCase>()));
 
 
     // [DEPARTMENT]
@@ -151,6 +151,7 @@ locator.registerFactory(() => HasPermissionForUUIDUseCase(locator<LoadSessionUse
   hasSessionUseCase: locator<HasSessionUseCase>(),
   updateSessionTokenUseCase: locator<UpdateSessionTokenUseCase>(),
   hasPermissionForUUIDUseCase: locator<HasPermissionForUUIDUseCase>(),
+  updateSessionUseCase: locator<UpdateSessionUseCase>(),
 ));
 
 }

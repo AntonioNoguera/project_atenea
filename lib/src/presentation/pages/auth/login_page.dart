@@ -47,6 +47,7 @@ class LoginPage extends StatelessWidget {
           userName: user.fullName,
           userPermissions: user.userPermissions,
           tokenValidUntil: DateTime.now().add(const Duration(days: 7)), // Por ejemplo, 7 días de validez
+          pinnedSubjects: [],
         );
 
         // Guardar la sesión en el SessionProvider

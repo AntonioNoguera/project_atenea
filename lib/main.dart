@@ -32,7 +32,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  /*
   // Configuración de Firebase Messaging
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -55,6 +55,8 @@ void main() async {
   // Obtener el token del dispositivo
   String? token = await messaging.getToken();
   print('FCM Token: $token');
+
+  */
 
   // Inicializa la localización de fechas
   await initializeDateFormatting('es', null);

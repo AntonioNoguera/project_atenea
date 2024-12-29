@@ -9,6 +9,7 @@ class SessionEntity {
   final String userName;
   final PermissionEntity userPermissions;
   final DateTime tokenValidUntil;
+  final List<String> pinnedSubjects;
 
   SessionEntity({
     required this.token,
@@ -16,6 +17,7 @@ class SessionEntity {
     required this.userName,
     required this.userPermissions,
     required this.tokenValidUntil,
+    required this.pinnedSubjects,
   });
 
   // Constructor con valores predeterminados
@@ -27,14 +29,17 @@ class SessionEntity {
           isSuper: false,
           department: [
             AtomicPermissionEntity(
-              permissionId: FirebaseFirestore.instance.collection('departments').doc('default_department_id'),
+              permissionId: FirebaseFirestore.instance
+                  .collection('departments')
+                  .doc('default_department_id'),
               permissionTypes: [PermitTypes.edit],
             ),
           ],
           academy: [],
           subject: [],
         ),
-        tokenValidUntil = DateTime.now().add(const Duration(days: 30));
+        tokenValidUntil = DateTime.now().add(const Duration(days: 30)),
+        pinnedSubjects = [];
 
   // Método para convertir a un Map<String, dynamic> para almacenamiento
   Map<String, dynamic> toMap() {
@@ -47,21 +52,30 @@ class SessionEntity {
       'departmentPermissions': userPermissions.department
           .map((perm) => {
                 'permissionId': perm.permissionId.path,
-                'permissionTypes': perm.permissionTypes.map((type) => type.toString().split('.').last).toList(),
+                'permissionTypes': perm.permissionTypes
+                    .map((type) => type.toString().split('.').last)
+                    .toList(),
               })
           .toList(),
       'academyPermissions': userPermissions.academy
           .map((perm) => {
                 'permissionId': perm.permissionId.path,
-                'permissionTypes': perm.permissionTypes.map((type) => type.toString().split('.').last).toList(),
+                'permissionTypes': perm.permissionTypes
+                    .map((type) => type.toString().split('.').last)
+                    .toList(),
               })
           .toList(),
       'subjectPermissions': userPermissions.subject
           .map((perm) => {
                 'permissionId': perm.permissionId.path,
-                'permissionTypes': perm.permissionTypes.map((type) => type.toString().split('.').last).toList(),
+                'permissionTypes': perm.permissionTypes
+                    .map((type) => type.toString().split('.').last)
+                    .toList(),
               })
           .toList(),
+
+      // Convertimos cada DocumentReference en su path (String)
+      'pinnedSubjects': pinnedSubjects.map((ref) => ref).toList(),
     };
   }
 
@@ -77,48 +91,62 @@ class SessionEntity {
           isSuper: map['isSuper'] ?? false,
           department: (map['departmentPermissions'] as List<dynamic>)
               .map((perm) => AtomicPermissionEntity(
-                    permissionId: FirebaseFirestore.instance.doc(perm['permissionId']),
+                    permissionId:
+                        FirebaseFirestore.instance.doc(perm['permissionId']),
                     permissionTypes: (perm['permissionTypes'] as List<dynamic>)
                         .map((type) => PermitTypes.values.firstWhere(
-                            (e) => e.toString() == 'PermitTypes.$type',
-                            orElse: () {
-                              print("Unknown PermitType: $type. Defaulting to 'edit'.");
-                              return PermitTypes.edit;
-                            }))
+                              (e) => e.toString() == 'PermitTypes.$type',
+                              orElse: () {
+                                print(
+                                    "Unknown PermitType: $type. Defaulting to 'edit'.");
+                                return PermitTypes.edit;
+                              },
+                            ))
                         .toList(),
                   ))
               .toList(),
           academy: (map['academyPermissions'] as List<dynamic>)
               .map((perm) => AtomicPermissionEntity(
-                    permissionId: FirebaseFirestore.instance.doc(perm['permissionId']),
+                    permissionId:
+                        FirebaseFirestore.instance.doc(perm['permissionId']),
                     permissionTypes: (perm['permissionTypes'] as List<dynamic>)
                         .map((type) => PermitTypes.values.firstWhere(
-                            (e) => e.toString() == 'PermitTypes.$type',
-                            orElse: () {
-                              print("Unknown PermitType: $type. Defaulting to 'edit'.");
-                              return PermitTypes.edit;
-                            }))
+                              (e) => e.toString() == 'PermitTypes.$type',
+                              orElse: () {
+                                print(
+                                    "Unknown PermitType: $type. Defaulting to 'edit'.");
+                                return PermitTypes.edit;
+                              },
+                            ))
                         .toList(),
                   ))
               .toList(),
           subject: (map['subjectPermissions'] as List<dynamic>)
               .map((perm) => AtomicPermissionEntity(
-                    permissionId: FirebaseFirestore.instance.doc(perm['permissionId']),
+                    permissionId:
+                        FirebaseFirestore.instance.doc(perm['permissionId']),
                     permissionTypes: (perm['permissionTypes'] as List<dynamic>)
                         .map((type) => PermitTypes.values.firstWhere(
-                            (e) => e.toString() == 'PermitTypes.$type',
-                            orElse: () {
-                              print("Unknown PermitType: $type. Defaulting to 'edit'.");
-                              return PermitTypes.edit;
-                            }))
+                              (e) => e.toString() == 'PermitTypes.$type',
+                              orElse: () {
+                                print(
+                                    "Unknown PermitType: $type. Defaulting to 'edit'.");
+                                return PermitTypes.edit;
+                              },
+                            ))
                         .toList(),
                   ))
               .toList(),
         ),
+        pinnedSubjects: (map['pinnedSubjects'] as List<dynamic>?)
+                ?.map((id) => id as String)
+                .toList() ??
+            [],
       );
     } catch (e) {
       print("Error deserializing SessionEntity from map: $e");
-      return SessionEntity.defaultValues(); // Retorna valores por defecto en caso de error
+      return SessionEntity
+          .defaultValues(); // Retorna valores por defecto en caso de error
     }
   }
 }

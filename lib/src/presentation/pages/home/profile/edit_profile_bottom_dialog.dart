@@ -178,6 +178,7 @@ class _EditProfileDialogContentState extends State<_EditProfileDialogContent> {
                         '${_nombreController.text} ${_apellidoController.text}',
                     userPermissions: widget.userSession.userPermissions,
                     tokenValidUntil: widget.userSession.tokenValidUntil,
+                    pinnedSubjects: widget.userSession.pinnedSubjects,
                   );
 
                   await widget.onSave(updatedSession);
