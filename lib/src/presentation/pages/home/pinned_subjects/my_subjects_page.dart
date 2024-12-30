@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; 
-import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
+import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/pinned_subjects/widgets/pin_subject_item_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
@@ -15,22 +14,22 @@ class MySubjectsPage extends StatelessWidget {
   const MySubjectsPage({super.key});
 
   Future<List<SubjectEntity>> _fetchPinnedSubjects(
-  BuildContext context,
-  List<String> pinnedIds,
-) async {
-  // Obtenemos el SubjectProvider para usar `getSubject(...)`
-  final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
+    BuildContext context,
+    List<String> pinnedIds,
+  ) async {
+    // Obtenemos el SubjectProvider para usar `getSubject(...)`
+    final subjectProvider =
+        Provider.of<SubjectProvider>(context, listen: false);
 
-  final List<SubjectEntity> results = [];
-  for (final subjectId in pinnedIds) {
-    final subject = await subjectProvider.getSubject(subjectId);
-    if (subject != null) {
-      results.add(subject);
+    final List<SubjectEntity> results = [];
+    for (final subjectId in pinnedIds) {
+      final subject = await subjectProvider.getSubject(subjectId);
+      if (subject != null) {
+        results.add(subject);
+      }
     }
+    return results;
   }
-  return results;
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -55,54 +54,55 @@ class MySubjectsPage extends StatelessWidget {
               child: const AddPinnedSubjectDialog(),
             ),
             const SizedBox(height: 20.0),
-
             Expanded(
-  child: Consumer<SessionProvider>(
-    builder: (context, sessionProvider, _) {
-      final session = sessionProvider.currentSession;
+              child: Consumer<SessionProvider>(
+                builder: (context, sessionProvider, _) {
+                  final session = sessionProvider.currentSession;
 
-      // Si no hay sesión o la lista de pinnedSubjects está vacía, mostrar la vista "vacía".
-      if (session == null || session.pinnedSubjects.isEmpty) {
-        return _buildEmptyView(context);
-      }
+                  // Si no hay sesión o la lista de pinnedSubjects está vacía, mostrar la vista "vacía".
+                  if (session == null || session.pinnedSubjects.isEmpty) {
+                    return _buildEmptyView(context);
+                  }
 
-      // Usamos un FutureBuilder para cargar los SubjectEntity de pinnedSubjects
-      return FutureBuilder<List<SubjectEntity>>(
-        future: _fetchPinnedSubjects(context, session.pinnedSubjects),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Mientras esperamos la data, mostramos un indicador de carga
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            // Si hubo un error en la carga
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            // Si no hay datos o la lista de SubjectEntity vino vacía
-            return _buildEmptyView(context);
-          }
+                  // Usamos un FutureBuilder para cargar los SubjectEntity de pinnedSubjects
+                  return FutureBuilder<List<SubjectEntity>>(
+                    future:
+                        _fetchPinnedSubjects(context, session.pinnedSubjects),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Mientras esperamos la data, mostramos un indicador de carga
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        // Si hubo un error en la carga
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        // Si no hay datos o la lista de SubjectEntity vino vacía
+                        return _buildEmptyView(context);
+                      }
 
-          // Tenemos nuestra lista de SubjectEntity
-          final subjects = snapshot.data!;
+                      // Tenemos nuestra lista de SubjectEntity
+                      final subjects = snapshot.data!;
 
-          // Renderizamos esa lista
-          return ListView.builder(
-            itemCount: subjects.length,
-            itemBuilder: (context, index) {
-              final subject = subjects[index];
-              return Padding ( 
-                padding: const EdgeInsets.symmetric(horizontal:  16.0), 
-                child : PinSubjectItemRow(
-                  subject: subject,
-                  shouldUnpin: true,
-                ));
-            },
-          );
-        },
-      );
-    },
-  ),
-)
-
+                      // Renderizamos esa lista
+                      return ListView.builder(
+                        itemCount: subjects.length,
+                        itemBuilder: (context, index) {
+                          final subject = subjects[index];
+                          return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.05),
+                              child: PinSubjectItemRow(
+                                subject: subject,
+                                shouldUnpin: true,
+                              ));
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -112,8 +112,8 @@ class MySubjectsPage extends StatelessWidget {
   Widget _buildEmptyView(BuildContext context) {
     return Center(
       child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05),
         child: AteneaCard(
           child: Column(
             mainAxisSize: MainAxisSize.min,

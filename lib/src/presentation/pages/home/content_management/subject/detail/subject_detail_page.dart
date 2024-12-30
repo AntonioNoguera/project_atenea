@@ -12,37 +12,38 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_card.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_circular_progress.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
-import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart'; 
+import 'package:proyect_atenea/src/presentation/widgets/atenea_page_animator.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/presentation/widgets/atenea_scaffold.dart';
-import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart'; 
+import 'package:proyect_atenea/src/presentation/widgets/toggle_buttons_widget%20.dart';
 
 class SubjectDetailPage extends StatelessWidget {
   final SubjectEntity subject;
   final bool shouldUnpin;
 
-  const SubjectDetailPage({
-    super.key, required this.subject, this.shouldUnpin = false});
+  const SubjectDetailPage(
+      {super.key, required this.subject, this.shouldUnpin = false});
 
   void _handleToggle(BuildContext context, int index) {
-    Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
+    Provider.of<ActiveIndexNotifier>(context, listen: false)
+        .setActiveIndex(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
+    final subjectProvider =
+        Provider.of<SubjectProvider>(context, listen: false);
 
     return ChangeNotifierProvider(
       create: (context) => ActiveIndexNotifier(),
       child: FutureBuilder<SubjectEntity?>(
         future: subjectProvider.getSubject(subject.id),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) { 
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const AteneaScaffold(
-              body: Center(
-                child: AteneaCircularProgress(),
-              )
-            );
+                body: Center(
+              child: AteneaCircularProgress(),
+            ));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error al cargar la materia'));
           } else if (!snapshot.hasData) {
@@ -61,7 +62,6 @@ class SubjectDetailPage extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 10.0),
-                                  
                       Text(
                         'Materia Seleccionada',
                         textAlign: TextAlign.center,
@@ -71,7 +71,6 @@ class SubjectDetailPage extends StatelessWidget {
                           weight: FontWeights.regular,
                         ),
                       ),
-
                       Text(
                         subject.name,
                         textAlign: TextAlign.center,
@@ -119,7 +118,8 @@ class SubjectDetailPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      AppUiHelpers.formatDateStringToWords(subject.lastModificationDateTime),
+                                      AppUiHelpers.formatDateStringToWords(
+                                          subject.lastModificationDateTime),
                                       textAlign: TextAlign.center,
                                       style: AppTextStyles.builder(
                                         color: AppColors.grayColor,
@@ -132,11 +132,13 @@ class SubjectDetailPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 10),
                               ToggleButtonsWidget(
-                                onToggle: (index) => _handleToggle(context, index),
+                                onToggle: (index) =>
+                                    _handleToggle(context, index),
                                 toggleOptions: const ['Temas', 'Recursos'],
                               ),
                               const SizedBox(height: 10),
-                              _renderedContent(activeIndexNotifier.activeIndex, subject),
+                              _renderedContent(
+                                  activeIndexNotifier.activeIndex, subject),
                             ],
                           ),
                         ),
@@ -157,21 +159,32 @@ class SubjectDetailPage extends StatelessWidget {
                           const SizedBox(width: 10.0),
                           Expanded(
                             child: AteneaButtonV2(
-  text: 'Anclar Materia',
-  onPressed: () async {
-    final sessionProvider = Provider.of<SessionProvider>(context, listen: false);
+                              text: shouldUnpin
+                                  ? 'Desanclar Materia'
+                                  : 'Anclar Materia',
+                              onPressed: () async {
+                                final sessionProvider =
+                                    Provider.of<SessionProvider>(context,
+                                        listen: false);
 
-    // Llamamos al método para anclar
-    await sessionProvider.updatePinnedSubjects(subject.id, shouldUnpin);
+                                // Llamamos al método para anclar
+                                await sessionProvider.updatePinnedSubjects(
+                                    subject.id, shouldUnpin);
 
-    // Opcionalmente, retroalimentar la UI (ej. mostrando SnackBar, etc.)
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Materia anclada con éxito')),
-    );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      shouldUnpin
+                                          ? 'Materia desanclada con éxito'
+                                          : 'Materia anclada con éxito',
+                                    ),
+                                  ),
+                                );
 
-    // Navigator.pop(context); // si quieres regresar atrás
-  },
-),
+                                Navigator.pop(
+                                    context); // si quieres regresar atrás
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -186,7 +199,7 @@ class SubjectDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _renderEmptySubjectsMessage( String type ) {
+  Widget _renderEmptySubjectsMessage(String type) {
     return Center(
       child: AteneaCard(
         child: Column(
@@ -216,7 +229,6 @@ class SubjectDetailPage extends StatelessWidget {
     );
   }
 
-
   Widget _renderedContent(int activeIndex, SubjectEntity subject) {
     final Map<int, Widget> renderedContent = {
       0: subject.subjectPlanData?.subjectThemes != null
@@ -226,7 +238,9 @@ class SubjectDetailPage extends StatelessWidget {
                   ThemeOrFileSubject(
                     contentType: 'Temas Medio Termino',
                     hasSvg: false,
-                    content: UiUtilities.hashMapToOrderedList(subject.subjectPlanData!.subjectThemes.halfTerm) ?? [] ,
+                    content: UiUtilities.hashMapToOrderedList(
+                            subject.subjectPlanData!.subjectThemes.halfTerm) ??
+                        [],
                   )
                 else
                   const Text(
@@ -237,7 +251,9 @@ class SubjectDetailPage extends StatelessWidget {
                   ThemeOrFileSubject(
                     contentType: 'Temas Ordinario',
                     hasSvg: false,
-                    content: UiUtilities.hashMapToOrderedList(subject.subjectPlanData!.subjectThemes.halfTerm) ?? [] ,
+                    content: UiUtilities.hashMapToOrderedList(
+                            subject.subjectPlanData!.subjectThemes.halfTerm) ??
+                        [],
                   )
                 else
                   const Text(
@@ -246,9 +262,9 @@ class SubjectDetailPage extends StatelessWidget {
                   ),
               ],
             )
-          :  _renderEmptySubjectsMessage('temas'),
-
-      1: (subject.subjectPlanData?.subjectFiles != null && subject.subjectPlanData!.subjectFiles!.isNotEmpty)
+          : _renderEmptySubjectsMessage('temas'),
+      1: (subject.subjectPlanData?.subjectFiles != null &&
+              subject.subjectPlanData!.subjectFiles!.isNotEmpty)
           ? Column(
               children: [
                 /*
@@ -273,5 +289,4 @@ class SubjectDetailPage extends StatelessWidget {
 
     return renderedContent[activeIndex] ?? const Text('Unrenderable');
   }
-
 }
