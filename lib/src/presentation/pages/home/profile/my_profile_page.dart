@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/session_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/manage_content_page.dart';
-import 'package:proyect_atenea/src/presentation/pages/home/profile/edit_profile_bottom_dialog.dart'; 
+import 'package:proyect_atenea/src/presentation/pages/home/profile/edit_profile_bottom_dialog.dart';
+import 'package:proyect_atenea/src/presentation/pages/playground.dart'; 
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart'; 
 import 'package:proyect_atenea/src/presentation/widgets/atenea_button_v2.dart';
@@ -53,9 +54,16 @@ class MyProfilePage extends StatelessWidget {
                 xpndText: true,
                 svgIcon: SvgButtonStyle(svgPath: 'assets/svg/subjects.svg'),
                 onPressed: () {
+                  /*
                   Navigator.push(
                     context,
                     AteneaPageAnimator(page: const ManageContentPage()),
+                  );
+                  */
+
+                  Navigator.push(
+                    context,
+                    AteneaPageAnimator(page: ImageUploadScreen())
                   );
                 },
               ),

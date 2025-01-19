@@ -6,7 +6,7 @@ import '../../domain/repositories/file_repository.dart';
 class FileRepositoryImpl implements FileRepository {
   final FileDataSource remoteDataSource;
 
-  FileRepositoryImpl({required this.remoteDataSource});
+  FileRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<void> uploadFile(FileEntity file, List<int> fileBytes) async {

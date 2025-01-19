@@ -13,7 +13,7 @@ import 'package:proyect_atenea/src/presentation/widgets/atenea_dialog.dart';
 
 class AddFileDialog extends StatefulWidget {
 
-  final void Function(FileEntity, List<int>) onFileAdded;
+  final void Function(FileEntity) onFileAdded;
   const AddFileDialog({super.key, required this.onFileAdded});
 
   @override
@@ -126,6 +126,9 @@ class _AddFileDialogState extends State<AddFileDialog> {
           AteneaButtonCallback(
             textButton: 'Aceptar',
             onPressedCallback: () {
+
+              //trepar archivo y obtener url de descarga
+
               if (_selectedFile != null &&
                   _selectedFile!.bytes != null &&
                   _fileNameController.text.trim().isNotEmpty) {
@@ -134,11 +137,12 @@ class _AddFileDialogState extends State<AddFileDialog> {
                   extension: _selectedFile!.extension ?? 'unknown',
                   size: _selectedFile!.size,
                   downloadUrl: '',
-                  subjectId: 'widget.subjectId,',
+                  subjectId: '',
                   uploadedAt: DateTime.now().toIso8601String(),
+                  fileBytes: _selectedFile!.bytes!,
                 );
 
-                widget.onFileAdded(fileEntity, _selectedFile!.bytes!);
+                widget.onFileAdded(fileEntity);
                 Navigator.of(context).pop();
               } else {
                 print('Error: No se ha seleccionado un archivo o el nombre está vacío.');

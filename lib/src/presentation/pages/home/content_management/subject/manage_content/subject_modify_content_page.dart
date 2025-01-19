@@ -2,9 +2,9 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; 
+import 'package:provider/provider.dart';
 import 'package:proyect_atenea/src/domain/entities/file_entity.dart';
-import 'package:proyect_atenea/src/domain/entities/subject_entity.dart'; 
+import 'package:proyect_atenea/src/domain/entities/subject_entity.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_file_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/add_theme_dialog.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/delete_subject_content_dialog.dart';
@@ -12,6 +12,7 @@ import 'package:proyect_atenea/src/presentation/pages/home/content_management/su
 import 'package:proyect_atenea/src/presentation/pages/home/content_management/subject/manage_content/widget/theme_or_file_subject_manage_row.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/active_index_notifier.dart';
 import 'package:proyect_atenea/src/presentation/providers/app_state_providers/scroll_controller_notifier.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/file_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/utils/ui_utilities.dart';
 import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
@@ -29,13 +30,13 @@ class SubjectModifyContentPage extends StatefulWidget {
   const SubjectModifyContentPage({super.key, required this.subjectId});
 
   @override
-  _SubjectModifyContentPageState createState() => _SubjectModifyContentPageState();
+  _SubjectModifyContentPageState createState() =>
+      _SubjectModifyContentPageState();
 }
 
 class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
-
-  List<String> halfTerm =  [];
-  List<String> ordinary =  []; 
+  List<String> halfTerm = [];
+  List<String> ordinary = [];
   List<FileEntity> subjectFiles = [];
 
   String _lastSemesterStageSelected = '';
@@ -54,7 +55,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
       final subjectProvider =
           Provider.of<SubjectProvider>(context, listen: false);
       print('Cargando asignatura con ID: ${widget.subjectId}');
-      
+
       final subject = await subjectProvider.getSubjectByIdUseCase(
         widget.subjectId,
       );
@@ -63,9 +64,15 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         print('Asignatura cargada correctamente: ${subject.name}');
         setState(() {
           _subject = subject;
-          ordinary = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.ordinary) ?? [];
-          halfTerm = UiUtilities.hashMapToOrderedList( subject.subjectPlanData?.subjectThemes.halfTerm) ?? [];
-          subjectFiles = UiUtilities.hashMapToOrderedList(subject.subjectPlanData?.subjectFiles) ?? [];
+          ordinary = UiUtilities.hashMapToOrderedList(
+                  subject.subjectPlanData?.subjectThemes.ordinary) ??
+              [];
+          halfTerm = UiUtilities.hashMapToOrderedList(
+                  subject.subjectPlanData?.subjectThemes.halfTerm) ??
+              [];
+          subjectFiles = UiUtilities.hashMapToOrderedList(
+                  subject.subjectPlanData?.subjectFiles) ??
+              [];
           _isLoading = false;
         });
       } else {
@@ -86,10 +93,12 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   void _handleToggle(BuildContext context, int index) {
-    Provider.of<ActiveIndexNotifier>(context, listen: false).setActiveIndex(index);
+    Provider.of<ActiveIndexNotifier>(context, listen: false)
+        .setActiveIndex(index);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ScrollControllerNotifier>(context, listen: false).setButtonCollapsed();
+      Provider.of<ScrollControllerNotifier>(context, listen: false)
+          .setButtonCollapsed();
     });
   }
 
@@ -195,7 +204,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
     });
   }
 
-  Widget _renderEmptySubjectsMessage( String type ) {
+  Widget _renderEmptySubjectsMessage(String type) {
     return Center(
       child: AteneaCard(
         child: Column(
@@ -217,28 +226,71 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   void _saveSubjectChanges() async {
-  if (_subject == null) return;
+    if (_subject == null) return;
 
-  final subjectProvider = Provider.of<SubjectProvider>(context, listen: false);
+    final subjectProvider =
+        Provider.of<SubjectProvider>(context, listen: false);
+    final fileProvider = Provider.of<FileProvider>(context, listen: false);
 
-  _subject!.subjectPlanData?.subjectThemes.halfTerm = UiUtilities.orderedListToHashMap(halfTerm);
-  _subject!.subjectPlanData?.subjectThemes.ordinary = UiUtilities.orderedListToHashMap(ordinary);
-  _subject!.subjectPlanData?.subjectFiles = UiUtilities.orderedListToHashMap(subjectFiles);
+    _subject!.subjectPlanData?.subjectThemes.halfTerm =
+        UiUtilities.orderedListToHashMap(halfTerm);
+    _subject!.subjectPlanData?.subjectThemes.ordinary =
+        UiUtilities.orderedListToHashMap(ordinary);
 
-  try {
-    await subjectProvider.updateSubject(_subject!);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Los cambios se han guardado correctamente')),
-    );
-  } catch (e) {
-    print('Error: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error al guardar los cambios: $e')),
-    );
+    // Subir archivos y actualizar sus URLs
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Subiendo archivos, por favor espera...')),
+      );
+
+      print('Iniciando el proceso de subida de archivos...');
+      List<FileEntity> updatedFiles = [];
+
+      for (var file in subjectFiles) {
+        print('Procesando archivo: ${file.name}');
+        if (file.downloadUrl.isEmpty) {
+          print('Subiendo archivo porque no tiene URL: ${file.name}');
+ 
+          await fileProvider.uploadFile(file, file.fileBytes!);
+          print('Archivo subido: ${file.name}');
+
+          final updatedFile = fileProvider.files.firstWhere(
+            (f) => f.name == file.name,
+          );
+          updatedFiles.add(updatedFile);
+          print('Archivo actualizado con URL: ${updatedFile.downloadUrl}');
+        } else {
+          updatedFiles.add(file);
+          print('El archivo ya tenía URL: ${file.name}');
+        }
+      }
+
+      print('Actualizando subjectFiles con las URLs...');
+      setState(() {
+        subjectFiles = updatedFiles;
+      });
+
+      print('Actualizando subjectPlanData...');
+      _subject!.subjectPlanData?.subjectFiles =
+          UiUtilities.orderedListToHashMap(subjectFiles);
+
+      print('Guardando cambios en el subject...');
+      await subjectProvider.updateSubject(_subject!);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Los cambios se han guardado correctamente')),
+      );
+
+      print('Proceso completado exitosamente.');
+    } catch (e, stackTrace) {
+      print('Error al guardar los cambios: $e');
+      print('StackTrace: $stackTrace');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al guardar los cambios: $e')),
+      );
+    }
   }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -334,13 +386,13 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                   builder: (BuildContext context) {
                                     return AddThemeDialog(
                                       onAddTheme: _addNewTheme,
-                                      previousSemesterStage: _lastSemesterStageSelected,
+                                      previousSemesterStage:
+                                          _lastSemesterStageSelected,
                                     );
                                   },
                                 );
                               },
                             ),
-                            
                           if (activeIndexNotifier.activeIndex == 1)
                             AteneaFoldingButton(
                               data: 'Añadir Recurso',
@@ -349,18 +401,16 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
                                 showDialog(
                                   context: context,
                                   builder: (context) => AddFileDialog(
-                                    onFileAdded: (fileEntity, fileBytes) {
+                                    onFileAdded: (fileEntity) {
                                       setState(() {
+                                        fileEntity.subjectId = widget.subjectId;
                                         subjectFiles.add(fileEntity);
                                       });
-                                      print('Archivo añadido: ${fileEntity.name}');
-                                      print('Bytes del archivo: ${fileBytes.length}');
                                     },
                                   ),
                                 );
                               },
                             ),
-                          
                           const SizedBox(height: 10),
                           Row(
                             children: [
@@ -403,12 +453,12 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
   }
 
   Widget _renderedContent(int activeIndex) {
-    if (activeIndex == 0) { 
+    if (activeIndex == 0) {
       return _renderThemes();
-    } else if (activeIndex == 1) { 
+    } else if (activeIndex == 1) {
       return _renderResources();
     } else {
-      return const SizedBox(); 
+      return const SizedBox();
     }
   }
 
@@ -502,7 +552,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
             onReorder: (oldIndex, newIndex) =>
                 _onReorder(oldIndex, newIndex, subjectFiles!),
             children: [
-              for (int index = 0; index < subjectFiles.length; index++)  
+              for (int index = 0; index < subjectFiles.length; index++)
                 ThemeOrFileSubjectManageRow(
                   key: ValueKey(subjectFiles[index].id),
                   content: subjectFiles[index].name,

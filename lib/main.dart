@@ -10,6 +10,7 @@ import 'package:proyect_atenea/src/presentation/pages/auth/splash_page.dart';
 import 'package:proyect_atenea/src/presentation/pages/home/home_page.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/academy_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/department_provider.dart';
+import 'package:proyect_atenea/src/presentation/providers/remote_providers/file_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/session_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/subject_provider.dart';
 import 'package:proyect_atenea/src/presentation/providers/remote_providers/user_provider.dart';
@@ -32,32 +33,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  /*
-  // Configuración de Firebase Messaging
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  // Solicitar permisos (solo para iOS)
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('Permisos otorgados');
-  } else {
-    print('Permisos denegados');
-  }
-
-  // Registrar el handler de notificaciones en segundo plano
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  // Obtener el token del dispositivo
-  String? token = await messaging.getToken();
-  print('FCM Token: $token');
-
-  */
-
   // Inicializa la localización de fechas
   await initializeDateFormatting('es', null);
 
@@ -95,6 +70,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => GetIt.instance<SubjectProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => GetIt.instance<FileProvider>(),
         ),
       ],
       child: MaterialApp(

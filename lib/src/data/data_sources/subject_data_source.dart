@@ -54,11 +54,13 @@ class SubjectDataSource {
           .where('parentAcademy', isEqualTo: firestore.doc('academies/$academyId').path)  // Usa .path para obtener el String
           .get();
       return snapshot.docs.map((doc) {
-        var data = doc.data() as Map<String, dynamic>;
+        var data = doc.data() as Map<String, dynamic>; 
+
         return SubjectEntity.fromMap(doc.id, data, firestore);
-      }).toList();
+      }
+      ).toList();
     } catch (e) {
-      print('Error obteniendo materias por ID de academia: $e');
+      print('Error obteniendo materias por ID de academia: $academyId -> $e');
       return [];
     }
   }

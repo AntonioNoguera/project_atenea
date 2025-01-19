@@ -24,19 +24,21 @@ class FileProvider with ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   /// Subir un archivo
-  Future<void> uploadFile(FileEntity file, List<int> fileBytes) async {
+  Future<FileEntity> uploadFile(FileEntity file, List<int> fileBytes) async {
     _setLoading(true);
     try {
       print('Subiendo archivo: ${file.name}');
       await uploadFileUseCase.execute(file, fileBytes);
       print('Archivo subido con éxito');
-      // Opcional: Refrescar la lista después de subir un archivo
-      await getFiles(file.subjectId);
+      //await getFiles(file.subjectId);
+      return FileEntity.defaultValue;
     } catch (e) {
       _setErrorMessage('Error al subir el archivo: $e');
     } finally {
       _setLoading(false);
     }
+    
+      return FileEntity.defaultValue;
   }
 
   /// Obtener archivos por `subjectId`

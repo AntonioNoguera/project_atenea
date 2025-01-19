@@ -17,6 +17,8 @@ dependencies:
   cloud_firestore: ^5.5.1
   firebase_messaging: ^15.1.6
 
+  image_picker: ^0.8.7
+
   # Other dependencies
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.16
