@@ -18,7 +18,7 @@ class FileEntity {
     required this.downloadUrl,
     required this.subjectId,
     required this.uploadedAt,
-    List<int>? this.fileBytes 
+    this.fileBytes 
   }) : id = id ?? const Uuid().v4();
 
   // Propiedad estática para los valores predeterminados

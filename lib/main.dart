@@ -18,7 +18,6 @@ import 'package:proyect_atenea/src/presentation/values/app_theme.dart';
 import 'package:proyect_atenea/src/firebase_options.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 
 // Handler para notificaciones en segundo plano
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

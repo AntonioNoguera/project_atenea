@@ -1,7 +1,7 @@
 buildscript {
     ext {
         // Actualiza la versión de Kotlin para alinearse con las dependencias compiladas con Kotlin 1.8.0
-        kotlinVersion = '1.8.22'
+        kotlinVersion = '1.9.24'
     }
     repositories {
         google()
@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         // Asegúrate de utilizar la versión más reciente del plugin de Gradle compatible
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'com.google.gms:google-services:4.3.15'
     }
