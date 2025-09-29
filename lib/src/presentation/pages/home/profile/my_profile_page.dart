@@ -53,18 +53,11 @@ class MyProfilePage extends StatelessWidget {
                 text: 'Editar Contenidos',
                 xpndText: true,
                 svgIcon: SvgButtonStyle(svgPath: 'assets/svg/subjects.svg'),
-                onPressed: () {
-                  /*
+                onPressed: () { 
                   Navigator.push(
                     context,
                     AteneaPageAnimator(page: const ManageContentPage()),
-                  );
-                  */
-
-                  Navigator.push(
-                    context,
-                    AteneaPageAnimator(page: ImageUploadScreen())
-                  );
+                  );  
                 },
               ),
               const SizedBox(height: 10.0),

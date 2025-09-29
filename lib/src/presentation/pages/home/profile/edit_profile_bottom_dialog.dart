@@ -76,7 +76,7 @@ class _EditProfileDialogContentState extends State<_EditProfileDialogContent> {
       text: widget.userSession.userName.split(' ').last,
     );
     _emailController = TextEditingController(
-      text: widget.userSession.userPermissions.toString(),
+      text: "michael@gmail.com",
     );
   }
 

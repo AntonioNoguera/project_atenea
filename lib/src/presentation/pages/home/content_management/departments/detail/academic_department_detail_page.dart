@@ -122,7 +122,7 @@ class _AcademicDepartmentDetailPageState
                                 ),
                               ),
                               Text(
-                                department.lastModificationContributor,
+                                'Admin',
                                 textAlign: TextAlign.center,
                                 style: AppTextStyles.builder(
                                   color: AppColors.grayColor,

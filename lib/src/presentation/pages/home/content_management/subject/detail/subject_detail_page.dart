@@ -99,7 +99,7 @@ class SubjectDetailPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      subject.lastModificationContributor,
+                                      'Admin',
                                       textAlign: TextAlign.center,
                                       style: AppTextStyles.builder(
                                         color: AppColors.grayColor,

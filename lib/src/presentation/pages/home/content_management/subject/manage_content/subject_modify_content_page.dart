@@ -238,10 +238,7 @@ class _SubjectModifyContentPageState extends State<SubjectModifyContentPage> {
         UiUtilities.orderedListToHashMap(ordinary);
 
     // Subir archivos y actualizar sus URLs
-    try {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Subiendo archivos, por favor espera...')),
-      );
+    try { 
 
       print('Iniciando el proceso de subida de archivos...');
       List<FileEntity> updatedFiles = [];

@@ -111,7 +111,7 @@ class _AcademyDetailPageState extends State<AcademyDetailPage> {
                                       ),
                                     ),
                                     Text(
-                                      widget.academy.lastModificationContributor,
+                                      'Admin',
                                       textAlign: TextAlign.center,
                                       style: AppTextStyles.builder(
                                         color: AppColors.grayColor,
